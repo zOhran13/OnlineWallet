@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         justifyContent: 'space-around',
-        marginBottom: 450
+        marginBottom: 400
     },
     picture: {
 
