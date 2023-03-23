@@ -7,13 +7,16 @@ const AccountBalance = () => {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.balanceValueComponent}>
+
+        <View style={styles.elipseContainer}>
           <Text style={styles.balanceText}>Total balance</Text>
-            <Text style={styles.balanceValueText}>BAM {balance}</Text>
-          </View>
+          <Text style={styles.balanceValueText}>BAM {balance}</Text>
+        </View>
+
         <View>
           <Image source={require('../assets/images/WalletPicture.png')} style={styles.picture}/>
         </View>
+
       </View>
     </>
   );
@@ -26,7 +29,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         justifyContent: 'space-around',
-        marginBottom: 400
+        marginBottom: 200
     },
     picture: {
 
@@ -52,6 +55,13 @@ const styles = StyleSheet.create({
       backgroundColor: '#312e66',
       padding: 30,
     
+    },
+    elipseContainer: {
+      borderColor: 'black',
+      padding: 10,
+      borderRadius: 50,
+      backgroundColor: '#312e66',
+      padding: 30
     }
 
   });
