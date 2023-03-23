@@ -1,11 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import AccountBalance from './components/AccountBalance';
+import HomeScreen from './screens/HomeScreen';
 
 export default function App() {
   return (
     <View style={styles.container}>
-        <AccountBalance/>
+        <HomeScreen/>
     </View>
   );
 }
