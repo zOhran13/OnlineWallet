@@ -1,12 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import 'bootstrap/dist/css';
+import AccountBalance from './components/AccountBalance';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Novi Sprint!</Text>
-      <StatusBar style="auto" />
+        <AccountBalance/>
     </View>
   );
 }
@@ -14,7 +13,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#1B1938',
     alignItems: 'center',
     justifyContent: 'center',
   },
