@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet, Pressable } from 'react-native';
+import { Text, View, Image, StyleSheet, Pressable} from 'react-native';
 import AccountBalance from '../components/AccountBalance';
 
 const HomeScreen = ({ navigation }) => {
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderColor: 'black',
-    borderRadius: 30,
+    borderRadius: 40,
     backgroundColor: '#312e66',
-    padding: 30,
+    padding: 50,
     width: '80%',
     marginTop: '80%'
   },
