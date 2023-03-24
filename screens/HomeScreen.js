@@ -3,7 +3,7 @@ import { Text, View, Image, StyleSheet} from 'react-native';
 import AccountBalance from '../components/AccountBalance';
 import HomePageButtons from '../components/HomePageButtons';
 
-const HomeScreen = () => {
+const HomeScreen = (props) => {
 
   return (
     <>

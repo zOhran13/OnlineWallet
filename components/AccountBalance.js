@@ -29,7 +29,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
         justifyContent: 'space-around',
-        marginBottom: 200
+        position: 'absolute',
+        top: '15%'
     },
     picture: {
 
