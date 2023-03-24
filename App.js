@@ -3,36 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import AccountBalance from './components/AccountBalance';
 import HomeScreen from './screens/HomeScreen';
 import TransactionScreen from './screens/TransactionScreen';
+import MyTransactionsScreen from './screens/MyTransactionsScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-const MyStack = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Welcome'}}
-        />
-        <Stack.Screen
-          name="Transaction"
-          component={TransactionScreen}
-          options={{title: 'Transaction'}}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
-
 export default function App() {
   return (
     <NavigationContainer>
-      <View style={styles.container}>
-        <HomeScreen/>
-      </View>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Transaction" component={TransactionScreen}/>
+        <Stack.Screen name="MyTransactions" component={MyTransactionsScreen}/>
+
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

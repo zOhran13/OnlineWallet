@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, View, Image, StyleSheet} from 'react-native';
 import AccountBalance from '../components/AccountBalance';
 
-const TransactionScreen = ({ navigation }) => {
+const MyTransactionsScreen = ({ navigation }) => {
   return (
     <>
         <AccountBalance/>
@@ -52,4 +52,4 @@ const styles = StyleSheet.create({
 });
   
 
-export default TransactionScreen;
+export default MyTransactionsScreen;
