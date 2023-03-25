@@ -11,7 +11,7 @@ const HomeScreen = ({ navigation }) => {
 
 <View>
 
-<Pressable style={styles.payButton} onPress={() => navigation.navigate("Transaction")}>
+<Pressable style={styles.payButton} onPress={() => navigation.navigate("EmailVerificationScreen")}>
   <Text style={styles.text}>PAY</Text>
 </Pressable>
 </View>
