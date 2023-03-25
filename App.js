@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import AccountBalance from './components/AccountBalance';
-import RegistrationScreen from './screens/egistrationScreen';
+import RegistrationScreen from './screens/RegistrationScreen';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
 import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import HomeScreen from './screens/HomeScreen';

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     marginTop: '80%'
   },
   verifyButton: {
-    alignItems: 'center',s
+    alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
     width: 150,
