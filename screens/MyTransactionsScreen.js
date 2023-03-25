@@ -6,8 +6,6 @@ const MyTransactionsScreen = ({ navigation }) => {
   return (
     <>
         <AccountBalance/>
-        
-        
     </>
   );
 
