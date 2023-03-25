@@ -36,17 +36,21 @@ const RegistrationScreen = ({ navigation }) => {
 
 <TextInput style={styles.input} 
           placeholder="Password" keyboardType="text" placeholderTextColor ='#6e749d'/>
-
+         
 <Text style={styles.password}>Use 6 or more characters, mix letters and numbers.</Text> 
 
 <TextInput style={styles.input} 
           placeholder="Confirm Password" keyboardType="text" placeholderTextColor ='#6e749d'/> 
        
       </View>
-        <Pressable style={styles.registerButton} onPress={() =>navigation.navigate("EmailVerification")}>
-  <Text style={styles.text}>REGISTER</Text>
-</Pressable>
 
+        <Pressable
+					style={styles.verifyButton}
+					title='Register'
+					onPress={() => navigation.navigate("EmailVerification")}
+				>
+					<Text style={styles.registerText}>REGISTER</Text>
+				</Pressable>
 
 <Text style={styles.login}>Already have an account? Log in</Text>
         
@@ -58,7 +62,19 @@ const RegistrationScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+
+  /*container: {
+		flex: 1,
+		backgroundColor: '#1B1938',
+		alignItems: 'center',
+		justifyContent: 'center',
+		width: '100%',
+		height: '100%',
+	},*/
+	
   elipseContainer: {
+
+    
     borderColor: 'black',
     borderRadius: 30,
     backgroundColor: '#312e66',
@@ -78,12 +94,12 @@ const styles = StyleSheet.create({
  },
 
  picture:{
-   width: 310,
-   height: 140,
+   width: 350,
+   height: 160,
  },
 
  password:{
-  fontSize: 10,
+  fontSize: 13,
   lineHeight: 21,
   fontWeight: 'bold',
   letterSpacing: 0.25,
@@ -93,23 +109,36 @@ const styles = StyleSheet.create({
   marginBottom: -1,
  },
 
+ verifyButton: {
+  marginTop: 13,
+  backgroundColor: '#FFC022',
+  width: 120,
+  height: 35,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderRadius: 15,
+  
+},
+
  login:{
-  fontSize: 12,
+  fontSize: 14,
   lineHeight: 21,
   fontWeight: 'bold',
   letterSpacing: 0.25,
   color: '#6e749d',
   margin: 0,
-  marginTop: 0,
+  marginTop: 9,
   marginBottom:6,
  },
 
  input:{
+    fontSize: 18,
     backgroundColor: '#23204d',
     margin: 4,
     alignItems: 'stretch',
-    width: 275,
-    height: 35,
+    width: 320,
+    height: 48,
     borderRadius: 10,
     padding: 9,
     color: 'white'
@@ -124,7 +153,14 @@ const styles = StyleSheet.create({
   backgroundColor: '#FFC021',
   margin: 7,
   marginBottom: -2,
+
  },
+
+ registerText: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  letterSpacing: 1,
+},
 
  text: {
   fontSize: 13,

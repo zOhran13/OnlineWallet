@@ -93,13 +93,15 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 	},
 	verifyText: {
-		fontSize: 14,
+		fontSize: 18,
 		fontWeight: 'bold',
+		letterSpacing: 1,
 	},
 	resendCode: {
 		color: '#00D8FF',
-		fontSize: 13,
-		marginTop: 9,
+		fontSize: 14,
+		marginTop: 6,
+		letterSpacing: 1,
 	},
 });
 
