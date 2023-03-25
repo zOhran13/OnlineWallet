@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 
 
 
-const RegistrationScreen = () => {
+const RegistrationScreen = ({ navigation }) => {
     
   return (
     <>
@@ -43,10 +43,10 @@ const RegistrationScreen = () => {
           placeholder="Confirm Password" keyboardType="text" placeholderTextColor ='#6e749d'/> 
        
       </View>
-    
-        <Pressable style={styles.registerButton} onPress={() => Alert.alert('Transaction Successful!')}>
+        <Pressable style={styles.registerButton} onPress={() =>navigation.navigate("EmailVerification")}>
   <Text style={styles.text}>REGISTER</Text>
 </Pressable>
+
 
 <Text style={styles.login}>Already have an account? Log in</Text>
         
@@ -62,9 +62,11 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 30,
     backgroundColor: '#312e66',
+    borderWidth: 2,
+		borderColor: '#645CD1',
     paddingLeft: 10,
     paddingRight: 10,
-    paddingBottom: 30,
+    paddingBottom: 22,
   },
 
  container: {
@@ -72,6 +74,7 @@ const styles = StyleSheet.create({
    backgroundColor: '#1B1938',
    alignItems: 'center',
    justifyContent: 'center',
+  
  },
 
  picture:{
