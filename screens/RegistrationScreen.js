@@ -63,15 +63,7 @@ const RegistrationScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
 
-  /*container: {
-		flex: 1,
-		backgroundColor: '#1B1938',
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: '100%',
-		height: '100%',
-	},*/
-	
+  
   elipseContainer: {
 
     

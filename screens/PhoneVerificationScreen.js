@@ -51,8 +51,8 @@ const styles = StyleSheet.create({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		width: '70%',
-		height: '40%',
+		width: '90%',
+		height: '45%',
 		backgroundColor: '#312D65',
 		borderRadius: 50,
 		borderWidth: 2,
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		display: 'flex',
 		alignItems: 'center',
-		marginBottom: 32,
+		marginBottom: 25,
 	},
 	bodyText: {
 		color: '#CADAFFBF',
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
 		height: 45,
 		textAlign: 'center',
 		borderRadius: 20,
-		marginTop: 22,
+		marginTop: 25,
 		fontSize: 18,
 	},
 	verifyButton: {
@@ -97,10 +97,11 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
     letterSpacing: 1,
 	},
+
 	resendCode: {
 		color: '#00D8FF',
 		fontSize: 14,
-		marginTop: 6,
+		marginTop: 7,
     letterSpacing: 1,
 	},
 });
