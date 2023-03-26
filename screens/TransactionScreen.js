@@ -6,8 +6,33 @@ import { Picker } from '@react-native-picker/picker';
 
 const TransactionScreen = () => {
   const [currency, setCurrency] = useState('US Dollar');
+  const [textInputName, setTextInputName] = useState('');
+  const [textInputNumber, setTextInputNumber] = useState('');
+  const [textInputAmount, setTextInputAmount] = useState('');
 
-  
+  const checkTextInput = () => {
+
+    if (!textInputAmount.trim()) {
+      alert('Please Enter Amount!');
+      return;
+    }
+    
+    if (!textInputName.trim()) {
+      alert('Please Enter Name!');
+      return;
+    }
+   
+    if (!textInputNumber.trim()) {
+      alert('Please Enter Account Number!');
+      return;
+    }
+    
+
+    //Checked Successfully
+    //Do whatever you want
+    Alert.alert('Transaction Successful!')
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -22,8 +47,12 @@ const TransactionScreen = () => {
         <View style={styles.amountCurrencyContainer}>
 
         <TextInput style={styles.amountInput} 
-          placeholder="Transaction amount" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
-
+          placeholder="Transaction amount" 
+          onChangeText={
+            (value) => setTextInputAmount(value)
+          }
+          keyboardType="numeric" placeholderTextColor ='#6e749d'
+          />
         <Picker
           selectedValue={currency}
           onValueChange={currentCurrency => setCurrency(currentCurrency)} style={styles.currencyPicker}>
@@ -35,10 +64,20 @@ const TransactionScreen = () => {
         </View>
 
         <TextInput style={styles.input}
-          placeholder="Recipient name" keyboardType="numeric" placeholderTextColor ='#6e749d'
+          placeholder="Recipient name" 
+          placeholderTextColor ='#6e749d'
+          onChangeText={
+            (value) => setTextInputName(value)
+          }
         />
         <TextInput style={styles.input} 
-          placeholder="Recipient account number" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
+          placeholder="Recipient account number" 
+          keyboardType="numeric" 
+          placeholderTextColor ='#6e749d'
+          onChangeText={
+            (value) => setTextInputNumber(value)
+        }
+        />
 
         <Text style={styles.selectedCurrencyText}>
           Selected: {currency}
@@ -48,7 +87,7 @@ const TransactionScreen = () => {
     
         
         </View>
-        <Pressable style={styles.submitButton} onPress={() => Alert.alert('Transaction Successful!')}>
+        <Pressable style={styles.submitButton} onPress={checkTextInput}>
   <Text style={styles.text}>Submit</Text>
 </Pressable>
         
