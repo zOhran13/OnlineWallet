@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     borderColor: "#645CD1",
     paddingLeft: 10,
     paddingRight: 10,
-    paddingBottom: 22,
+    paddingBottom: 10,
   },
 
   container: {
@@ -141,11 +141,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#1B1938",
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 20,
   },
 
   picture: {
-    marginTop: -13,
     width: 350,
     height: 160,
   },
@@ -177,18 +175,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "#6e749d",
-    margin: 0,
     marginTop: 9,
-    marginBottom: 6,
+    marginBottom: 100,
   },
 
   input: {
-    fontSize: 18,
+    fontSize: 17,
     backgroundColor: "#23204d",
     margin: 4,
     alignItems: "stretch",
-    width: 320,
-    height: 48,
+    width: 340,
+    height: 45,
     borderRadius: 10,
     padding: 9,
     color: "white",
@@ -202,7 +199,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#FFC021",
     margin: 7,
-    marginBottom: -2,
   },
 
   registerText: {
