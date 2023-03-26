@@ -23,13 +23,7 @@ const EmailVerificationScreen = ({ navigation }) => {
 					<Text style={styles.verifyText}>VERIFY</Text>
 				</Pressable>
 
-				<Pressable
-					style={styles.resendCode}
-					title='SendToPhone'
-					onPress={() => navigation.navigate("PhoneVerification")}
-				>
-					<Text style={styles.resendCode}> Send code to my phone number.</Text>
-				</Pressable>
+			
 
 
 				

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet,TextInput,Alert,Pressable, Image} from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-
+import Checkbox from 'expo-checkbox';
 
 
 const RegistrationScreen = ({ navigation }) => {
-    
+  const [isChecked, setChecked] = useState(false);
   return (
     <>
       <View style={styles.container}>
@@ -13,35 +12,49 @@ const RegistrationScreen = ({ navigation }) => {
 
       <View>
           <Image source={require('../assets/images/registration.png')} style={styles.picture}/>
-        </View>
+      </View>
 
       
-        <View style={styles.elipseContainer}>
-        <Text style={styles.newTransactionText}></Text>
+      <View style={styles.elipseContainer}>
+      <Text style={styles.newTransactionText}></Text>
 
-        <TextInput style={styles.input}
-          placeholder="First Name" placeholderTextColor ='#6e749d'
-        />
-        <TextInput style={styles.input} 
-          placeholder="Last Name" keyboardType="text" placeholderTextColor ='#6e749d'/>
+      <TextInput style={styles.input}
+          placeholder="First Name" placeholderTextColor ='#6e749d'/>
 
-<TextInput style={styles.input} 
-          placeholder="Username" keyboardType="text" placeholderTextColor ='#6e749d'/>
+      <TextInput style={styles.input} 
+          placeholder="Last Name" keyboardType="default" placeholderTextColor ='#6e749d'/>
 
-<TextInput style={styles.input} 
+      <TextInput style={styles.input} 
+          placeholder="Username" keyboardType="default" placeholderTextColor ='#6e749d'/>
+
+      <TextInput style={styles.input} 
           placeholder="Phone number" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
 
-<TextInput style={styles.input} 
-          placeholder="Email" keyboardType="text" placeholderTextColor ='#6e749d'/>
+      <View style={styles.container1}>
+     
+     <View style={styles.section}>
+       <Checkbox
+         style={styles.checkbox}
+         value={isChecked}
+         onValueChange={setChecked}
+         color={isChecked ? '#6e749d' : undefined}
+       />
+       <Text style={styles.paragraph}>Send verification code to my phone number.</Text>
+      </View>
+    
+      </View>
+
+        <TextInput style={styles.input} 
+          placeholder="Email" keyboardType="email-address" placeholderTextColor ='#6e749d'/>
 
 <TextInput style={styles.input} 
-          placeholder="Password" keyboardType="text" placeholderTextColor ='#6e749d'/>
+          placeholder="Password" keyboardType="default" placeholderTextColor ='#6e749d'secureTextEntry/ >
          
 <Text style={styles.password}>Use 6 or more characters, mix letters and numbers.</Text> 
 
 <TextInput style={styles.input} 
-          placeholder="Confirm Password" keyboardType="text" placeholderTextColor ='#6e749d'/> 
-       
+          placeholder="Confirm Password" keyboardType="default" placeholderTextColor ='#6e749d' secureTextEntry/> 
+         
       </View>
 
         <Pressable
@@ -52,21 +65,28 @@ const RegistrationScreen = ({ navigation }) => {
 					<Text style={styles.registerText}>REGISTER</Text>
 				</Pressable>
 
-<Text style={styles.login}>Already have an account? Log in</Text>
-        
+        <Text style={styles.login}>Already have an account? Log in</Text>
       </View>
     </>
-
   );
-
 };
 
 const styles = StyleSheet.create({
 
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  paragraph: {
+    fontSize: 14,
+    color:'#6e749d',
+    letterSpacing: 0.25,
+  },
+  checkbox: {
+    margin: 8,
+  },
   
   elipseContainer: {
-
-    
     borderColor: 'black',
     borderRadius: 30,
     backgroundColor: '#312e66',
@@ -86,19 +106,19 @@ const styles = StyleSheet.create({
  },
 
  picture:{
+  marginTop: -13,
    width: 350,
    height: 160,
  },
 
  password:{
-  fontSize: 13,
+  fontSize: 14,
   lineHeight: 21,
-  fontWeight: 'bold',
   letterSpacing: 0.25,
   color: '#6e749d',
   margin: 7,
-  marginTop: -6,
-  marginBottom: -1,
+  marginTop:1,
+  marginBottom: 2,
  },
 
  verifyButton: {
