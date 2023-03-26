@@ -23,6 +23,7 @@ const TransactionScreen = () => {
 
         <TextInput style={styles.amountInput} 
           placeholder="Transaction amount" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
+
         <Picker
           selectedValue={currency}
           onValueChange={currentCurrency => setCurrency(currentCurrency)} style={styles.currencyPicker}>
@@ -34,10 +35,10 @@ const TransactionScreen = () => {
         </View>
 
         <TextInput style={styles.input}
-          placeholder="Recipient account number" keyboardType="numeric" placeholderTextColor ='#6e749d'
+          placeholder="Recipient name" keyboardType="numeric" placeholderTextColor ='#6e749d'
         />
         <TextInput style={styles.input} 
-          placeholder="Transaction amount" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
+          placeholder="Recipient account number" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
 
         <Text style={styles.selectedCurrencyText}>
           Selected: {currency}
@@ -60,11 +61,10 @@ const TransactionScreen = () => {
 const styles = StyleSheet.create({
   elipseContainer: {
     borderColor: 'black',
-    padding: 10,
     borderRadius: 50,
     backgroundColor: '#312e66',
-    padding: 30,
-
+    padding: 20,
+    margin: 3,
   },
   container: {
     flex: 1,
@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#23204d',
     margin: 4,
     alignItems: 'stretch',
-    width: '80%',
-    height: 35,
+    width: '92%',
+    //height: '18%',
     borderRadius: 10,
     padding: 9,
     color: 'white'
@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
     height: '10%',
     backgroundColor: '#6e749d',
     marginBottom: 5
-    
  },
  selectedCurrencyText: {
   color: '#6e749d',
@@ -113,8 +112,8 @@ const styles = StyleSheet.create({
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: 30,
-  width: 150,
-  padding: 20,
+  width: '50%',
+  padding: '5%',
   backgroundColor: '#FFC021',
   margin: 30
  },
@@ -130,7 +129,7 @@ amountInput: {
   margin: 4,
   alignItems: 'stretch',
   width: '57%',
-  height: 35,
+  height: '85%',
   borderRadius: 10,
   padding: 9,
   color: 'white'
