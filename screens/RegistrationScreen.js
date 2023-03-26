@@ -1,10 +1,73 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet,TextInput,Alert,Pressable, Image} from 'react-native';
+import { Text, View, StyleSheet,TextInput,Alert,Pressable, Image, ToastAndroid} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 
 
 const RegistrationScreen = ({ navigation }) => {
+
+  const showAlert = (title, errorMsg, desc) =>
+  Alert.alert(
+    title,
+    errorMsg,
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {
+          ToastAndroid.show('Correctly fill all fields', ToastAndroid.SHORT);
+        },
+        style: 'cancel',
+      },
+    ],
+    {
+      cancelable: true,
+      onDismiss: () =>
+        Alert.alert(
+          'This alert was dismissed by tapping outside of the dialog.',
+        ),
+    },
+  );
+
+  
+  const [errors, setErrors] = useState({})
+  const [inputs, setInputs] = useState({
+    username: '',
+    password: '',
+    email: '',
+    password_confirmation: '',
+    last_name: '',
+    first_name: ''
+  })
+
+  const validateFunction = () => {
+    console.log("Pozove se")
+    if(!(inputs.username && inputs.email && inputs.last_name && inputs.first_name && inputs.password && inputs.password_confirmation)) {
+      showAlert('Blank field error', 'All fields are required!')
+      return false
+    } else if(inputs.username.length < 2) {
+      showAlert('Username error', 'Username must have more than 2 letters')
+    }else if(!inputs.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+      showAlert('Email error', 'You entered invalid email!')
+      return false
+    } else if(!inputs.password.match(/^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/)){
+      showAlert('Password error', 'Password needs 8 letters, at least a symbol, upper and lower case with number!')
+      return false
+    } else if(inputs.password != inputs.password_confirmation){
+      showAlert('Password confirmation error', 'Passwords must be the same!')
+      return false
+    } 
+    return true
+  }
+
+  const onChangeTextHandle = (text, input) => {
+    console.log(inputs)
+    setInputs(previousObject => ({
+      ...previousObject, [input]: text
+    }))
+  }
+
+
+
     
   return (
     <>
@@ -20,34 +83,57 @@ const RegistrationScreen = ({ navigation }) => {
         <Text style={styles.newTransactionText}></Text>
 
         <TextInput style={styles.input}
-          placeholder="First Name" placeholderTextColor ='#6e749d'
+          placeholder="First Name" 
+          placeholderTextColor ='#6e749d'
+          onChangeText={(text) => onChangeTextHandle(text, 'first_name')}
         />
         <TextInput style={styles.input} 
-          placeholder="Last Name" keyboardType="text" placeholderTextColor ='#6e749d'/>
+          placeholder="Last Name" 
+          keyboardType="text" 
+          placeholderTextColor ='#6e749d'
+          onChangeText={(text) => onChangeTextHandle(text, 'last_name')}/>
 
-<TextInput style={styles.input} 
-          placeholder="Username" keyboardType="text" placeholderTextColor ='#6e749d'/>
+        <TextInput style={styles.input} 
+              placeholder="Username" 
+              keyboardType="text" 
+              placeholderTextColor ='#6e749d'
+              onChangeText={(text) => onChangeTextHandle(text, 'username')} />
 
-<TextInput style={styles.input} 
-          placeholder="Phone number" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
+        <TextInput style={styles.input} 
+              placeholder="Phone number" 
+              keyboardType="numeric" 
+              placeholderTextColor ='#6e749d'/>
 
-<TextInput style={styles.input} 
-          placeholder="Email" keyboardType="text" placeholderTextColor ='#6e749d'/>
+        <TextInput style={styles.input} 
+              placeholder="Email" 
+              keyboardType="text" 
+              placeholderTextColor ='#6e749d'
+               onChangeText={(text) => onChangeTextHandle(text, 'email')}/>
 
-<TextInput style={styles.input} 
-          placeholder="Password" keyboardType="text" placeholderTextColor ='#6e749d'/>
-         
-<Text style={styles.password}>Use 6 or more characters, mix letters and numbers.</Text> 
+        <TextInput style={styles.input} 
+              placeholder="Password" 
+              keyboardType="password" 
+              placeholderTextColor ='#6e749d'
+               onChangeText={(text) => onChangeTextHandle(text, 'password')}/>
+              
+        <Text style={styles.password}>Use 6 or more characters, mix letters and numbers.</Text> 
 
-<TextInput style={styles.input} 
-          placeholder="Confirm Password" keyboardType="text" placeholderTextColor ='#6e749d'/> 
-       
+        <TextInput style={styles.input} 
+              placeholder="Confirm Password" 
+              keyboardType="password" 
+              placeholderTextColor ='#6e749d'
+              onChangeText={(text) => onChangeTextHandle(text, 'password_confirmation')}/> 
+            
       </View>
 
         <Pressable
 					style={styles.verifyButton}
 					title='Register'
-					onPress={() => navigation.navigate("EmailVerification")}
+					 onPress={() => {
+            if(validateFunction()) {
+              navigation.navigate("EmailVerification")
+            }
+          }}
 				>
 					<Text style={styles.registerText}>REGISTER</Text>
 				</Pressable>
