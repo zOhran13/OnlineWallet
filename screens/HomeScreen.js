@@ -57,10 +57,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
-    width: 300,
+    width: '100%',
     padding: 20,
     backgroundColor: '#FFC021',
-    marginTop: 70,
+    marginTop: 70
   },
   text: {
     fontSize: 20,

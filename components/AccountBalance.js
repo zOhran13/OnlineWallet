@@ -25,26 +25,24 @@ const AccountBalance = () => {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         padding: 20,
-        justifyContent: 'space-around',
+        justifyContent: 'space-evenly',
         position: 'absolute',
-        top: '15%'
+        top: '15%',
+        width: '85%',
+        height: '30%'
     },
     picture: {
-
     },
     balanceText: {
         color: 'white',
-        fontFamily: 'Georgia',
         fontSize: 28,
         fontWeight: 'bold',
         padding: 5
     },
     balanceValueText: {
       color: 'white',
-      fontFamily: 'Georgia',
       fontSize: 20,
       fontWeight: 'normal',
       padding: 5
