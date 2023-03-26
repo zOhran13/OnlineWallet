@@ -20,21 +20,21 @@ const TransactionScreen = () => {
       <View>
       
         <View style={styles.amountCurrencyContainer}>
-        <TextInput style={styles.input}
-          placeholder="Recipient account number" keyboardType="numeric" placeholderTextColor ='#6e749d'
-        />
+
+        <TextInput style={styles.amountInput} 
+          placeholder="Transaction amount" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
         <Picker
           selectedValue={currency}
           onValueChange={currentCurrency => setCurrency(currentCurrency)} style={styles.currencyPicker}>
-          <Picker.Item label="BAM" value="Bosnian Mark" color='white'/>
-          <Picker.Item label="EUR" value="Euro" color='white'/>
-          <Picker.Item label="USD" value="US Dollar" color='white'/>
+          <Picker.Item label="BAM" value="Bosnian Mark" color='black'/>
+          <Picker.Item label="EUR" value="Euro" color='black'/>
+          <Picker.Item label="USD" value="US Dollar" color='black'/>
         </Picker>
 
         </View>
 
         <TextInput style={styles.input}
-          placeholder="Recipient name" placeholderTextColor ='#6e749d'
+          placeholder="Recipient account number" keyboardType="numeric" placeholderTextColor ='#6e749d'
         />
         <TextInput style={styles.input} 
           placeholder="Transaction amount" keyboardType="numeric" placeholderTextColor ='#6e749d'/>
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#23204d',
     margin: 4,
     alignItems: 'stretch',
-    width: 275,
+    width: '80%',
     height: 35,
     borderRadius: 10,
     padding: 9,
@@ -85,11 +85,16 @@ const styles = StyleSheet.create({
  },
  amountCurrencyContainer: {
   flexDirection: 'row',
-  justifyContent: 'space-between',
+  justifyContent: 'space-evenly',
+  padding: 1,
+  alignItems: 'center'
  },
  currencyPicker: {
-    width: 110,
-    height: 7,
+    width: '40%',
+    height: '10%',
+    backgroundColor: '#6e749d',
+    marginBottom: 5
+    
  },
  selectedCurrencyText: {
   color: '#6e749d',
@@ -119,6 +124,16 @@ const styles = StyleSheet.create({
   fontWeight: 'bold',
   letterSpacing: 0.25,
   color: 'black',
+},
+amountInput: {
+  backgroundColor: '#23204d',
+  margin: 4,
+  alignItems: 'stretch',
+  width: '57%',
+  height: 35,
+  borderRadius: 10,
+  padding: 9,
+  color: 'white'
 }
 
 });
