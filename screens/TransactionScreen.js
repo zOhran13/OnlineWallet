@@ -33,6 +33,19 @@ const TransactionScreen = () => {
     Alert.alert('Transaction Successful!')
   }
 
+  const getUsers = async () => {
+    try {
+      let response = await fetch(
+        'url sa bekenda/users'
+      );
+      let json = await response.json();
+      return json.users;
+    } catch (error) {
+       console.error(error);
+    }
+  };
+  
+
   return (
     <>
       <View style={styles.container}>
