@@ -36,7 +36,8 @@ const RegistrationScreen = ({ navigation }) => {
     email: '',
     password_confirmation: '',
     last_name: '',
-    first_name: ''
+    first_name: '',
+    phone: ''
   })
 
   const validateFunction = () => {
@@ -46,6 +47,7 @@ const RegistrationScreen = ({ navigation }) => {
       return false
     } else if(inputs.username.length < 2) {
       showAlert('Username error', 'Username must have more than 2 letters')
+      return false
     }else if(!inputs.email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
       showAlert('Email error', 'You entered invalid email!')
       return false
@@ -55,7 +57,10 @@ const RegistrationScreen = ({ navigation }) => {
     } else if(inputs.password != inputs.password_confirmation){
       showAlert('Password confirmation error', 'Passwords must be the same!')
       return false
-    } 
+    } else if(!inputs.phone){
+      showAlert('Phone number field must be filled!')
+      return false
+    }
     return true
   }
 
@@ -103,6 +108,7 @@ const RegistrationScreen = ({ navigation }) => {
               placeholder="Phone number"
               keyboardType="numeric"
               placeholderTextColor="#6e749d"
+              onChangeText={(text) => onChangeTextHandle(text, 'phone')}
             />
             <View style={styles.container1}>
               <View style={styles.section}>
@@ -125,11 +131,12 @@ const RegistrationScreen = ({ navigation }) => {
 
         <TextInput style={styles.input} 
               placeholder="Password" 
-              keyboardType="password" 
+              keyboardType="default" 
               placeholderTextColor ='#6e749d'
+              secureTextEntry
                onChangeText={(text) => onChangeTextHandle(text, 'password')}/>
               
-        <Text style={styles.password}>Use 6 or more characters, mix letters and numbers.</Text> 
+        <Text style={styles.password}>Use 8 or more characters, mix letters and numbers.</Text> 
 
             <TextInput
               style={styles.input}
