@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet,TextInput,Alert,Pressable} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { getUsers, getUser } from '../modules/userModule';
+import { submitTransaction } from '../modules/transactionModule';
 
 
 
@@ -31,68 +33,6 @@ const TransactionScreen = () => {
     //Checked Successfully
     //Do whatever you want
     Alert.alert('Transaction Successful!')
-  }
-
-  const getUsers = async () => {
-    try {
-      let response = await fetch(
-        'url sa bekenda/users'
-      );
-      let json = await response.json();
-      return json.users;
-    } catch (error) {
-       console.error(error);
-    }
-  };
-  
-  const getUser = async (id) => {
-    try {
-      let response = await fetch(
-        `url sa bekenda/users/${id}`
-      );
-      let json = await response.json();
-      return json.user;
-    } catch (error) {
-       console.error(error);
-    }
-  };
-
-  const submitTransaction = async () => {
-    try {
-      checkTextInput();
-      let users=getUsers();
-      let flag=false;
-      users.forEach(element => {
-        if(element.name==textInputName && element.accountNumber==textInputNumber) flag=true;
-      });
-      if(flag) {
-        await fetch('url sa bekenda/transactions', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-
-          body: JSON.stringify({
-            name: textInputName,
-            accountNumber: textInputNumber,
-            currency: currency,
-            amount: textInputAmount,
-          }),
-        })
-          .then((response) => {
-            if(response.status==200) {
-              alert('Transaction successful!');
-              return;
-            } else {
-              alert('Transaction not successful!');
-              return;
-            }
-          });
-      }
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   return (
