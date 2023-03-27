@@ -15,17 +15,30 @@ const TransactionScreen = () => {
     if (!textInputAmount.trim()) {
       alert('Please Enter Amount!');
       return;
-    }
+      }
+      if (!(/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim()))) {
+          alert('Please enter valid Amount (e.g. 123,456.78)');
+          return;
+      }
     
     if (!textInputName.trim()) {
       alert('Please Enter Name!');
       return;
-    }
+      }
+      if (textInputName.trim().length < 2) {
+          alert('Username must have more than 2 letters');
+          return;
+      }
    
     if (!textInputNumber.trim()) {
       alert('Please Enter Account Number!');
       return;
-    }
+      }
+      if (!(/^[0-9]+$/.test(textInputNumber.trim()))){
+          alert('Please enter valid Account Number')
+          return;
+      }
+
     
 
     //Checked Successfully
