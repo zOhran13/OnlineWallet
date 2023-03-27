@@ -89,8 +89,8 @@ const RegistrationScreen = ({ navigation }) => {
         />
         <TextInput style={styles.input} 
           placeholder="Last Name" keyboardType="text" placeholderTextColor ='#6e749d'
-          onChangeText={(text) => onChangeTextHandle(text, 'last_name')}/>
-          />
+          onChangeText={(text) => onChangeTextHandle(text, 'last_name')}
+        />
 
         <TextInput style={styles.input} 
               placeholder="Username" 
@@ -141,7 +141,7 @@ const RegistrationScreen = ({ navigation }) => {
               keyboardType="default"
               placeholderTextColor="#6e749d"
               secureTextEntry
-              onChangeText={(text) => onChangeTextHandle(text, 'password_confirmation')}/> 
+              onChangeText={(text) => onChangeTextHandle(text, 'password_confirmation')}
             />
           </View>
 
