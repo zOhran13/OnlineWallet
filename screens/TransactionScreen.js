@@ -45,6 +45,17 @@ const TransactionScreen = () => {
     }
   };
   
+  const getUser = async (id) => {
+    try {
+      let response = await fetch(
+        `url sa bekenda/users/${id}`
+      );
+      let json = await response.json();
+      return json.user;
+    } catch (error) {
+       console.error(error);
+    }
+  };
 
   return (
     <>
