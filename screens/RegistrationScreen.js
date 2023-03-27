@@ -99,7 +99,7 @@ const RegistrationScreen = ({ navigation }) => {
           <Pressable
             style={styles.verifyButton}
             title="Register"
-            onPress={() => navigation.navigate("EmailVerification")}
+            onPress={() => navigation.navigate("EmailVerification", { isChecked })}
           >
             <Text style={styles.registerText}>REGISTER</Text>
           </Pressable>

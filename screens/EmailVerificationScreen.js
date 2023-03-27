@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 
-const EmailVerificationScreen = ({ navigation }) => {
+const EmailVerificationScreen = ({ navigation, route }) => {
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.box}>
@@ -18,7 +19,7 @@ const EmailVerificationScreen = ({ navigation }) => {
 				<Pressable
 					style={styles.verifyButton}
 					title='Verify'
-					onPress={() => navigation.navigate("Home")}
+					onPress={() => route.params.isChecked ? navigation.navigate("PhoneVerification"): navigation.navigate("Home")}
 				>
 					<Text style={styles.verifyText}>VERIFY</Text>
 				</Pressable>
