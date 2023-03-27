@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet,TextInput,Alert,Pressable, Image} from 'react-native';
+import { Text, View, StyleSheet,TextInput,Alert,Pressable, Image, ScrollView, ToastAndroid} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Checkbox from "expo-checkbox";
 
@@ -130,10 +130,6 @@ const RegistrationScreen = ({ navigation }) => {
                onChangeText={(text) => onChangeTextHandle(text, 'password')}/>
               
         <Text style={styles.password}>Use 6 or more characters, mix letters and numbers.</Text> 
-
-            <Text style={styles.password}>
-              Use 6 or more characters, mix letters and numbers.
-            </Text>
 
             <TextInput
               style={styles.input}
