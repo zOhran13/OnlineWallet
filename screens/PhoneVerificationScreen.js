@@ -41,7 +41,7 @@ const EmailVerificationScreen = ({ navigation, route }) => {
 							})
 						}
 
-						fetch("https://e664-77-77-219-0.eu.ngrok.io/Register/confirm/phone", requestOption).then(res => {
+						fetch("http://siprojekat.duckdns.org:5051/Register/confirm/phone", requestOption).then(res => {
 							return res.json()
 						}).then(data => {
 							

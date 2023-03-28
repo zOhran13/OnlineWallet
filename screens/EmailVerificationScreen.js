@@ -29,10 +29,10 @@ const EmailVerificationScreen = ({ navigation, route }) => {
 								}
 							}
 							console.log("Username: " + route.params.username)
-							fetch("https://e664-77-77-219-0.eu.ngrok.io/Register/phone?username="+route.params.username, requestOption).then(response => {
+							fetch("http://siprojekat.duckdns.org:5051/Register/phone?username="+route.params.username, requestOption).then(response => {
 								return response.json()
 							}).then(data => {
-								ToastAndroid.show(JSON.stringify(data), ToastAndroid.SHORT);
+								ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
 								console.log(JSON.stringify(data))
 							}).catch(err => {
 								console.log(err.message)

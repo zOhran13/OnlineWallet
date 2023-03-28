@@ -170,14 +170,20 @@ const RegistrationScreen = ({ navigation }) => {
                 })
 							}
               console.log("Req: " + requestOption.body)
-							fetch("https://e664-77-77-219-0.eu.ngrok.io/Register", requestOption).then(response => {
+							fetch("http://siprojekat.duckdns.org:5051/Register", requestOption).then(response => {
 								return response.json()
 							}).then(data => {
-								ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
-                navigation.navigate("EmailVerification", { 
-                  isChecked: isChecked,
-                  username: inputs.username
-                 })
+								
+                if(data.message === 'Registration successful'){
+                  ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
+                  navigation.navigate("EmailVerification", { 
+                    isChecked: isChecked,
+                    username: inputs.username
+                   })
+                } else {
+                  ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
+                }
+                
 								
 							}).catch(err => {
 								console.log(err.message)
