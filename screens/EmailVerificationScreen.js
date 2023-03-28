@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, ToastAndroid } from 'react-native';
 
 const EmailVerificationScreen = ({ navigation, route }) => {
 
@@ -19,7 +19,32 @@ const EmailVerificationScreen = ({ navigation, route }) => {
 				<Pressable
 					style={styles.verifyButton}
 					title='Verify'
-					onPress={() => route.params.isChecked ? navigation.navigate("PhoneVerification"): navigation.navigate("Home")}
+					onPress={() => {
+						if(route.params.isChecked) {
+							const requestOption = {
+								method: 'GET',
+								headers: {
+									'accept': 'text/plain',
+									'Content-Type': 'application/json'
+								},
+								body: JSON.stringify({
+									username: route.params.username
+								})
+							}
+							fetch("https://8f74-77-77-219-0.eu.ngrok.io/Register/phone", requestOption).then(response => {
+								return response.json()
+							}).then(data => {
+								ToastAndroid.show(JSON.stringify(data), ToastAndroid.SHORT);
+								console.log("Uraditi nesto sa: " + JSON.stringify(data))
+							}).catch(err => {
+								console.log(err.message)
+							})
+							navigation.navigate("PhoneVerification")
+						} else {
+							navigation.navigate("Home")
+						}
+
+					}}
 				>
 					<Text style={styles.verifyText}>VERIFY</Text>
 				</Pressable>

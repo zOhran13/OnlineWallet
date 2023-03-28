@@ -93,20 +93,20 @@ const RegistrationScreen = ({ navigation }) => {
           onChangeText={(text) => onChangeTextHandle(text, 'first_name')}  
         />
         <TextInput style={styles.input} 
-          placeholder="Last Name" keyboardType="text" placeholderTextColor ='#6e749d'
+          placeholder="Last Name" keyboardType="ascii-capable" placeholderTextColor ='#6e749d'
           onChangeText={(text) => onChangeTextHandle(text, 'last_name')}
         />
 
         <TextInput style={styles.input} 
               placeholder="Username" 
-              keyboardType="text" 
+              keyboardType="ascii-capable" 
               placeholderTextColor ='#6e749d'
               onChangeText={(text) => onChangeTextHandle(text, 'username')} />
 
             <TextInput
               style={styles.input}
               placeholder="Phone number"
-              keyboardType="numeric"
+              keyboardType="number-pad"
               placeholderTextColor="#6e749d"
               onChangeText={(text) => onChangeTextHandle(text, 'phone')}
             />
@@ -131,7 +131,7 @@ const RegistrationScreen = ({ navigation }) => {
 
         <TextInput style={styles.input} 
               placeholder="Password" 
-              keyboardType="default" 
+              keyboardType="ascii-capable" 
               placeholderTextColor ='#6e749d'
               secureTextEntry
                onChangeText={(text) => onChangeTextHandle(text, 'password')}/>
@@ -141,7 +141,7 @@ const RegistrationScreen = ({ navigation }) => {
             <TextInput
               style={styles.input}
               placeholder="Confirm Password"
-              keyboardType="default"
+              keyboardType="ascii-capable"
               placeholderTextColor="#6e749d"
               secureTextEntry
               onChangeText={(text) => onChangeTextHandle(text, 'password_confirmation')}
@@ -153,7 +153,36 @@ const RegistrationScreen = ({ navigation }) => {
 					title='Register'
 					 onPress={() => {
             if(validateFunction()) {
-              navigation.navigate("EmailVerification", { isChecked })
+              const requestOption = {
+								method: 'POST',
+								headers: {
+									'accept': 'application/json',
+									'Content-Type': 'application/json'
+								},
+                body: JSON.stringify({
+                  firstName: inputs.first_name,
+                  lastName: inputs.last_name,
+                  email: inputs.email,
+                  username: inputs.username,
+                  password: inputs.password,
+                  address: 'Adress',
+                  phoneNumber: inputs.phone
+                })
+							}
+              console.log("Req: " + requestOption.body)
+							fetch("https://8f74-77-77-219-0.eu.ngrok.io/Register", requestOption).then(response => {
+								return response.json()
+							}).then(data => {
+								ToastAndroid.show(JSON.stringify(data), ToastAndroid.SHORT);
+                navigation.navigate("EmailVerification", { 
+                  isChecked: isChecked,
+                  username: inputs.username
+                 })
+								console.log("Uraditi nesto sa: " + JSON.stringify(data))
+							}).catch(err => {
+								console.log(err.message)
+							})
+              
             }
           }}
 				>
