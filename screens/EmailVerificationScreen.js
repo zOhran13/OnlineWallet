@@ -26,20 +26,20 @@ const EmailVerificationScreen = ({ navigation, route }) => {
 								headers: {
 									'accept': 'text/plain',
 									'Content-Type': 'application/json'
-								},
-								body: JSON.stringify({
-									username: route.params.username
-								})
+								}
 							}
-							fetch("https://8f74-77-77-219-0.eu.ngrok.io/Register/phone", requestOption).then(response => {
+							console.log("Username: " + route.params.username)
+							fetch("https://e664-77-77-219-0.eu.ngrok.io/Register/phone?username="+route.params.username, requestOption).then(response => {
 								return response.json()
 							}).then(data => {
 								ToastAndroid.show(JSON.stringify(data), ToastAndroid.SHORT);
-								console.log("Uraditi nesto sa: " + JSON.stringify(data))
+								console.log(JSON.stringify(data))
 							}).catch(err => {
 								console.log(err.message)
 							})
-							navigation.navigate("PhoneVerification")
+							navigation.navigate("PhoneVerification", {
+								username: route.params.username
+							})
 						} else {
 							navigation.navigate("Home")
 						}

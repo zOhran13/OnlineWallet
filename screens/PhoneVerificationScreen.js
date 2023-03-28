@@ -1,7 +1,13 @@
-import React from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Pressable, ToastAndroid } from 'react-native';
 
-const EmailVerificationScreen = ({ navigation }) => {
+const EmailVerificationScreen = ({ navigation, route }) => {
+	const [code, setCode] = useState('')
+	const saveCode = text => {
+		setCode(text)
+	}
+	
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.box}>
@@ -14,11 +20,43 @@ const EmailVerificationScreen = ({ navigation }) => {
 					style={styles.inputText}
 					placeholder='Enter code'
 					placeholderTextColor={'#CADAFF73'}
+					keyboardType="number-pad"
+					onChangeText={text => {
+						console.log(text)
+						saveCode(text)
+					}}
 				/>
 				<Pressable
 					style={styles.verifyButton}
 					title='Verify'
-					onPress={() => navigation.navigate("Home")}
+					onPress={() => {
+						const requestOption = {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								username: route.params.username,
+								code: code
+							})
+						}
+
+						fetch("https://e664-77-77-219-0.eu.ngrok.io/Register/confirm/phone", requestOption).then(res => {
+							return res.json()
+						}).then(data => {
+							
+							if(data.message != 'Username or code incorrect!'){
+								navigation.navigate("Home")
+								ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
+								console.log(JSON.stringify(data))
+							}
+							else {
+								ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
+							}
+						}).catch(err => {
+							ToastAndroid.show(err.message, ToastAndroid.SHORT);
+						})
+					}}
 				>
 					<Text style={styles.verifyText}>VERIFY</Text>
 				</Pressable>

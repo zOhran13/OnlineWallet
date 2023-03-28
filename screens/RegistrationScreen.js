@@ -170,15 +170,15 @@ const RegistrationScreen = ({ navigation }) => {
                 })
 							}
               console.log("Req: " + requestOption.body)
-							fetch("https://8f74-77-77-219-0.eu.ngrok.io/Register", requestOption).then(response => {
+							fetch("https://e664-77-77-219-0.eu.ngrok.io/Register", requestOption).then(response => {
 								return response.json()
 							}).then(data => {
-								ToastAndroid.show(JSON.stringify(data), ToastAndroid.SHORT);
+								ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
                 navigation.navigate("EmailVerification", { 
                   isChecked: isChecked,
                   username: inputs.username
                  })
-								console.log("Uraditi nesto sa: " + JSON.stringify(data))
+								
 							}).catch(err => {
 								console.log(err.message)
 							})
