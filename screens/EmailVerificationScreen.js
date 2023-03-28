@@ -9,6 +9,80 @@ import {
 } from "react-native";
 
 import { useState } from "react";
+/*
+const EmailVerificationScreen = ({ navigation, route }) => {
+  const [code, setCode] = useState("");
+  const saveCode = (text) => {
+    setCode(text);
+  };
+  return (
+    <View style={styles.container}>
+      <View style={styles.box}>
+        <Text style={styles.title}>Verification code</Text>
+        <Text style={styles.bodyText}>
+          Enter the confirmation code sent to your mail to complete the
+          verification.
+        </Text>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Enter code"
+          placeholderTextColor={"#CADAFF73"}
+          keyboardType="number-pad"
+          onChangeText={(text) => {
+            console.log(text);
+            saveCode(text);
+          }}
+        />
+        <Pressable
+          style={styles.verifyButton}
+          title="Verify"
+          onPress={() => {
+            if (route.params.isChecked) {
+              if (code.trim().length === 0) {
+                ToastAndroid.show("Code can't be blank", ToastAndroid.SHORT);
+                return;
+              }
+              const requestOption = {
+                method: "GET",
+                headers: {
+                  accept: "text/plain",
+                  "Content-Type": "application/json",
+                },
+              };
+              console.log("Username: " + route.params.username);
+              fetch(
+                "http://siprojekat.duckdns.org:5051/Register/phone?username=" +
+                  route.params.username,
+                requestOption
+              )
+                .then((response) => {
+                  return response.json();
+                })
+                .then((data) => {
+                  ToastAndroid.show(
+                    JSON.stringify(data.message),
+                    ToastAndroid.SHORT
+                  );
+                  console.log(JSON.stringify(data));
+                })
+                .catch((err) => {
+                  console.log(err.message);
+                });
+              navigation.navigate("PhoneVerification", {
+                username: route.params.username,
+              });
+            } else {
+              navigation.navigate("Home");
+            }
+          }}
+        >
+          <Text style={styles.verifyText}>VERIFY</Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+};
+*/
 
 const EmailVerificationScreen = ({ navigation, route }) => {
   const [code, setCode] = useState("");
@@ -49,6 +123,11 @@ const EmailVerificationScreen = ({ navigation, route }) => {
               }),
             };
 
+			if (code.trim().length === 0) {
+				ToastAndroid.show("Code can't be blank", ToastAndroid.SHORT);
+				return;
+			}
+			
             fetch(
               "http://siprojekat.duckdns.org:5051/Register/confirm/email",
               requestOption
@@ -61,6 +140,36 @@ const EmailVerificationScreen = ({ navigation, route }) => {
                   if (route.params.isChecked == false)
                     navigation.navigate("Home");
                   else{
+					const requestOption = {
+						method: "GET",
+						headers: {
+						  accept: "text/plain",
+						  "Content-Type": "application/json",
+						},
+					  };
+					  console.log("Username: " + route.params.username);
+					  fetch(
+						"http://siprojekat.duckdns.org:5051/Register/phone?username=" +
+						  route.params.username,
+						requestOption
+					  )
+						.then((response) => {
+						  return response.json();
+						})
+						.then((data) => {
+						  ToastAndroid.show(
+							JSON.stringify(data.message),
+							ToastAndroid.SHORT
+						  );
+						  console.log(JSON.stringify(data));
+						})
+						.catch((err) => {
+						  console.log(err.message);
+						});
+					  navigation.navigate("PhoneVerification", {
+						username: route.params.username,
+					  });
+
                     navigation.navigate("PhoneVerification", {
                       username: route.params.username,
                     });
@@ -71,7 +180,6 @@ const EmailVerificationScreen = ({ navigation, route }) => {
                   );
                   console.log(JSON.stringify(data));
                 }
-                //
                 else {
                   ToastAndroid.show(
                     JSON.stringify(data.message),
