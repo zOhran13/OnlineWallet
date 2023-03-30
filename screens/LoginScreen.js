@@ -17,6 +17,53 @@ const LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
 
+  const showAlert = (title, errorMsg, desc) =>
+    Alert.alert(
+      title,
+      errorMsg,
+      [
+        {
+          text: 'Ok',
+          onPress: () => {
+            ToastAndroid.show('Correctly fill all fields', ToastAndroid.SHORT);
+          },
+          style: 'cancel',
+        },
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          ToastAndroid.show('Correctly fill all fields', ToastAndroid.SHORT),
+      }
+    );
+
+  const validateFunction = () => {
+    console.log('Validacija');
+    if (!(emailOrPhone && password)) {
+      showAlert('Blank field error', 'All fields are required!');
+      return false;
+    } else if (
+      !isValidEmail(emailOrPhone) &&
+      !isValidPhoneNumber(emailOrPhone)
+    ) {
+      showAlert('Email or phone error', 'You entered invalid email or phone!');
+      return false;
+    }
+    return true;
+  };
+
+  function isValidEmail(email) {
+    return email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
+  }
+
+  function isValidPhoneNumber(number) {
+    return number.match(/^\d+$/);
+  }
+
+  function handleSignup() {
+    console.log('Sign up');
+  }
+
   return (
     <View style={styles.container}>
       <View>
@@ -45,7 +92,18 @@ const LoginScreen = ({ navigation }) => {
             value={password}
           />
         </View>
-        <Pressable style={styles.loginButton} title='Login'>
+        <Pressable
+          style={styles.loginButton}
+          title='Login'
+          onPress={() => {
+            if (validateFunction()) {
+              console.log('Prijavi se');
+              // posalji podatke na Be
+              // ako su validni loginuj se, spasi JWT, idi na home page
+              // inace prijavi gresku korisniku
+            }
+          }}
+        >
           <Text style={styles.loginText}>LOGIN</Text>
         </Pressable>
       </View>
