@@ -13,7 +13,7 @@ import {
 
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const LoginScreen = ({ navigation }) => {
+export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
 
@@ -64,15 +64,21 @@ const LoginScreen = ({ navigation }) => {
   }
 
   function handleGoogleLogin() {
-    console.log('Log in with Google');
+    Alert.alert('Login with Google', 'Login with Google button was pressed');
   }
 
   function handleFacebookLogin() {
-    console.log('Log in with Facebook');
+    Alert.alert(
+      'Login with Facebook',
+      'Login with Facebook button was pressed'
+    );
   }
 
   function handleMicrosoftLogin() {
-    console.log('Log in with Microsoft');
+    Alert.alert(
+      'Login with Microsoft',
+      'Login with Microsoft button was pressed'
+    );
   }
 
   return (
@@ -119,19 +125,10 @@ const LoginScreen = ({ navigation }) => {
         </Pressable>
       </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 5,
-          marginHorizontal: 20,
-        }}
-      >
-        <View style={{ flex: 1, height: 1, backgroundColor: '#6e749d' }} />
-        <View>
-          <Text style={styles.signupText}>Or</Text>
-        </View>
-        <View style={{ flex: 1, height: 1, backgroundColor: '#6e749d' }} />
+      <View style={styles.horizontalSeparatorContainer}>
+        <View style={styles.horizontalBar} />
+        <Text style={styles.signupText}>Or</Text>
+        <View style={styles.horizontalBar} />
       </View>
 
       <View style={styles.alternativeLoginContainer}>
@@ -266,6 +263,15 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+  horizontalSeparatorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+    marginHorizontal: 20,
+  },
+  horizontalBar: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#6e749d',
+  },
 });
-
-export default LoginScreen;
