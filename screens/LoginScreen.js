@@ -64,6 +64,18 @@ const LoginScreen = ({ navigation }) => {
     console.log('Sign up');
   }
 
+  function handleGoogleLogin() {
+    console.log('Log in with Google');
+  }
+
+  function handleFacebookLogin() {
+    console.log('Log in with Facebook');
+  }
+
+  function handleMicrosoftLogin() {
+    console.log('Log in with Microsoft');
+  }
+
   return (
     <View style={styles.container}>
       <View>
@@ -107,9 +119,47 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.loginText}>LOGIN</Text>
         </Pressable>
       </View>
+
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 5,
+          marginHorizontal: 20,
+        }}
+      >
+        <View style={{ flex: 1, height: 1, backgroundColor: '#6e749d' }} />
+        <View>
+          <Text style={styles.signupText}>Or</Text>
+        </View>
+        <View style={{ flex: 1, height: 1, backgroundColor: '#6e749d' }} />
+      </View>
+
+      <View style={styles.alternativeLoginContainer}>
+        <Pressable onPress={handleFacebookLogin} style={styles.facebookButton}>
+          <FontAwesome5 name='facebook' size={24} color='white' />
+          <Text style={styles.facebookText}>Login with Facebook</Text>
+        </Pressable>
+        <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
+          <Image
+            source={require('../assets/images/google_icon.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.googleText}>Login with Google</Text>
+        </Pressable>
+        <Pressable onPress={handleMicrosoftLogin} style={styles.googleButton}>
+          <Image
+            source={require('../assets/images/microsoft_icon.png')}
+            style={styles.icon}
+          />
+          <Text style={styles.googleText}>Login with Microsoft</Text>
+        </Pressable>
+      </View>
       <Text style={styles.signupText}>
         <Text>Don't have an account? </Text>
-        <Text style={{ color: '#ffc022ef' }}>Sign up</Text>
+        <Text style={{ color: '#ffc022ef' }} onPress={handleSignup}>
+          Sign up
+        </Text>
       </Text>
     </View>
   );
@@ -120,7 +170,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: StatusBar.currentHeight + 20,
     backgroundColor: '#1B1938',
   },
   formContainer: {
@@ -171,10 +220,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0.25,
     color: '#6e749d',
-    marginVertical: 24,
+    marginVertical: 16,
   },
 
-  googleFacebookContainer: {
+  alternativeLoginContainer: {
     gap: 12,
     alignItems: 'center',
   },
