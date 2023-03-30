@@ -38,7 +38,6 @@ const LoginScreen = ({ navigation }) => {
     );
 
   const validateFunction = () => {
-    console.log('Validacija');
     if (!(emailOrPhone && password)) {
       showAlert('Blank field error', 'All fields are required!');
       return false;
@@ -61,7 +60,7 @@ const LoginScreen = ({ navigation }) => {
   }
 
   function handleSignup() {
-    console.log('Sign up');
+    navigation.navigate('Registration');
   }
 
   function handleGoogleLogin() {
@@ -106,10 +105,10 @@ const LoginScreen = ({ navigation }) => {
         </View>
         <Pressable
           style={styles.loginButton}
-          title='Login'
           onPress={() => {
             if (validateFunction()) {
               console.log('Prijavi se');
+              navigation.navigate('Home');
               // posalji podatke na Be
               // ako su validni loginuj se, spasi JWT, idi na home page
               // inace prijavi gresku korisniku
