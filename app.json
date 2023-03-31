@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": ["scheme", "facebook_app_id"],
     "name": "SI-Wallet",
     "slug": "SI-Wallet",
     "version": "1.0.0",
