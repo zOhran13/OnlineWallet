@@ -6,6 +6,17 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <AccountBalance />
+      <View style={styles.container2}>
+        <Pressable
+          style={styles.listTemplatesButton}
+          onPress={() => navigation.navigate("Transaction")}
+        >
+          <Image
+            source={require("../assets/images/listTemplates.png")}
+            style={styles.buttonImage}
+          />
+        </Pressable>
+      </View>
 
       <View style={styles.container1}>
         <View>
@@ -69,6 +80,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "black",
+  },
+
+  container2: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  listTemplatesButton: {
+    marginLeft: "70%",
+  },
+  buttonImage: {
+    width: 50,
+    height: 50,
   },
 });
 
