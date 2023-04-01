@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import AccountBalance from "../components/AccountBalance";
-import getTemplates from './modules/userModule';
-import { FlatList } from "react-native-web";
+/*import getTemplates from './modules/userModule';
+import { FlatList } from "react-native-web";*/
 
 /*
 const TemplateList = () => {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderColor: "black",
     borderRadius: 10,
-    backgroundColor: "#FFFF00",
+    backgroundColor: "#FFC021",
     padding: 10,
     width: "80%",
     marginBottom: 10,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderColor: "black",
     borderRadius: 10,
-    backgroundColor: "#FFFF00",
+    backgroundColor: "#FFC021",
     padding: 10,
     width: "80%",
   }
