@@ -1,6 +1,6 @@
-export async function getUsers() {
+export async function getTemplates() {
   try {
-    let response = await fetch("url sa bekenda/users");
+    let response = await fetch("https://be19-5-43-126-189.eu.ngrok.io/swagger/index.html/api/Template");
     let json = await response.json();
     return json.users;
   } catch (error) {
