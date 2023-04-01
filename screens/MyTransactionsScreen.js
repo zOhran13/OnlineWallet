@@ -5,7 +5,7 @@ import AccountBalance from "../components/AccountBalance";
 const MyTransactionsScreen = ({ navigation }) => {
   return (
     <>
-      <AccountBalance />
+       <AccountBalance />
     </>
   );
 };
