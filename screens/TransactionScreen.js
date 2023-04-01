@@ -94,6 +94,12 @@ const TransactionScreen = () => {
               placeholderTextColor="#6e749d"
               onChangeText={(value) => setTextInputNumber(value)}
             />
+            <TextInput
+              style={styles.input}
+              placeholder="Description"
+              placeholderTextColor="#6e749d"
+              onChangeText={(value) => setTextInputName(value)}
+            />
 
             <Text style={styles.selectedCurrencyText}>
               Selected: {currency}
