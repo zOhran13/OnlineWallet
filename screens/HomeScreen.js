@@ -9,7 +9,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.container2}>
         <Pressable
           style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("Transaction")}
+          onPress={() => navigation.navigate("Template List")}
         >
           <Image
             source={require("../assets/images/listTemplates.png")}

@@ -4,6 +4,7 @@ import AccountBalance from "./components/AccountBalance";
 import HomeScreen from "./screens/HomeScreen";
 import TransactionScreen from "./screens/TransactionScreen";
 import MyTransactionsScreen from "./screens/MyTransactionsScreen";
+import TemplateListScreen from "./screens/TemplateListScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -20,6 +21,7 @@ export default function App() {
         />
         <Stack.Screen name="Transaction" component={TransactionScreen} />
         <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
+        <Stack.Screen name="Template List" component={TemplateListScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
