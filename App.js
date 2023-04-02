@@ -10,6 +10,7 @@ import TransactionScreen from './screens/TransactionScreen';
 import MyTransactionsScreen from './screens/MyTransactionsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import EmailOrPhoneVerificationScreen from './screens/EmailOrPhoneVerificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,10 @@ export default function App() {
           name='PhoneVerification'
           component={PhoneVerificationScreen}
         />
+        <Stack.Screen 
+          name='EmailOrPhoneVerification'
+          component={EmailOrPhoneVerificationScreen}
+          />
 
         <Stack.Screen
           name='Home'

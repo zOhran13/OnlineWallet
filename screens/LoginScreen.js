@@ -113,7 +113,39 @@ export default LoginScreen = ({ navigation }) => {
           style={styles.loginButton}
           onPress={() => {
             if (validateFunction()) {
-              console.log('Prijavi se');
+              let requestOption = {}
+              if(isValidEmail(emailOrPhone)) {
+                requestOption = {
+                  headers: {
+                    "Content-Type":"application/json"
+                  },
+                  body: JSON.stringify({
+                    email: emailOrPhone,
+                    password: password
+                  })
+                }
+              } else if(isValidPhoneNumber()) {
+                requestOption = {
+                  headers: {
+                    "Content-Type":"application/json"
+                  },
+                  body: JSON.stringify({
+                    phone: emailOrPhone,
+                    password: password
+                  })
+                }
+              }
+              
+              fetch("http://localhost:5051/api/User/login", requestOption).then(response => {
+                return response.json()
+              }).then(data => {
+                if(data.message === 'We have sent verification code to your email.') {
+                  ToastAndroid.show('Correctly fill all fields', ToastAndroid.SHORT);
+                  navigation.navigate('EmailOrPhoneVerification')
+                }
+              }).catch(err => {
+                ToastAndroid.show('Error while sending code to ' + emailOrPhone, ToastAndroid.SHORT);
+              })
               navigation.navigate('Home');
               // posalji podatke na Be
               // ako su validni loginuj se, spasi JWT, idi na home page
