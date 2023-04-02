@@ -163,6 +163,14 @@ const TransactionScreen = () => {
         <Pressable style={styles.submitButton} onPress={checkTextInput}>
           <Text style={styles.text}>Submit</Text>
         </Pressable>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Pressable style={styles.editButton} onPress={checkTextInput}>
+              <Text style={styles.text}>Edit</Text>
+          </Pressable>
+          <Pressable style={styles.deleteButton} onPress={checkTextInput}>
+            <Text style={styles.text}>Delete</Text>
+          </Pressable>
+        </View>
       </View>
     </>
   );
@@ -303,6 +311,24 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 9,
     color: "white",
+  },
+  editButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    width: "30%",
+    padding: "1%",
+    backgroundColor: "#FFC021",
+    margin: 10,
+  },
+  deleteButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    width: "30%",
+    padding: "5%",
+    backgroundColor: "#FFC021",
+    margin: 10,
   },
 });
 
