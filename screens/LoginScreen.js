@@ -9,13 +9,53 @@ import {
   Image,
   ToastAndroid,
   StatusBar,
+  TouchableOpacity
 } from 'react-native';
 
 import { FontAwesome5 } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
+
+
+//web 1027336724168-rmlfp04puu7f9ea51po4fv1n4ghukt03.apps.googleusercontent.com
+//ios 1027336724168-mv1qe272qqkku8uf6i8vp1m3ogl3an9s.apps.googleusercontent.com
+//android 1027336724168-idu6f6mjvfhf3g2mp0hkqs1hn9vckv7r.apps.googleusercontent.com
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [accessToken, setAccessToken] = React.useState(null);
+  const [user, setUser] = React.useState(null);
+  const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
+    clientId: "1027336724168-rmlfp04puu7f9ea51po4fv1n4ghukt03.apps.googleusercontent.com",
+    iosClientId: "1027336724168-mv1qe272qqkku8uf6i8vp1m3ogl3an9s.apps.googleusercontent.com",
+    androidClientId: "1027336724168-idu6f6mjvfhf3g2mp0hkqs1hn9vckv7r.apps.googleusercontent.com"
+  });
+
+  React.useEffect(() => {
+    if(response?.type === "success") {
+      setAccessToken(response.authentication.accessToken);
+      accessToken && fetchUserInfo();
+    }
+  }, [response, accessToken])
+
+  async function fetchUserInfo() {
+    let response = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    const useInfo = await response.json();
+    setUser(useInfo);
+  }
+
+  const ShowUserInfo = () => {
+    if(user) {
+      return(
+        navigation.navigate('Home')
+      )
+    }
+  }
 
   const showAlert = (title, errorMsg, desc) =>
     Alert.alert(
@@ -136,7 +176,7 @@ export default LoginScreen = ({ navigation }) => {
           <FontAwesome5 name='facebook' size={24} color='white' />
           <Text style={styles.facebookText}>Login with Facebook</Text>
         </Pressable>
-        <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
+        <Pressable onPress={promptAsync()} style={styles.googleButton}>
           <Image
             source={require('../assets/images/google_icon.png')}
             style={styles.icon}
