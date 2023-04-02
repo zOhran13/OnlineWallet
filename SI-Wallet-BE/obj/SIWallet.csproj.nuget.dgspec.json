@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\etf\\treca\\SI\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj": {}
+    "C:\\Users\\Naida\\Desktop\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj": {}
   },
   "projects": {
-    "C:\\etf\\treca\\SI\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj": {
+    "C:\\Users\\Naida\\Desktop\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\etf\\treca\\SI\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj",
+        "projectUniqueName": "C:\\Users\\Naida\\Desktop\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj",
         "projectName": "SIWallet",
-        "projectPath": "C:\\etf\\treca\\SI\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj",
-        "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\etf\\treca\\SI\\SI-Wallet\\SI-Wallet-BE\\obj\\",
+        "projectPath": "C:\\Users\\Naida\\Desktop\\SI-Wallet\\SI-Wallet-BE\\SIWallet.csproj",
+        "packagesPath": "C:\\Users\\Naida\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Naida\\Desktop\\SI-Wallet\\SI-Wallet-BE\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Korisnik\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Naida\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

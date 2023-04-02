@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet } from "react-native";
 import AccountBalance from "../components/AccountBalance";
+import { getTemplates } from "../modules/templatesModule";
 
 const MyTransactionsScreen = ({ navigation }) => {
   return (
     <>
-       <AccountBalance />
+      <AccountBalance/>
     </>
   );
 };

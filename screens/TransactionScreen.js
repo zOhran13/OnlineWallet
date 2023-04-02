@@ -11,12 +11,55 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
+import { useRoute } from '@react-navigation/native';
 
 const TransactionScreen = () => {
+  let templates = ([{
+    "id": 2,
+    "userId": 1,
+    "title": "Plin",
+    "description": "Placanje racuna za plin",
+    "currency": "BAM",
+    "recipientName": "sarajevoGas",
+    "recipientAccountNumber": "123456"
+  },
+  {
+    "id": 3,
+    "userId": 2,
+    "title": "Voda",
+    "description": "Placanje racuna za vodu",
+    "currency": "BAM",
+    "recipientName": "vodovod",
+    "recipientAccountNumber": "123457"
+  },
+  {
+    "id": 4,
+    "userId": 2,
+    "title": "Struja",
+    "description": "Placanje racuna za struju",
+    "currency": "BAM",
+    "recipientName": "elektrodistribucija",
+    "recipientAccountNumber": "123457"
+  }]);
+  
+
+  const {params} = useRoute();
+  const id = params?.id
+
+ /* if(id) {
+    console.log(id)
+
+    const selectedItem = templates.find(item => item.id === id)
+    console.log(selectedItem.title)
+    const [recipientName, setRecipientName] = useState(selectedItem?.name)
+
+  }*/
+
   const [currency, setCurrency] = useState("US Dollar");
   const [textInputName, setTextInputName] = useState("");
   const [textInputNumber, setTextInputNumber] = useState("");
   const [textInputAmount, setTextInputAmount] = useState("");
+
 
   const checkTextInput = () => {
     if (!textInputAmount.trim()) {
@@ -52,7 +95,15 @@ const TransactionScreen = () => {
     //Do whatever you want
     Alert.alert("Transaction Successful!");
   };
+  if ( id != null) {
+  
+      const selectedItem = templates.find(item => item.id === id)
 
+      const [recipientName, setRecipientName] = useState(selectedItem?.recipientName)
+      const [recipientAccountNumber, setRecipientAccountNumber] = useState(selectedItem?.recipientAccountNumber)
+      const [description, setDescription] = useState(selectedItem?.description)
+      const [currencyTemplate, setCurrencyTemplate] = useState(selectedItem?.currency)
+  
   return (
     <>
       <View style={styles.container}>
@@ -69,7 +120,7 @@ const TransactionScreen = () => {
                 placeholderTextColor="#6e749d"
               />
               <Picker
-                selectedValue={currency}
+                selectedValue={currencyTemplate}
                 onValueChange={(currentCurrency) =>
                   setCurrency(currentCurrency)
                 }
@@ -85,6 +136,7 @@ const TransactionScreen = () => {
               style={styles.input}
               placeholder="Recipient name"
               placeholderTextColor="#6e749d"
+              value={recipientName}
               onChangeText={(value) => setTextInputName(value)}
             />
             <TextInput
@@ -92,12 +144,14 @@ const TransactionScreen = () => {
               placeholder="Recipient account number"
               keyboardType="numeric"
               placeholderTextColor="#6e749d"
+              value={recipientAccountNumber}
               onChangeText={(value) => setTextInputNumber(value)}
             />
             <TextInput
               style={styles.input}
               placeholder="Description"
               placeholderTextColor="#6e749d"
+              value={description}
               onChangeText={(value) => setTextInputName(value)}
             />
 
@@ -112,6 +166,67 @@ const TransactionScreen = () => {
       </View>
     </>
   );
+  } else {
+    return (
+      <>
+        <View style={styles.container}>
+          <View style={styles.elipseContainer}>
+            <Text style={styles.newTransactionText}>New Transaction</Text>
+  
+            <View>
+              <View style={styles.amountCurrencyContainer}>
+                <TextInput
+                  style={styles.amountInput}
+                  placeholder="Transaction amount"
+                  onChangeText={(value) => setTextInputAmount(value)}
+                  keyboardType="numeric"
+                  placeholderTextColor="#6e749d"
+                />
+                <Picker
+                  selectedValue={currency}
+                  onValueChange={(currentCurrency) =>
+                    setCurrency(currentCurrency)
+                  }
+                  style={styles.currencyPicker}
+                >
+                  <Picker.Item label="BAM" value="Bosnian Mark" color="black" />
+                  <Picker.Item label="EUR" value="Euro" color="black" />
+                  <Picker.Item label="USD" value="US Dollar" color="black" />
+                </Picker>
+              </View>
+  
+              <TextInput
+                style={styles.input}
+                placeholder="Recipient name"
+                placeholderTextColor="#6e749d"
+                onChangeText={(value) => setTextInputName(value)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Recipient account number"
+                keyboardType="numeric"
+                placeholderTextColor="#6e749d"
+                onChangeText={(value) => setTextInputNumber(value)}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Description"
+                placeholderTextColor="#6e749d"
+                onChangeText={(value) => setTextInputName(value)}
+              />
+  
+              <Text style={styles.selectedCurrencyText}>
+                Selected: {currency}
+              </Text>
+            </View>
+          </View>
+          <Pressable style={styles.submitButton} onPress={checkTextInput}>
+            <Text style={styles.text}>Submit</Text>
+          </Pressable>
+        </View>
+      </>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
