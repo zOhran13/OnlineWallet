@@ -43,8 +43,20 @@ const TransactionScreen = () => {
   }
 
   const handleDeletePress = () => {
-    deleteTemplate(id);
-  } 
+    Alert.alert('Delete template', 'Are you sure you want to delete this template?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => {
+        console.log('OK Pressed')
+        deleteTemplate(id);
+      }
+      },
+    ]);
+    
+  }
 
   const handleSaveButton = () => {
 
