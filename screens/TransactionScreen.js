@@ -116,6 +116,7 @@ const TransactionScreen = () => {
       const [description, setDescription] = useState(selectedItem?.description)
       const [currencyTemplate, setCurrencyTemplate] = useState(selectedItem?.currency)
       
+      const [editableBoolean, setEditableBoolean] = useState(false);
   
   return (
     <>
@@ -150,14 +151,14 @@ const TransactionScreen = () => {
               placeholder="Recipient name"
               placeholderTextColor="#6e749d"
               defaultValue={recipientName}
-              editable={false}
+              editable={editableBoolean}
             />
             <TextInput
               style={styles.input}
               placeholder="Recipient account number"
-              keyboardType="numeric"
+              keyboardType="phone-pad"
               placeholderTextColor="#6e749d"
-              editable={false}
+              editable={editableBoolean}
               defaultValue={recipientAccountNumber}
               onChangeText={(value) => setTextInputNumber(value)}
             />
@@ -166,7 +167,7 @@ const TransactionScreen = () => {
               placeholder="Description"
               placeholderTextColor="#6e749d"
               defaultValue={description}
-              editable={false}
+              editable={editableBoolean}
               onChangeText={(value) => setTextInputName(value)}
             />
 
@@ -178,8 +179,8 @@ const TransactionScreen = () => {
         <Pressable style={styles.submitButton} onPress={checkAmountInput}>
           <Text style={styles.text}>Submit</Text>
         </Pressable>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Pressable style={styles.editButton} >
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
+          <Pressable style={styles.editButton} onPress= {() => setEditableBoolean(true)}>
               <Text style={styles.text}>Edit</Text>
           </Pressable>
           <Pressable style={styles.deleteButton}>
@@ -202,7 +203,7 @@ const TransactionScreen = () => {
                   style={styles.amountInput}
                   placeholder="Transaction amount"
                   onChangeText={(value) => setTextInputAmount(value)}
-                  keyboardType="numeric"
+                  keyboardType="phone-pad"
                   placeholderTextColor="#6e749d"
                 />
                 <Picker
@@ -227,7 +228,7 @@ const TransactionScreen = () => {
               <TextInput
                 style={styles.input}
                 placeholder="Recipient account number"
-                keyboardType="numeric"
+                keyboardType="phone-pad"
                 placeholderTextColor="#6e749d"
                 onChangeText={(value) => setTextInputNumber(value)}
               />
