@@ -13,6 +13,7 @@ import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
 import { touchProps } from "react-native-web/dist/cjs/modules/forwardedProps";
+import { deleteTemplate } from "../modules/templatesModule";
 
 const TransactionScreen = () => {
   let templates = ([{
@@ -58,6 +59,9 @@ const TransactionScreen = () => {
     Alert.alert("You are in edit mode.");
   }
 
+  const handleDeletePress = () => {
+    deleteTemplate(id);
+  } 
 
   const checkTextInput = () => {
     if (!textInputAmount.trim()) {
@@ -189,7 +193,7 @@ const TransactionScreen = () => {
           <Pressable style={styles.editButton}  onPress= {handleEditPress}>
               <Text style={styles.text}>Edit</Text>
           </Pressable>
-          <Pressable style={styles.deleteButton}>
+          <Pressable style={styles.deleteButton} onPress= {handleDeletePress}>
             <Text style={styles.text}>Delete</Text>
           </Pressable>
         </View>
