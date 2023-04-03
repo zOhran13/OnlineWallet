@@ -29,7 +29,8 @@ const TransactionScreen = () => {
     fetchTemplate();
   }, []);
 
-  
+  const selectedItem = selectedTemplate;
+  console.log(selectedItem)
 
   const [currency, setCurrency] = useState("US Dollar");
   const [textInputName, setTextInputName] = useState("");
@@ -123,8 +124,7 @@ const TransactionScreen = () => {
  // const templates = getTemplates();
       //const selectedItem = templates.find(item => item.id === id)
 
-      const selectedItem = selectedTemplate;
-      console.log(selectedItem)
+     
      // console.log("OVDJEEE IDD",id)
 
       const [recipientName, setRecipientName] = useState(selectedItem?.recipientName)
@@ -157,7 +157,8 @@ const TransactionScreen = () => {
                 placeholderTextColor="#6e749d"
               />
               <Picker
-                selectedValue={currencyTemplate}
+                selectedValue={selectedItem.currency}
+                editable = {editableBoolean}
                 onValueChange={(currentCurrency) =>
                   setCurrency(currentCurrency)
                 }
@@ -173,7 +174,7 @@ const TransactionScreen = () => {
               style={styles.input}
               placeholder="Recipient name"
               placeholderTextColor="#6e749d"
-              defaultValue={recipientName}
+              defaultValue={selectedItem.recipientName}
               editable={editableBoolean}
             />
             <TextInput
@@ -182,20 +183,20 @@ const TransactionScreen = () => {
               keyboardType="phone-pad"
               placeholderTextColor="#6e749d"
               editable={editableBoolean}
-              defaultValue={recipientAccountNumber}
+              defaultValue={selectedItem.recipientAccountNumber}
               onChangeText={(value) => setTextInputNumber(value)}
             />
             <TextInput
               style={styles.input}
               placeholder="Description"
               placeholderTextColor="#6e749d"
-              defaultValue={description}
+              defaultValue={selectedItem.description}
               editable={editableBoolean}
               onChangeText={(value) => setTextInputName(value)}
             />
 
             <Text style={styles.selectedCurrencyText}>
-              Selected: {currencyTemplate}
+              Selected: {selectedItem.currency}
             </Text>
           </View>
         </View>
