@@ -12,22 +12,24 @@ import { Picker } from "@react-native-picker/picker";
 import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
-import { touchProps } from "react-native-web/dist/cjs/modules/forwardedProps";
+import { getTemplate, deleteTemplate,getTemplates } from "../modules/templatesModule";
 
 const TransactionScreen = () => {
-  const [templates, setTemplates] = useState([]);
-
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      const data = await getTemplates();
-      setTemplates(data);
-    };
-
-    fetchTemplates();
-  }, []);
+  const [selectedTemplate, setSelectedTemplate] = useState({});
 
   const {params} = useRoute();
   const id = params?.id
+
+  useEffect(() => {
+    const fetchTemplate = async () => {
+      const data = await getTemplate(id);
+      setSelectedTemplate(data);
+    };
+
+    fetchTemplate();
+  }, []);
+
+  
 
   const [currency, setCurrency] = useState("US Dollar");
   const [textInputName, setTextInputName] = useState("");
@@ -118,8 +120,12 @@ const TransactionScreen = () => {
 
 
   if ( id != null) {
-  
-      const selectedItem = templates.find(item => item.id === id)
+ // const templates = getTemplates();
+      //const selectedItem = templates.find(item => item.id === id)
+
+      const selectedItem = selectedTemplate;
+      console.log(selectedItem)
+     // console.log("OVDJEEE IDD",id)
 
       const [recipientName, setRecipientName] = useState(selectedItem?.recipientName)
       const [recipientAccountNumber, setRecipientAccountNumber] = useState(selectedItem?.recipientAccountNumber)
