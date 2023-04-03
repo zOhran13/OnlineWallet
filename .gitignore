@@ -4,5 +4,5 @@
 
 /.vs
 node_modules/
-SI-Wallet-BE/.vs
-SI-Wallet-BE/obj
+/SI-Wallet-BE/.vs
+/SI-Wallet-BE/obj
