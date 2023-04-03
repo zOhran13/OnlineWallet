@@ -14,10 +14,11 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
     setCode(text);
   };
   const verifyCode = () => {
-    // if (code.trim().length === 0) {
-    //   ToastAndroid.show("Code can't be blank", ToastAndroid.SHORT);
-    //   return;
-    // }
+    if (code.trim().length === 0) {
+      ToastAndroid.show("Code can't be blank", ToastAndroid.SHORT);
+      return false;
+    }
+    return true
 
     // const requestOption = {
     //   method: "POST",
@@ -73,7 +74,11 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
           style={styles.verifyButton}
           title="Verify"
           onPress={() => {
-            verifyCode();
+            if(verifyCode()) {
+              //should be code to verify code from email or phone number... soon
+              navigation.navigate("Home")
+            };
+
           }}
         >
           <Text style={styles.verifyText}>VERIFY</Text>

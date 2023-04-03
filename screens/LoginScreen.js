@@ -99,6 +99,8 @@ export default LoginScreen = ({ navigation }) => {
     navigation.navigate('Registration');
   }
 
+
+
   async function handleGoogleLogin() {
     let socialTokenString = await SecureStore.getItemAsync('social_token');
     let socialToken = null;
@@ -175,6 +177,13 @@ export default LoginScreen = ({ navigation }) => {
     );
   }
 
+    async function setToken(token) {
+      await SecureStore.setItemAsync("secure_token", token)
+      const tok = await SecureStore.getItemAsync("secure_token")
+      console.log("Tokic " + tok)
+    }
+  
+
   return (
 
     <><View style={styles.container}>
@@ -204,10 +213,12 @@ export default LoginScreen = ({ navigation }) => {
         <Pressable
           style={styles.loginButton}
           onPress={() => {
+            console.log("Da vidim telefon " + emailOrPhone)
             if (validateFunction()) {
               let requestOption = {};
               if (isValidEmail(emailOrPhone)) {
                 requestOption = {
+                  method:'POST',
                   headers: {
                     "Content-Type": "application/json"
                   },
@@ -216,8 +227,9 @@ export default LoginScreen = ({ navigation }) => {
                     password: password
                   })
                 };
-              } else if (isValidPhoneNumber()) {
+              } else if (isValidPhoneNumber(emailOrPhone)) {
                 requestOption = {
+                  method: 'POST',
                   headers: {
                     "Content-Type": "application/json"
                   },
@@ -228,20 +240,20 @@ export default LoginScreen = ({ navigation }) => {
                 };
               }
 
-              fetch("http://localhost:5051/api/User/login", requestOption).then(response => {
+              fetch("http://siprojekat.duckdns.org:5051/api/User/login", requestOption).then(response => {
                 return response.json();
               }).then(data => {
-                if (data.message === 'We have sent verification code to your email.') {
-                  ToastAndroid.show('Correctly fill all fields', ToastAndroid.SHORT);
-                  navigation.navigate('EmailOrPhoneVerification');
+                if (data.errors != null || data.token == null) {
+                  showAlert("Login error", "Login data incorrect")
+                } else {
+                  setToken(data.token)
+                  console.log("data token: " + data.token)
+                  navigation.navigate("EmailOrPhoneVerification")
                 }
               }).catch(err => {
+                console.log(err.message)
                 ToastAndroid.show('Error while sending code to ' + emailOrPhone, ToastAndroid.SHORT);
               });
-              navigation.navigate('Home');
-              // posalji podatke na Be
-              // ako su validni loginuj se, spasi JWT, idi na home page
-              // inace prijavi gresku korisniku
             }
           }}
         >
