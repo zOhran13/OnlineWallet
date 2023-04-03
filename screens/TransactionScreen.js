@@ -12,6 +12,7 @@ import { Picker } from "@react-native-picker/picker";
 import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
+import { touchProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 
 const TransactionScreen = () => {
   let templates = ([{
@@ -45,15 +46,6 @@ const TransactionScreen = () => {
 
   const {params} = useRoute();
   const id = params?.id
-
- /* if(id) {
-    console.log(id)
-
-    const selectedItem = templates.find(item => item.id === id)
-    console.log(selectedItem.title)
-    const [recipientName, setRecipientName] = useState(selectedItem?.name)
-
-  }*/
 
   const [currency, setCurrency] = useState("US Dollar");
   const [textInputName, setTextInputName] = useState("");
@@ -95,6 +87,26 @@ const TransactionScreen = () => {
     //Do whatever you want
     Alert.alert("Transaction Successful!");
   };
+
+
+    const checkAmountInput = () => {
+    if (!textInputAmount.trim()) {
+      alert("Please Enter Amount!");
+      return;
+    }
+    if (
+      !/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim())
+    ) {
+      alert("Please enter valid Amount (e.g. 123,456.78)");
+      return;
+    }
+
+    //Checked Successfully
+    //Do whatever you want
+    Alert.alert("Transaction Successful!");
+  };
+
+
   if ( id != null) {
   
       const selectedItem = templates.find(item => item.id === id)
@@ -103,6 +115,7 @@ const TransactionScreen = () => {
       const [recipientAccountNumber, setRecipientAccountNumber] = useState(selectedItem?.recipientAccountNumber)
       const [description, setDescription] = useState(selectedItem?.description)
       const [currencyTemplate, setCurrencyTemplate] = useState(selectedItem?.currency)
+      
   
   return (
     <>
@@ -116,7 +129,7 @@ const TransactionScreen = () => {
                 style={styles.amountInput}
                 placeholder="Transaction amount"
                 onChangeText={(value) => setTextInputAmount(value)}
-                keyboardType="numeric"
+                keyboardType="phone-pad"
                 placeholderTextColor="#6e749d"
               />
               <Picker
@@ -136,38 +149,40 @@ const TransactionScreen = () => {
               style={styles.input}
               placeholder="Recipient name"
               placeholderTextColor="#6e749d"
-              value={recipientName}
-              onChangeText={(value) => setTextInputName(value)}
+              defaultValue={recipientName}
+              editable={false}
             />
             <TextInput
               style={styles.input}
               placeholder="Recipient account number"
               keyboardType="numeric"
               placeholderTextColor="#6e749d"
-              value={recipientAccountNumber}
+              editable={false}
+              defaultValue={recipientAccountNumber}
               onChangeText={(value) => setTextInputNumber(value)}
             />
             <TextInput
               style={styles.input}
               placeholder="Description"
               placeholderTextColor="#6e749d"
-              value={description}
+              defaultValue={description}
+              editable={false}
               onChangeText={(value) => setTextInputName(value)}
             />
 
             <Text style={styles.selectedCurrencyText}>
-              Selected: {currency}
+              Selected: {currencyTemplate}
             </Text>
           </View>
         </View>
-        <Pressable style={styles.submitButton} onPress={checkTextInput}>
+        <Pressable style={styles.submitButton} onPress={checkAmountInput}>
           <Text style={styles.text}>Submit</Text>
         </Pressable>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Pressable style={styles.editButton} onPress={checkTextInput}>
+          <Pressable style={styles.editButton} >
               <Text style={styles.text}>Edit</Text>
           </Pressable>
-          <Pressable style={styles.deleteButton} onPress={checkTextInput}>
+          <Pressable style={styles.deleteButton}>
             <Text style={styles.text}>Delete</Text>
           </Pressable>
         </View>
