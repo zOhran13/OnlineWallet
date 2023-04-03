@@ -52,10 +52,17 @@ const TransactionScreen = () => {
   const [textInputNumber, setTextInputNumber] = useState("");
   const [textInputAmount, setTextInputAmount] = useState("");
   const [editableBoolean, setEditableBoolean] = useState(false);
+  const [showComponent, setShowComponent] = useState(false);
 
   const handleEditPress = () => {
     setEditableBoolean(true);
+    setShowComponent(true);
     Alert.alert("You are in edit mode.");
+  }
+
+
+  const handleSaveButton = () => {
+
   }
 
 
@@ -128,8 +135,15 @@ const TransactionScreen = () => {
     <>
       <View style={styles.container}>
         <View style={styles.elipseContainer}>
+          <View style={styles.saveButtonAndTransactionContainer}>
           <Text style={styles.newTransactionText}>New Transaction</Text>
-
+          {
+            showComponent 
+            && <Pressable style={styles.saveButton} onPress={() => setShowComponent(false)}>
+                <Text style={styles.saveButtonText}>SAVE</Text>
+                  </Pressable>
+          }
+          </View>
           <View>
             <View style={styles.amountCurrencyContainer}>
               <TextInput
@@ -352,6 +366,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFC021",
     margin: 10,
   },
+  saveButtonAndTransactionContainer: {
+    flexDirection: 'row'
+  },
+  saveButton: {
+
+  },
+  saveButtonText: {
+    color: "#FFC021",
+    fontWeight: 'bold',
+    fontSize: 18
+  }
+
 });
 
 export default TransactionScreen;
