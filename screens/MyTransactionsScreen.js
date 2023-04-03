@@ -4,9 +4,11 @@ import AccountBalance from "../components/AccountBalance";
 import { getTemplates } from "../modules/templatesModule";
 
 const MyTransactionsScreen = ({ navigation }) => {
+  getTemplates();
   return (
     <>
       <AccountBalance/>
+      
     </>
   );
 };

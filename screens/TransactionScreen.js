@@ -13,36 +13,10 @@ import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
 import { touchProps } from "react-native-web/dist/cjs/modules/forwardedProps";
+import { getTemplates } from "../modules/templatesModule";
 
 const TransactionScreen = () => {
-  let templates = ([{
-    "id": 2,
-    "userId": 1,
-    "title": "Plin",
-    "description": "Placanje racuna za plin",
-    "currency": "BAM",
-    "recipientName": "sarajevoGas",
-    "recipientAccountNumber": "123456"
-  },
-  {
-    "id": 3,
-    "userId": 2,
-    "title": "Voda",
-    "description": "Placanje racuna za vodu",
-    "currency": "BAM",
-    "recipientName": "vodovod",
-    "recipientAccountNumber": "123457"
-  },
-  {
-    "id": 4,
-    "userId": 2,
-    "title": "Struja",
-    "description": "Placanje racuna za struju",
-    "currency": "BAM",
-    "recipientName": "elektrodistribucija",
-    "recipientAccountNumber": "123457"
-  }]);
-  
+  let templates = getTemplates();
 
   const {params} = useRoute();
   const id = params?.id
@@ -215,7 +189,14 @@ const TransactionScreen = () => {
       <>
         <View style={styles.container}>
           <View style={styles.elipseContainer}>
-            <Text style={styles.newTransactionText}>New Transaction</Text>
+          <View style={styles.saveButtonAndTransactionContainer}>
+          <Text style={styles.newTransactionText}>New Transaction</Text>
+
+          <Pressable style={styles.saveButton} onPress={() => setShowComponent(false)}>
+            <Text style={styles.saveButtonText}>SAVE</Text>
+          </Pressable>
+
+          </View>
   
             <View>
               <View style={styles.amountCurrencyContainer}>

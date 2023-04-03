@@ -1,45 +1,21 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
+import { getTemplates } from "../modules/templatesModule";
 
 
-const TemplateListScreen = ({ navigation }) => {
+const TemplateListScreen = async ({ navigation }) => {
+  console.log("Heeej")
+  let response = await fetch("https://4494-195-130-59-86.eu.ngrok.io/api/Template");
+  let templates = await response.json();
+  console.log("DRUGIIIIIIIII KONZOL " + templates[0].title)
 
-  let templates = ([{
-    "id": 2,
-    "userId": 1,
-    "title": "Plin",
-    "description": "Placanje racuna za plin",
-    "currency": "BAM",
-    "recipientName": "sarajevoGas",
-    "recipientAccountNumber": "123456"
-  },
-  {
-    "id": 3,
-    "userId": 2,
-    "title": "Voda",
-    "description": "Placanje racuna za vodu",
-    "currency": "BAM",
-    "recipientName": "vodovod",
-    "recipientAccountNumber": "123457"
-  },
-  {
-    "id": 4,
-    "userId": 2,
-    "title": "Struja",
-    "description": "Placanje racuna za struju",
-    "currency": "BAM",
-    "recipientName": "elektrodistribucija",
-    "recipientAccountNumber": "123457"
-  }]);
-
+  
   const handlePress = (id) => {
       navigation.navigate("Transaction", {id})
   }
   return (
     <View style={styles.container}>
-      
         {templates.map(template => (
-
               <View style={styles.container1} key={template.id}>
                 <Pressable
                         onPress={() => handlePress(template.id)}
@@ -49,7 +25,8 @@ const TemplateListScreen = ({ navigation }) => {
                 </View>
 
 
-          ))}
+          ))
+          }
  
 
     </View>
