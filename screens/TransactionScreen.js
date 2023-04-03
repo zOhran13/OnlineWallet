@@ -51,6 +51,12 @@ const TransactionScreen = () => {
   const [textInputName, setTextInputName] = useState("");
   const [textInputNumber, setTextInputNumber] = useState("");
   const [textInputAmount, setTextInputAmount] = useState("");
+  const [editableBoolean, setEditableBoolean] = useState(false);
+
+  const handleEditPress = () => {
+    setEditableBoolean(true);
+    Alert.alert("You are in edit mode.");
+  }
 
 
   const checkTextInput = () => {
@@ -116,7 +122,7 @@ const TransactionScreen = () => {
       const [description, setDescription] = useState(selectedItem?.description)
       const [currencyTemplate, setCurrencyTemplate] = useState(selectedItem?.currency)
       
-      const [editableBoolean, setEditableBoolean] = useState(false);
+     
   
   return (
     <>
@@ -180,7 +186,7 @@ const TransactionScreen = () => {
           <Text style={styles.text}>Submit</Text>
         </Pressable>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-          <Pressable style={styles.editButton} onPress= {() => setEditableBoolean(true)}>
+          <Pressable style={styles.editButton}  onPress= {handleEditPress}>
               <Text style={styles.text}>Edit</Text>
           </Pressable>
           <Pressable style={styles.deleteButton}>
