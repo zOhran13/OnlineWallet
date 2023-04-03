@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme": ["scheme", "facebook_app_id"],
+    "scheme": "host.exp.exponent",
     "name": "SI-Wallet",
     "slug": "SI-Wallet",
     "version": "1.0.0",
@@ -19,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "host.exp.exponent",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

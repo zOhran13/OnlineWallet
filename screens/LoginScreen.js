@@ -12,7 +12,8 @@ import {
   StatusBar,
 } from 'react-native';
 import * as Facebook from 'expo-auth-session/providers/facebook';
-
+import * as Google from 'expo-auth-session/providers/google';
+import Expo from "expo";
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export default LoginScreen = ({ navigation }) => {
@@ -21,6 +22,11 @@ export default LoginScreen = ({ navigation }) => {
 
   const [_, __, fbPromptAsync] = Facebook.useAuthRequest({
     clientId: "1370313683731054"
+  });
+  
+  const [___, _____, googlePromptAsync] = Google.useAuthRequest({
+    expoClientId: "788342956193-siinksvah4o472pb4b7i9us94pi2lttm.apps.googleusercontent.com",
+    androidClientId: "788342956193-35v68vd43enipuckknkthkt3t7kihn7e.apps.googleusercontent.com"
   });
 
   const facebookRegister = async () => {
@@ -31,6 +37,21 @@ export default LoginScreen = ({ navigation }) => {
     }
     return null;
   };
+
+  const googleRegister = async () => {
+    try {
+      const result = await googlePromptAsync();
+
+      if (result.type === "success") {
+        return result.authentication.accessToken;
+      } else {
+        console.log("prekinuto!");
+      }
+    } catch(e) {
+      console.log("Desila se greška: ", e);
+    }
+    return null;
+  }
 
   const showAlert = (title, errorMsg, desc) =>
     Alert.alert(
@@ -78,8 +99,42 @@ export default LoginScreen = ({ navigation }) => {
     navigation.navigate('Registration');
   }
 
-  function handleGoogleLogin() {
-    Alert.alert('Login with Google', 'Login with Google button was pressed');
+  async function handleGoogleLogin() {
+    let socialTokenString = await SecureStore.getItemAsync('social_token');
+    let socialToken = null;
+
+    if (socialTokenString == "" || socialTokenString == null) {
+      const tokenValue = await googleRegister();
+      socialToken = {
+        "name": "google_token",
+        "value": tokenValue
+      };
+      await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
+    } else {
+      socialToken = JSON.parse(socialTokenString);
+      if (socialToken.name != 'google_token'){
+        Alert.alert(
+          'Google login error',
+          'You are already registered with another social account!'
+        );
+        return;
+      }
+    }
+
+    //ovdje dobavljamo podatke sa BE, i ako je validan korisnik (dobijemo validan odgovor)
+    //onda se logujemo dalje na stranicu
+    //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
+    console.log("Moj token je:");
+    console.log(socialToken);
+
+    let data = await fetch("https://www.googleapis.com/userinfo/v2/me",{
+      headers: { Authorization: `Bearer ${socialToken.value}` },
+    }).then(res => res.json());
+
+    console.log("Vraćeni podaci su: ");
+    console.log(data);
+    
+    navigation.navigate('Home');
   }
 
   async function handleFacebookLogin() {
