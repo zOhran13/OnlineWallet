@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import * as SecureStore from 'expo-secure-store';
 import {
   Text,
   View,
@@ -10,12 +11,47 @@ import {
   ToastAndroid,
   StatusBar,
 } from 'react-native';
-
+import * as Facebook from 'expo-auth-session/providers/facebook';
+import * as Google from 'expo-auth-session/providers/google';
+import Expo from "expo";
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
+
+  const [_, __, fbPromptAsync] = Facebook.useAuthRequest({
+    clientId: "1370313683731054"
+  });
+
+  const [___, _____, googlePromptAsync] = Google.useAuthRequest({
+    expoClientId: "788342956193-siinksvah4o472pb4b7i9us94pi2lttm.apps.googleusercontent.com",
+    androidClientId: "788342956193-35v68vd43enipuckknkthkt3t7kihn7e.apps.googleusercontent.com"
+  });
+
+  const facebookRegister = async () => {
+    const response = await fbPromptAsync();
+    if (response.type === "success") {
+      const { access_token } = response.params;
+      return access_token;
+    }
+    return null;
+  };
+
+  const googleRegister = async () => {
+    try {
+      const result = await googlePromptAsync();
+
+      if (result.type === "success") {
+        return result.authentication.accessToken;
+      } else {
+        console.log("prekinuto!");
+      }
+    } catch (e) {
+      console.log("Desila se greška: ", e);
+    }
+    return null;
+  }
 
   const showAlert = (title, errorMsg, desc) =>
     Alert.alert(
@@ -63,15 +99,73 @@ export default LoginScreen = ({ navigation }) => {
     navigation.navigate('Registration');
   }
 
-  function handleGoogleLogin() {
-    Alert.alert('Login with Google', 'Login with Google button was pressed');
+  async function handleGoogleLogin() {
+    let socialTokenString = await SecureStore.getItemAsync('social_token');
+    let socialToken = null;
+
+    if (socialTokenString == "" || socialTokenString == null) {
+      const tokenValue = await googleRegister();
+      socialToken = {
+        "name": "google_token",
+        "value": tokenValue
+      };
+      await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
+    } else {
+      socialToken = JSON.parse(socialTokenString);
+      if (socialToken.name != 'google_token') {
+        Alert.alert(
+          'Google login error',
+          'You are already registered with another social account!'
+        );
+        return;
+      }
+    }
+
+    //ovdje dobavljamo podatke sa BE, i ako je validan korisnik (dobijemo validan odgovor)
+    //onda se logujemo dalje na stranicu
+    //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
+    console.log("Moj token je:");
+    console.log(socialToken);
+
+    let data = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+      headers: { Authorization: `Bearer ${socialToken.value}` },
+    }).then(res => res.json());
+
+    console.log("Vraćeni podaci su: ");
+    console.log(data);
+
+    navigation.navigate('Home');
   }
 
-  function handleFacebookLogin() {
-    Alert.alert(
-      'Login with Facebook',
-      'Login with Facebook button was pressed'
-    );
+  async function handleFacebookLogin() {
+    let socialTokenString = await SecureStore.getItemAsync('social_token');
+    let socialToken = null;
+
+    if (socialTokenString == "" || socialTokenString == null) {
+      const tokenValue = await facebookRegister();
+      socialToken = {
+        "name": "facebook_token",
+        "value": tokenValue
+      };
+      await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
+    } else {
+      socialToken = JSON.parse(socialTokenString);
+      if (socialToken.name != 'facebook_token') {
+        Alert.alert(
+          'Facebook login error',
+          'You are already registered with another social account!'
+        );
+        return;
+      }
+    }
+
+    //ovdje dobavljamo podatke sa BE, i ako je validan korisnik (dobijemo validan odgovor)
+    //onda se logujemo dalje na stranicu
+    //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
+    console.log(socialToken);
+    let data = await fetch("https://graph.facebook.com/me?fields=last_name,first_name,email&access_token=" + socialToken.value).then(res => res.json());
+    console.log(data);
+    navigation.navigate('Home');
   }
 
   function handleMicrosoftLogin() {
@@ -82,23 +176,22 @@ export default LoginScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+
+    <><View style={styles.container}>
       <View>
         <Image
           source={require('../assets/images/registration.png')}
-          style={styles.picture}
-        />
+          style={styles.picture} />
       </View>
 
-      <View style={styles.formContainer}>
+    <View style={styles.formContainer}>
         <View style={styles.elipseContainer}>
           <TextInput
             style={styles.input}
             placeholder='Email or phone number'
             placeholderTextColor='#6e749d'
             onChangeText={setEmailOrPhone}
-            value={emailOrPhone}
-          />
+            value={emailOrPhone} />
 
           <TextInput
             style={styles.input}
@@ -106,46 +199,45 @@ export default LoginScreen = ({ navigation }) => {
             placeholderTextColor='#6e749d'
             secureTextEntry
             onChangeText={setPassword}
-            value={password}
-          />
+            value={password} />
         </View>
         <Pressable
           style={styles.loginButton}
           onPress={() => {
             if (validateFunction()) {
-              let requestOption = {}
-              if(isValidEmail(emailOrPhone)) {
+              let requestOption = {};
+              if (isValidEmail(emailOrPhone)) {
                 requestOption = {
                   headers: {
-                    "Content-Type":"application/json"
+                    "Content-Type": "application/json"
                   },
                   body: JSON.stringify({
                     email: emailOrPhone,
                     password: password
                   })
-                }
-              } else if(isValidPhoneNumber()) {
+                };
+              } else if (isValidPhoneNumber()) {
                 requestOption = {
                   headers: {
-                    "Content-Type":"application/json"
+                    "Content-Type": "application/json"
                   },
                   body: JSON.stringify({
                     phone: emailOrPhone,
                     password: password
                   })
-                }
+                };
               }
-              
+
               fetch("http://localhost:5051/api/User/login", requestOption).then(response => {
-                return response.json()
+                return response.json();
               }).then(data => {
-                if(data.message === 'We have sent verification code to your email.') {
+                if (data.message === 'We have sent verification code to your email.') {
                   ToastAndroid.show('Correctly fill all fields', ToastAndroid.SHORT);
-                  navigation.navigate('EmailOrPhoneVerification')
+                  navigation.navigate('EmailOrPhoneVerification');
                 }
               }).catch(err => {
                 ToastAndroid.show('Error while sending code to ' + emailOrPhone, ToastAndroid.SHORT);
-              })
+              });
               navigation.navigate('Home');
               // posalji podatke na Be
               // ako su validni loginuj se, spasi JWT, idi na home page
@@ -155,15 +247,11 @@ export default LoginScreen = ({ navigation }) => {
         >
           <Text style={styles.loginText}>LOGIN</Text>
         </Pressable>
-      </View>
-
-      <View style={styles.horizontalSeparatorContainer}>
+      </View><View style={styles.horizontalSeparatorContainer}>
         <View style={styles.horizontalBar} />
         <Text style={styles.signupText}>Or</Text>
         <View style={styles.horizontalBar} />
-      </View>
-
-      <View style={styles.alternativeLoginContainer}>
+      </View><View style={styles.alternativeLoginContainer}>
         <Pressable onPress={handleFacebookLogin} style={styles.facebookButton}>
           <FontAwesome5 name='facebook' size={24} color='white' />
           <Text style={styles.facebookText}>Login with Facebook</Text>
@@ -171,25 +259,22 @@ export default LoginScreen = ({ navigation }) => {
         <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
           <Image
             source={require('../assets/images/google_icon.png')}
-            style={styles.icon}
-          />
+            style={styles.icon} />
           <Text style={styles.googleText}>Login with Google</Text>
         </Pressable>
         <Pressable onPress={handleMicrosoftLogin} style={styles.googleButton}>
           <Image
             source={require('../assets/images/microsoft_icon.png')}
-            style={styles.icon}
-          />
+            style={styles.icon} />
           <Text style={styles.googleText}>Login with Microsoft</Text>
         </Pressable>
-      </View>
-      <Text style={styles.signupText}>
+      </View><Text style={styles.signupText}>
         <Text>Don't have an account? </Text>
         <Text style={{ color: '#ffc022ef' }} onPress={handleSignup}>
           Sign up
         </Text>
       </Text>
-    </View>
+      </View></>
   );
 };
 
