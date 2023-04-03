@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -15,7 +15,16 @@ import { useRoute } from '@react-navigation/native';
 import { touchProps } from "react-native-web/dist/cjs/modules/forwardedProps";
 
 const TransactionScreen = () => {
-  let templates = getTemplates();
+  const [templates, setTemplates] = useState([]);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      const data = await getTemplates();
+      setTemplates(data);
+    };
+
+    fetchTemplates();
+  }, []);
 
   const {params} = useRoute();
   const id = params?.id
