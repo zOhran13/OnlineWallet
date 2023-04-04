@@ -12,7 +12,7 @@ import { Picker } from "@react-native-picker/picker";
 import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
-import { getTemplate, deleteTemplate,getTemplates, update } from "../modules/templatesModule";
+import { getTemplate, deleteTemplate,getTemplates, update, createTemplate } from "../modules/templatesModule";
 
 const TransactionScreen = () => {
   const [selectedTemplate, setSelectedTemplate] = useState({});
@@ -33,6 +33,7 @@ const TransactionScreen = () => {
   console.log(selectedItem)
 
   const [currency, setCurrency] = useState("US Dollar");
+  const [textInputTitle, setTextInputTitle] = useState("New Transaction");
   const [textInputName, setTextInputName] = useState("");
   const [textInputDescription, setTextInputDescription] = useState("");
   const [textInputNumber, setTextInputNumber] = useState("");
@@ -42,6 +43,7 @@ const TransactionScreen = () => {
   const [showComponent, setShowComponent] = useState(false);
 
   const handleEditPress = () => {
+    setTextInputTitle(selectedItem.title);
     setTextInputName(selectedItem.recipientName)
     setTextInputNumber(selectedItem.recipientAccountNumber)
     setTextInputDescription(selectedItem.description)
@@ -68,7 +70,7 @@ const TransactionScreen = () => {
   }
 
   const handleSaveButton = () => {
-    if(checkTextInputForSave()) {
+    if(checkTextInputForSaveEdit()) {
       setEditableBoolean(false);
       setShowComponent(false);
       setDisableSubmitButton(false);
@@ -118,8 +120,7 @@ const TransactionScreen = () => {
     Alert.alert("Transaction Successful!");
   };
 
-
-  const checkTextInputForSave = () => {
+  const checkTextInputForSaveEdit = () => {
     if (!textInputAmount.trim()) {
       alert("Please Enter Amount!");
       return;
@@ -156,6 +157,13 @@ const TransactionScreen = () => {
 
     return true;
   };
+
+
+  const createNewTemplate = () => {
+    if(checkTextInputForSaveEdit()) {
+      createTemplate(3, textInputTitle, textInputName, textInputNumber, textInputDescription, currency);
+    } 
+  } 
 
 
     const checkAmountInput = () => {
@@ -195,7 +203,7 @@ const TransactionScreen = () => {
       <View style={styles.container}>
         <View style={styles.elipseContainer}>
           <View style={styles.saveButtonAndTransactionContainer}>
-          <Text style={styles.newTransactionText}>New Transaction</Text>
+          <TextInput style={styles.newTransactionTitle} onChangeText={(value) => setTextInputTitle(value)} editable={editableBoolean}>New Transaction</TextInput>
           {
             showComponent 
             && <Pressable style={styles.saveButton} onPress={handleSaveButton}>
@@ -277,9 +285,9 @@ const TransactionScreen = () => {
         <View style={styles.container}>
           <View style={styles.elipseContainer}>
           <View style={styles.saveButtonAndTransactionContainer}>
-          <Text style={styles.newTransactionText}>New Transaction</Text>
+          <TextInput style={styles.newTransactionTitle} onChangeText={(value) => setTextInputTitle(value)}>New Transaction</TextInput>
 
-          <Pressable style={styles.saveButton} onPress={() => setShowComponent(false)}>
+          <Pressable style={styles.saveButton} onPress={createNewTemplate()}>
             <Text style={styles.saveButtonText}>SAVE</Text>
           </Pressable>
 
@@ -382,7 +390,7 @@ const styles = StyleSheet.create({
     margin: 4,
     padding: 2,
   },
-  newTransactionText: {
+  newTransactionTitle: {
     color: "#b7bace",
     fontWeight: "bold",
     marginLeft: 4,

@@ -52,3 +52,22 @@ export async function deleteTemplate(id) {
     console.error(error);
   }
 }
+
+export async function createTemplate(userId, title, recipientName, recipientAccountNumber, description, currency) {
+  fetch("https://7e14-92-36-163-26.eu.ngrok.io/api/Template", {
+  method: 'POST',
+  body: JSON.stringify({
+    userId: userId,
+    title: title,
+    description: description,
+    currency: currency,
+    recipientName: recipientName,
+    recipientAccountNumber: recipientAccountNumber
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((json) => console.log(json));
+}
