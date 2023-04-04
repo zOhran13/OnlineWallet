@@ -55,7 +55,7 @@ const EmailVerificationScreen = ({ navigation, route }) => {
             }
 
             fetch(
-              "http://siprojekat.duckdns.org:5051/Register/confirm/email",
+              "http://siprojekat.duckdns.org:5051/api/Register/confirm/email",
               requestOption
             )
               .then((res) => {
@@ -75,7 +75,7 @@ const EmailVerificationScreen = ({ navigation, route }) => {
                     };
                     console.log("Username: " + route.params.username);
                     fetch(
-                      "http://siprojekat.duckdns.org:5051/Register/phone?username=" +
+                      "http://siprojekat.duckdns.org:5051/api/Register/phone?username=" +
                         route.params.username,
                       requestOption
                     )

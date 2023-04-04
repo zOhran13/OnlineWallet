@@ -165,15 +165,20 @@ const RegistrationScreen = ({ navigation }) => {
                   email: inputs.email,
                   username: inputs.username,
                   password: inputs.password,
-                  address: 'Adress',
+                  address: "Adress",
                   phoneNumber: inputs.phone
                 })
 							}
               console.log("Req: " + requestOption.body)
-							fetch("http://siprojekat.duckdns.org:5051/Register", requestOption).then(response => {
-								return response.json()
-							}).then(data => {
-								
+              navigation.navigate("EmailVerification", { 
+                isChecked: isChecked,
+                username: inputs.username
+              });
+
+							fetch("http://siprojekat.duckdns.org:5051/api/Register", requestOption).then(res => {
+                return res.json();
+              }).then(data => {
+								console.log(data)
                 if(data.message === 'Registration successful'){
                   ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
                   navigation.navigate("EmailVerification", { 
