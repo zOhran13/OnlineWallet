@@ -21,13 +21,16 @@ export async function getTemplate(id) {
   return fetchedData;
   }
 
-  export async function update(id) {
-  fetch(`https://4494-195-130-59-86.eu.ngrok.io/api/Template/${id}`, {
-  method: 'PATCH',
+  export async function update(id,userId,title, recipientName, recipientAccountNumber, description, currency) {
+  fetch("https://7e14-92-36-163-26.eu.ngrok.io/api/Template/"+id, {
+  method: 'PUT',
   body: JSON.stringify({
-    
-    title: 'foo',
-
+    userId: userId,
+    title: title,
+    description: description,
+    currency: currency,
+    recipientName: recipientName,
+    recipientAccountNumber: recipientAccountNumber
   }),
   headers: {
     'Content-type': 'application/json; charset=UTF-8',

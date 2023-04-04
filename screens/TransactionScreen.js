@@ -12,7 +12,7 @@ import { Picker } from "@react-native-picker/picker";
 import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
-import { getTemplate, deleteTemplate,getTemplates } from "../modules/templatesModule";
+import { getTemplate, deleteTemplate,getTemplates, update } from "../modules/templatesModule";
 
 const TransactionScreen = () => {
   const [selectedTemplate, setSelectedTemplate] = useState({});
@@ -34,14 +34,20 @@ const TransactionScreen = () => {
 
   const [currency, setCurrency] = useState("US Dollar");
   const [textInputName, setTextInputName] = useState("");
+  const [textInputDescription, setTextInputDescription] = useState("");
   const [textInputNumber, setTextInputNumber] = useState("");
   const [textInputAmount, setTextInputAmount] = useState("");
   const [editableBoolean, setEditableBoolean] = useState(false);
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const [showComponent, setShowComponent] = useState(false);
 
   const handleEditPress = () => {
+    setTextInputName(selectedItem.recipientName)
+    setTextInputNumber(selectedItem.recipientAccountNumber)
+    setTextInputDescription(selectedItem.description)
     setEditableBoolean(true);
     setShowComponent(true);
+    setDisableSubmitButton(true);
     Alert.alert("You are in edit mode.");
   }
 
@@ -62,7 +68,13 @@ const TransactionScreen = () => {
   }
 
   const handleSaveButton = () => {
+    if(checkTextInputForSave()) {
+      setEditableBoolean(false);
+      setShowComponent(false);
+      setDisableSubmitButton(false);
+      update(id,selectedItem.userId, selectedItem.title, textInputName, textInputNumber, textInputDescription, currency)
 
+    }
   }
 
 
@@ -96,9 +108,53 @@ const TransactionScreen = () => {
       return;
     }
 
+    if(!textInputDescription.trim()) {
+      alert("Please Enter Description!");
+      return
+    }
+
     //Checked Successfully
     //Do whatever you want
     Alert.alert("Transaction Successful!");
+  };
+
+
+  const checkTextInputForSave = () => {
+    if (!textInputAmount.trim()) {
+      alert("Please Enter Amount!");
+      return;
+    }
+    if (
+      !/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim())
+    ) {
+      alert("Please enter valid Amount (e.g. 123,456.78)");
+      return;
+    }
+
+    if (!textInputName.trim()) {
+      alert("Please Enter Name!");
+      return;
+    }
+    if (textInputName.trim().length < 2) {
+      alert("Username must have more than 2 letters");
+      return;
+    }
+
+    if (!textInputNumber.trim()) {
+      alert("Please Enter Account Number!");
+      return;
+    }
+    if (!/^[0-9]+$/.test(textInputNumber.trim())) {
+      alert("Please enter valid Account Number");
+      return;
+    }
+
+    if(!textInputDescription.trim()) {
+      alert("Please Enter Description!");
+      return
+    }
+
+    return true;
   };
 
 
@@ -142,7 +198,7 @@ const TransactionScreen = () => {
           <Text style={styles.newTransactionText}>New Transaction</Text>
           {
             showComponent 
-            && <Pressable style={styles.saveButton} onPress={() => setShowComponent(false)}>
+            && <Pressable style={styles.saveButton} onPress={handleSaveButton}>
                 <Text style={styles.saveButtonText}>SAVE</Text>
                   </Pressable>
           }
@@ -176,6 +232,7 @@ const TransactionScreen = () => {
               placeholderTextColor="#6e749d"
               defaultValue={selectedItem.recipientName}
               editable={editableBoolean}
+              onChangeText={(value) => setTextInputName(value)}
             />
             <TextInput
               style={styles.input}
@@ -192,7 +249,7 @@ const TransactionScreen = () => {
               placeholderTextColor="#6e749d"
               defaultValue={selectedItem.description}
               editable={editableBoolean}
-              onChangeText={(value) => setTextInputName(value)}
+              onChangeText={(value) => setTextInputDescription(value)}
             />
 
             <Text style={styles.selectedCurrencyText}>
@@ -200,7 +257,7 @@ const TransactionScreen = () => {
             </Text>
           </View>
         </View>
-        <Pressable style={styles.submitButton} onPress={checkAmountInput}>
+        <Pressable style={styles.submitButton} onPress={checkAmountInput} disabled={disableSubmitButton}>
           <Text style={styles.text}>Submit</Text>
         </Pressable>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
@@ -267,7 +324,7 @@ const TransactionScreen = () => {
                 style={styles.input}
                 placeholder="Description"
                 placeholderTextColor="#6e749d"
-                onChangeText={(value) => setTextInputName(value)}
+                onChangeText={(value) => setTextInputDescription(value)}
               />
   
               <Text style={styles.selectedCurrencyText}>
