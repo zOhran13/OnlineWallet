@@ -23,7 +23,7 @@ export default LoginScreen = ({ navigation }) => {
   const [_, __, fbPromptAsync] = Facebook.useAuthRequest({
     clientId: "1370313683731054"
   });
-  
+
   const [___, _____, googlePromptAsync] = Google.useAuthRequest({
     expoClientId: "788342956193-siinksvah4o472pb4b7i9us94pi2lttm.apps.googleusercontent.com",
     androidClientId: "788342956193-35v68vd43enipuckknkthkt3t7kihn7e.apps.googleusercontent.com"
@@ -47,7 +47,7 @@ export default LoginScreen = ({ navigation }) => {
       } else {
         console.log("prekinuto!");
       }
-    } catch(e) {
+    } catch (e) {
       console.log("Desila se greška: ", e);
     }
     return null;
@@ -99,6 +99,8 @@ export default LoginScreen = ({ navigation }) => {
     navigation.navigate('Registration');
   }
 
+
+
   async function handleGoogleLogin() {
     let socialTokenString = await SecureStore.getItemAsync('social_token');
     let socialToken = null;
@@ -112,7 +114,7 @@ export default LoginScreen = ({ navigation }) => {
       await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
     } else {
       socialToken = JSON.parse(socialTokenString);
-      if (socialToken.name != 'google_token'){
+      if (socialToken.name != 'google_token') {
         Alert.alert(
           'Google login error',
           'You are already registered with another social account!'
@@ -127,13 +129,13 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Moj token je:");
     console.log(socialToken);
 
-    let data = await fetch("https://www.googleapis.com/userinfo/v2/me",{
+    let data = await fetch("https://www.googleapis.com/userinfo/v2/me", {
       headers: { Authorization: `Bearer ${socialToken.value}` },
     }).then(res => res.json());
 
     console.log("Vraćeni podaci su: ");
     console.log(data);
-    
+
     navigation.navigate('Home');
   }
 
@@ -150,7 +152,7 @@ export default LoginScreen = ({ navigation }) => {
       await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
     } else {
       socialToken = JSON.parse(socialTokenString);
-      if (socialToken.name != 'facebook_token'){
+      if (socialToken.name != 'facebook_token') {
         Alert.alert(
           'Facebook login error',
           'You are already registered with another social account!'
@@ -175,83 +177,116 @@ export default LoginScreen = ({ navigation }) => {
     );
   }
 
+    async function setToken(token) {
+      await SecureStore.setItemAsync("secure_token", token)
+      const tok = await SecureStore.getItemAsync("secure_token")
+      console.log("Tokic " + tok)
+    }
+  
+
   return (
-      <View style={styles.container}>
-        <View>
-          <Image
-            source={require('../assets/images/registration.png')}
-            style={styles.picture}
-          />
-        </View>
 
-        <View style={styles.formContainer}>
-          <View style={styles.elipseContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder='Email or phone number'
-              placeholderTextColor='#6e749d'
-              onChangeText={setEmailOrPhone}
-              value={emailOrPhone}
-            />
-
-            <TextInput
-              style={styles.input}
-              placeholder='Password'
-              placeholderTextColor='#6e749d'
-              secureTextEntry
-              onChangeText={setPassword}
-              value={password}
-            />
-          </View>
-          <Pressable
-            style={styles.loginButton}
-            onPress={() => {
-              if (validateFunction()) {
-                console.log('Prijavi se');
-                navigation.navigate('Home');
-                // posalji podatke na Be
-                // ako su validni loginuj se, spasi JWT, idi na home page
-                // inace prijavi gresku korisniku
-              }
-            }}
-          >
-            <Text style={styles.loginText}>LOGIN</Text>
-          </Pressable>
-        </View>
-
-        <View style={styles.horizontalSeparatorContainer}>
-          <View style={styles.horizontalBar} />
-          <Text style={styles.signupText}>Or</Text>
-          <View style={styles.horizontalBar} />
-        </View>
-
-        <View style={styles.alternativeLoginContainer}>
-          <Pressable onPress={handleFacebookLogin} style={styles.facebookButton}>
-            <FontAwesome5 name='facebook' size={24} color='white' />
-            <Text style={styles.facebookText}>Login with Facebook</Text>
-          </Pressable>
-          <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
-            <Image
-              source={require('../assets/images/google_icon.png')}
-              style={styles.icon}
-            />
-            <Text style={styles.googleText}>Login with Google</Text>
-          </Pressable>
-          <Pressable onPress={handleMicrosoftLogin} style={styles.googleButton}>
-            <Image
-              source={require('../assets/images/microsoft_icon.png')}
-              style={styles.icon}
-            />
-            <Text style={styles.googleText}>Login with Microsoft</Text>
-          </Pressable>
-        </View>
-        <Text style={styles.signupText}>
-          <Text>Don't have an account? </Text>
-          <Text style={{ color: '#ffc022ef' }} onPress={handleSignup}>
-            Sign up
-          </Text>
-        </Text>
+    <><View style={styles.container}>
+      <View>
+        <Image
+          source={require('../assets/images/registration.png')}
+          style={styles.picture} />
       </View>
+
+    <View style={styles.formContainer}>
+        <View style={styles.elipseContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder='Email or phone number'
+            placeholderTextColor='#6e749d'
+            onChangeText={setEmailOrPhone}
+            value={emailOrPhone} />
+
+          <TextInput
+            style={styles.input}
+            placeholder='Password'
+            placeholderTextColor='#6e749d'
+            secureTextEntry
+            onChangeText={setPassword}
+            value={password} />
+        </View>
+        <Pressable
+          style={styles.loginButton}
+          onPress={() => {
+            console.log("Da vidim telefon " + emailOrPhone)
+            if (validateFunction()) {
+              let requestOption = {};
+              if (isValidEmail(emailOrPhone)) {
+                requestOption = {
+                  method:'POST',
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    email: emailOrPhone,
+                    password: password
+                  })
+                };
+              } else if (isValidPhoneNumber(emailOrPhone)) {
+                requestOption = {
+                  method: 'POST',
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    phone: emailOrPhone,
+                    password: password
+                  })
+                };
+              }
+
+              fetch("http://siprojekat.duckdns.org:5051/api/User/login", requestOption).then(response => {
+                return response.json();
+              }).then(data => {
+                if (data.errors != null || data.token == null) {
+                  showAlert("Login error", "Login data incorrect")
+                } else {
+                  setToken(data.token)
+                  console.log("data token: " + data.token)
+                  navigation.navigate("EmailOrPhoneVerification")
+                }
+              }).catch(err => {
+                console.log(err.message)
+                ToastAndroid.show('Error while sending code to ' + emailOrPhone, ToastAndroid.SHORT);
+              });
+            }
+          }}
+        >
+          <Text style={styles.loginText}>LOGIN</Text>
+        </Pressable>
+      </View><View style={styles.horizontalSeparatorContainer}>
+        <View style={styles.horizontalBar} />
+        <Text style={styles.signupText}>Or</Text>
+        <View style={styles.horizontalBar} />
+      </View><View style={styles.alternativeLoginContainer}>
+        <Pressable onPress={handleFacebookLogin} style={styles.facebookButton}>
+          <FontAwesome5 name='facebook' size={24} color='white' />
+          <Text style={styles.facebookText}>Login with Facebook</Text>
+        </Pressable>
+        <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
+          <Image
+            source={require('../assets/images/google_icon.png')}
+            style={styles.icon} />
+          <Text style={styles.googleText}>Login with Google</Text>
+        </Pressable>
+        <Pressable onPress={handleMicrosoftLogin} style={styles.googleButton}>
+          <Image
+            source={require('../assets/images/microsoft_icon.png')}
+            style={styles.icon} />
+          <Text style={styles.googleText}>Login with Microsoft</Text>
+        </Pressable>
+      </View><Text style={styles.signupText}>
+        <Text>Don't have an account? </Text>
+        <Text style={{ color: '#ffc022ef' }} onPress={handleSignup}>
+          Sign up
+        </Text>
+      </Text>
+      </View></>
   );
 };
 
