@@ -40,3 +40,22 @@ export async function submitTransaction() {
     console.error(error);
   }
 }
+
+export async function createTemplate(userId, title, recipientName, recipientAccountNumber, description, currency) {
+    fetch(link + '/api/Template', {
+        method: 'POST',
+        body: JSON.stringify({
+            userId: userId,
+            title: title,
+            description: description,
+            currency: currency,
+            recipientName: recipientName,
+            recipientAccountNumber: recipientAccountNumber
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+        .then((response) => response.json())
+        .then((json) => console.log(json));
+}

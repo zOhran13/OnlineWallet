@@ -1,7 +1,8 @@
 import { AppState } from "react-native";
 
+var link = 'https://3741-188-127-122-32.eu.ngrok.io';
 export const getTemplates = () => {
-  const fetchedData = fetch('https://7e14-92-36-163-26.eu.ngrok.io/api/Template')
+    const fetchedData = fetch(link + '/api/Template')
     .then(result => result.json())
     .then(data => {
         return data;
@@ -12,7 +13,7 @@ export const getTemplates = () => {
 
 export async function getTemplate(id) {
  // console.log("Evo mene id",id)
-  const fetchedData = fetch("https://7e14-92-36-163-26.eu.ngrok.io/api/Template/"+id)
+  const fetchedData = fetch(link + '/api/Template/' + id)
   .then(result => result.json())
   .then(data => {//console.log("Evo mene evo mene ovdje saaaam",data)
           return data;
@@ -22,7 +23,7 @@ export async function getTemplate(id) {
   }
 
   export async function update(id,userId,title, recipientName, recipientAccountNumber, description, currency) {
-  fetch("https://7e14-92-36-163-26.eu.ngrok.io/api/Template/"+id, {
+  fetch(link+id, {
   method: 'PUT',
   body: JSON.stringify({
     userId: userId,
@@ -42,7 +43,7 @@ export async function getTemplate(id) {
 
 export async function deleteTemplate(id) {
   try {
-    let response = await fetch("https://4494-195-130-59-86.eu.ngrok.io/api/Template/"+id, {
+    let response = await fetch(link  + '/api/Template/' +id, {
       method: 'DELETE',
     });
     let json = await response.text();
@@ -54,7 +55,7 @@ export async function deleteTemplate(id) {
 }
 
 export async function createTemplate(userId, title, recipientName, recipientAccountNumber, description, currency) {
-  fetch("https://7e14-92-36-163-26.eu.ngrok.io/api/Template", {
+  fetch(link + '/api/Template', {
   method: 'POST',
   body: JSON.stringify({
     userId: userId,
