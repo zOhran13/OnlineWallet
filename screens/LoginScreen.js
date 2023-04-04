@@ -16,6 +16,11 @@ import * as Google from 'expo-auth-session/providers/google';
 import Expo from "expo";
 import { FontAwesome5 } from '@expo/vector-icons';
 
+const TokenStatus = {
+  VALID: 'Token valid',
+  INVALID: 'Token invalid'
+}
+
 export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -136,7 +141,7 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Vraćeni podaci su: ");
     console.log(data);
 
-    navigation.navigate('Home');
+    loginUser(null);
   }
 
   async function handleFacebookLogin() {
@@ -165,9 +170,20 @@ export default LoginScreen = ({ navigation }) => {
     //onda se logujemo dalje na stranicu
     //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
     console.log(socialToken);
-    let data = await fetch("https://graph.facebook.com/me?fields=last_name,first_name,email&access_token=" + socialToken.value).then(res => res.json());
+    let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
     console.log(data);
-    navigation.navigate('Home');
+
+    if (data.tokenStatus == TokenStatus.INVALID) {
+      const tokenValue = await facebookRegister();
+      socialToken = {
+        "name": "facebook_token",
+        "value": tokenValue
+      };
+      await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
+      data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
+    }
+
+    loginUser(null);
   }
 
   function handleMicrosoftLogin() {
@@ -177,12 +193,56 @@ export default LoginScreen = ({ navigation }) => {
     );
   }
 
-    async function setToken(token) {
-      await SecureStore.setItemAsync("secure_token", token)
-      const tok = await SecureStore.getItemAsync("secure_token")
-      console.log("Tokic " + tok)
-    }
+  async function setToken(token) {
+    await SecureStore.setItemAsync("secure_token", token)
+    const tok = await SecureStore.getItemAsync("secure_token")
+    console.log("Tokic " + tok)
+  }
   
+  const loginUser = (emailOrPhoneValue) => {
+    console.log("Da vidim telefon " + emailOrPhoneValue)
+    if (validateFunction()) {
+      let requestOption = {};
+      if (isValidEmail(emailOrPhoneValue)) {
+        requestOption = {
+          method:'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: emailOrPhoneValue,
+            password: password
+          })
+        };
+      } else if (isValidPhoneNumber(emailOrPhoneValue)) {
+        requestOption = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            phone: emailOrPhoneValue,
+            password: password
+          })
+        };
+      }
+
+      fetch("http://siprojekat.duckdns.org:5051/api/User/login", requestOption).then(response => {
+        return response.json();
+      }).then(data => {
+        if (data.errors != null || data.token == null) {
+          showAlert("Login error", "Login data incorrect")
+        } else {
+          setToken(data.token)
+          console.log("User data: " + data)
+          navigation.navigate("EmailOrPhoneVerification")
+        }
+      }).catch(err => {
+        console.log(err.message)
+        ToastAndroid.show('Error while sending code to ' + emailOrPhoneValue, ToastAndroid.SHORT);
+      });
+    }
+  }  
 
   return (
 
@@ -212,50 +272,7 @@ export default LoginScreen = ({ navigation }) => {
         </View>
         <Pressable
           style={styles.loginButton}
-          onPress={() => {
-            console.log("Da vidim telefon " + emailOrPhone)
-            if (validateFunction()) {
-              let requestOption = {};
-              if (isValidEmail(emailOrPhone)) {
-                requestOption = {
-                  method:'POST',
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    email: emailOrPhone,
-                    password: password
-                  })
-                };
-              } else if (isValidPhoneNumber(emailOrPhone)) {
-                requestOption = {
-                  method: 'POST',
-                  headers: {
-                    "Content-Type": "application/json"
-                  },
-                  body: JSON.stringify({
-                    phone: emailOrPhone,
-                    password: password
-                  })
-                };
-              }
-
-              fetch("http://siprojekat.duckdns.org:5051/api/User/login", requestOption).then(response => {
-                return response.json();
-              }).then(data => {
-                if (data.errors != null || data.token == null) {
-                  showAlert("Login error", "Login data incorrect")
-                } else {
-                  setToken(data.token)
-                  console.log("data token: " + data.token)
-                  navigation.navigate("EmailOrPhoneVerification")
-                }
-              }).catch(err => {
-                console.log(err.message)
-                ToastAndroid.show('Error while sending code to ' + emailOrPhone, ToastAndroid.SHORT);
-              });
-            }
-          }}
+          onPress={() => { loginUser(emailOrPhone); }}
         >
           <Text style={styles.loginText}>LOGIN</Text>
         </Pressable>
