@@ -141,7 +141,7 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Vraćeni podaci su: ");
     console.log(data);
 
-    loginUser(null);
+    loginUser(data.email, "Pa$$w0rd" ,false);
   }
 
   async function handleFacebookLogin() {
@@ -170,6 +170,8 @@ export default LoginScreen = ({ navigation }) => {
     //onda se logujemo dalje na stranicu
     //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
     console.log(socialToken);
+    let data_fb = await fetch("https://graph.facebook.com/me?fields=last_name,first_name,email&access_token=" + socialToken.value).then(res => res.json());
+
     let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
     console.log(data);
 
@@ -183,10 +185,11 @@ export default LoginScreen = ({ navigation }) => {
       data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
     }
 
-    loginUser(null);
+    loginUser(data_fb.email, "Pa$$w0rd", false);
   }
 
-  function handleMicrosoftLogin() {
+  async function handleMicrosoftLogin() {
+    await SecureStore.setItemAsync("social_token", '');
     Alert.alert(
       'Login with Microsoft',
       'Login with Microsoft button was pressed'
@@ -199,9 +202,9 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Tokic " + tok)
   }
   
-  const loginUser = (emailOrPhoneValue) => {
+  const loginUser = (emailOrPhoneValue, password, realLogin) => {
     console.log("Da vidim telefon " + emailOrPhoneValue)
-    if (validateFunction()) {
+    if (!realLogin || validateFunction()) {
       let requestOption = {};
       if (isValidEmail(emailOrPhoneValue)) {
         requestOption = {
@@ -272,7 +275,7 @@ export default LoginScreen = ({ navigation }) => {
         </View>
         <Pressable
           style={styles.loginButton}
-          onPress={() => { loginUser(emailOrPhone); }}
+          onPress={() => { loginUser(emailOrPhone, password, true); }}
         >
           <Text style={styles.loginText}>LOGIN</Text>
         </Pressable>
