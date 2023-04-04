@@ -163,6 +163,8 @@ const TransactionScreen = () => {
     if(checkTextInputForSaveEdit()) {
       createTemplate(3, textInputTitle, textInputName, textInputNumber, textInputDescription, currency);
     } 
+    
+    
   } 
 
 
@@ -287,7 +289,7 @@ const TransactionScreen = () => {
           <View style={styles.saveButtonAndTransactionContainer}>
           <TextInput style={styles.newTransactionTitle} onChangeText={(value) => setTextInputTitle(value)}>New Transaction</TextInput>
 
-          <Pressable style={styles.saveButton} onPress={createNewTemplate()}>
+          <Pressable style={styles.saveButton} onPress={createNewTemplate}>
             <Text style={styles.saveButtonText}>SAVE</Text>
           </Pressable>
 
