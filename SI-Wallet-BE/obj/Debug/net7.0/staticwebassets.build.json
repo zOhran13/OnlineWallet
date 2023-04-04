@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "GQx6wWDfz9WV5qi/LvC90Aef1bPfQFKYoOsmegzLYPo=",
+  "Source": "SIWallet",
+  "BasePath": "_content/SIWallet",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

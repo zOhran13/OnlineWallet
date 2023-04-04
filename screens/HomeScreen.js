@@ -1,76 +1,102 @@
-import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet, Pressable} from 'react-native';
-import AccountBalance from '../components/AccountBalance';
+import React, { useState } from "react";
+import { Text, View, Image, StyleSheet, Pressable } from "react-native";
+import AccountBalance from "../components/AccountBalance";
 
 const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <AccountBalance/>
+      <AccountBalance />
+      <View style={styles.container2}>
+        <Pressable
+          style={styles.listTemplatesButton}
+          onPress={() => navigation.navigate("Template List")}
+        >
+          <Image
+            source={require("../assets/images/listTemplates.png")}
+            style={styles.buttonImage}
+          />
+        </Pressable>
+      </View>
 
-<View style={styles.container1}>
+      <View style={styles.container1}>
+        <View>
 
-<View>
 
-<Pressable style={styles.payButton} onPress={() => navigation.navigate("EmailVerificationScreen")}>
-  <Text style={styles.text}>PAY</Text>
-</Pressable>
-</View>
+          <Pressable
+            style={styles.payButton}
+            onPress={() => navigation.navigate("Transaction")}
+          >
 
-</View>
-<View>
-  <Pressable style={styles.myTransactionsButton} onPress={() => navigation.navigate("MyTransactions")}>
-    <Text style={styles.text}>MY TRANSACTIONS</Text>
-  </Pressable>
-</View>
+            <Text style={styles.text}>PAY</Text>
+          </Pressable>
+        </View>
+      </View>
+      <View>
+        <Pressable
+          style={styles.myTransactionsButton}
+          onPress={() => navigation.navigate("MyTransactions")}
+        >
+          <Text style={styles.text}>MY TRANSACTIONS</Text>
+        </Pressable>
+      </View>
     </View>
-    
   );
-
 };
 
 const styles = StyleSheet.create({
   container: {
-     flex: 1,
-    backgroundColor: '#1B1938',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flex: 1,
+    backgroundColor: "#1B1938",
+    alignItems: "center",
+    justifyContent: "center",
   },
   container1: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderColor: 'black',
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "black",
     borderRadius: 40,
-    backgroundColor: '#312e66',
+    backgroundColor: "#312e66",
     padding: 50,
-    width: '80%',
-    marginTop: '80%'
+    width: "80%",
+    marginTop: "80%",
   },
   payButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
     width: 150,
     padding: 20,
-    backgroundColor: '#FFC021',
+    backgroundColor: "#FFC021",
   },
   myTransactionsButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 30,
-    width: 300,
+    width: "100%",
     padding: 20,
-    backgroundColor: '#FFC021',
+    backgroundColor: "#FFC021",
     marginTop: 70,
   },
   text: {
     fontSize: 20,
     lineHeight: 21,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     letterSpacing: 0.25,
-    color: 'black',
+    color: "black",
   },
 
+  container2: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  listTemplatesButton: {
+    marginLeft: "70%",
+  },
+  buttonImage: {
+    width: 50,
+    height: 50,
+  },
 });
-  
 
 export default HomeScreen;

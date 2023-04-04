@@ -4,3 +4,6 @@
 
 /.vs
 node_modules/
+/SI-Wallet-BE/.vs
+/SI-Wallet-BE/obj
+/.expo
