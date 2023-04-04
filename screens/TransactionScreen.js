@@ -224,10 +224,7 @@ const TransactionScreen = () => {
               />
               <Picker
                 selectedValue={selectedItem.currency}
-                editable = {editableBoolean}
-                onValueChange={(currentCurrency) =>
-                  setCurrency(currentCurrency)
-                }
+                onValueChange={(value) => setCurrency(value)} 
                 style={styles.currencyPicker}
               >
                 <Picker.Item label="BAM" value="Bosnian Mark" color="black" />
@@ -307,7 +304,7 @@ const TransactionScreen = () => {
                 <Picker
                   selectedValue={currency}
                   onValueChange={(currentCurrency) =>
-                    setCurrency(currentCurrency)
+                    setCurrency(currentCurrency)  
                   }
                   style={styles.currencyPicker}
                 >
@@ -399,7 +396,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 5,
     fontSize: 38,
-  },
+    width: "86%"
+    },
   submitButton: {
     alignItems: "center",
     justifyContent: "center",
