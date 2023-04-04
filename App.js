@@ -20,14 +20,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name='Login' component={LoginScreen} />
         <Stack.Screen name="Registration" component={RegistrationScreen}/>
 
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
         
         <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
         <Stack.Screen name="Template List" component={TemplateListScreen} />
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name='Registration' component={RegistrationScreen} />
         <Stack.Screen
           name='EmailVerification'
           component={EmailVerificationScreen}
