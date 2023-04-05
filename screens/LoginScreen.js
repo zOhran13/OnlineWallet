@@ -196,6 +196,22 @@ export default LoginScreen = ({ navigation }) => {
     );
   }
 
+  async function handleFaceIDLogin() {
+    await SecureStore.setItemAsync("social_token", '');
+    Alert.alert(
+      'Login with Face ID',
+      'Login with Face ID button was pressed'
+    );
+  }
+
+  async function handleTouchIDLogin() {
+    await SecureStore.setItemAsync("social_token", '');
+    Alert.alert(
+      'Login with Touch ID',
+      'Login with Touch ID button was pressed'
+    );
+  }
+
   async function setToken(token) {
     await SecureStore.setItemAsync("secure_token", token)
     const tok = await SecureStore.getItemAsync("secure_token")
@@ -284,22 +300,44 @@ export default LoginScreen = ({ navigation }) => {
         <Text style={styles.signupText}>Or</Text>
         <View style={styles.horizontalBar} />
       </View><View style={styles.alternativeLoginContainer}>
+
         <Pressable onPress={handleFacebookLogin} style={styles.facebookButton}>
           <FontAwesome5 name='facebook' size={24} color='white' />
           <Text style={styles.facebookText}>Login with Facebook</Text>
         </Pressable>
+
         <Pressable onPress={handleGoogleLogin} style={styles.googleButton}>
           <Image
             source={require('../assets/images/google_icon.png')}
             style={styles.icon} />
           <Text style={styles.googleText}>Login with Google</Text>
         </Pressable>
+
         <Pressable onPress={handleMicrosoftLogin} style={styles.googleButton}>
           <Image
             source={require('../assets/images/microsoft_icon.png')}
             style={styles.icon} />
           <Text style={styles.googleText}>Login with Microsoft</Text>
         </Pressable>
+
+    <View style={{flexDirection:'row', justifyContent: 'center' }}>
+        <Pressable onPress={handleMicrosoftLogin} style={styles.TouchIDButton}>
+          <Image
+            source={require('../assets/images/toucid_icon.png')}
+            style={styles.icon} />
+          <Text style={styles.googleText}>Touch ID</Text>
+        </Pressable>
+
+        <Pressable onPress={handleMicrosoftLogin} style={styles.FaceIDButton}>
+          <Image
+            source={require('../assets/images/faceid_icon.png')}
+            style={styles.icon} />
+          <Text style={styles.googleText}>Face ID</Text>
+        </Pressable>
+        </View>
+        
+
+
       </View><Text style={styles.signupText}>
         <Text>Don't have an account? </Text>
         <Text style={{ color: '#ffc022ef' }} onPress={handleSignup}>
@@ -396,6 +434,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#ffffff',
   },
+  TouchIDButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 6,
+    gap: 10,
+    width: 144,
+    height: 45,
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#ffffff',
+  },
+  FaceIDButton: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 6,
+    gap: 10,
+    width: 144,
+    height: 45,
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#ffffff',
+  },
+
+
   facebookButton: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -408,6 +474,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: '#4267B2',
   },
+
+
+
   icon: {
     width: 24,
     height: 24,
