@@ -121,7 +121,7 @@ const TransactionScreen = ({navigation }) => {
 
         //Checked Successfully
         //Do whatever you want
-        Alert.alert("Transaction Successful!");
+        submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription)
     };
 
     const checkTextInputForSaveEdit = () => {
