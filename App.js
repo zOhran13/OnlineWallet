@@ -15,14 +15,14 @@ import { NavigationContainer } from '@react-navigation/native';
 import EmailOrPhoneVerificationScreen from './screens/EmailOrPhoneVerificationScreen';
 
 const Stack = createNativeStackNavigator();
-
+//<Stack.Screen name='Login' component={LoginScreen} />
+        //<Stack.Screen name="Registration" component={RegistrationScreen}/>
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name='Login' component={LoginScreen} />
-        <Stack.Screen name="Registration" component={RegistrationScreen}/>
-
+        
+              
         <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
         
         <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />

@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     marginBottom: 10,
     padding: 5,
-    fontSize: 38,
+    fontSize: 35,
     width: "86%"
     },
   submitButton: {
