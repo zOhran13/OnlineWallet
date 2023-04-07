@@ -2,17 +2,30 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import { getTemplates } from "../modules/templatesModule";
+import { BackHandler } from 'react-native';
 
 const TemplateListScreen = ({ navigation }) => {
-  const [templates, setTemplates] = useState([]);
+    const [templates, setTemplates] = useState([]);
 
   useEffect(() => {
     const fetchTemplates = async () => {
-      const data = await getTemplates();
+      const data = await getTemplates("1");
       setTemplates(data);
-    };
+    };x
+      const backAction = () => {
+          navigation.navigate('Home');
+          return true;
+      };
 
-    fetchTemplates();
+      const backHandler = BackHandler.addEventListener(
+          'hardwareBackPress',
+          backAction
+      );
+
+      fetchTemplates();
+      return () => backHandler.remove();
+
+    
   }, []);
 
   const handlePress = (id) => {

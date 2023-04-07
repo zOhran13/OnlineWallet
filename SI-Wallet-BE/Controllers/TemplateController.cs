@@ -17,9 +17,10 @@ namespace SIWallet.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Template>>> GetAllTemplates()
+        [Route("User/{userId}")]
+        public async Task<ActionResult<List<Template>>> GetAllTemplates(string userId)
         {
-            return await _templateService.GetAllTemplates();
+            return await _templateService.GetAllTemplates(userId);
         }
 
         [HttpGet]

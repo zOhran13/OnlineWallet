@@ -13,21 +13,22 @@ import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
 import { getTemplate, deleteTemplate, getTemplates, update, createTemplate } from "../modules/templatesModule";
+import { useNavigation, StackActions } from '@react-navigation/native';
 
-const TransactionScreen = ({navigation }) => {
+const TransactionScreen = ({ navigation }) => {
     const [selectedTemplate, setSelectedTemplate] = useState({});
 
     const { params } = useRoute();
     const id = params?.id
+    if (id != null)
+        useEffect(() => {
+            const fetchTemplate = async () => {
+                const data = await getTemplate(id);
+                setSelectedTemplate(data);
+            };
 
-    useEffect(() => {
-        const fetchTemplate = async () => {
-            const data = await getTemplate(id);
-            setSelectedTemplate(data);
-        };
-
-        fetchTemplate();
-    }, []);
+            fetchTemplate();
+        }, []);
 
     const selectedItem = selectedTemplate;
     console.log(selectedItem)
@@ -52,8 +53,9 @@ const TransactionScreen = ({navigation }) => {
         setShowComponent(true);
         setDisableSubmitButton(true);
         Alert.alert("You are in edit mode.");
+        console.log(selectedItem.title);
     }
-
+    const handleAmountInput = () => { }
     const handleDeletePress = () => {
         Alert.alert('Delete template', 'Are you sure you want to delete this template?', [
             {
@@ -66,7 +68,7 @@ const TransactionScreen = ({navigation }) => {
                     console.log('OK Pressed')
                     deleteTemplate(id);
 
-                    navigation.navigate("Template List");
+                    navigation.dispatch(StackActions.replace('Template List'));
                 }
             },
         ]);
@@ -85,108 +87,61 @@ const TransactionScreen = ({navigation }) => {
 
 
     const checkTextInput = () => {
-        if (!textInputAmount.trim()) {
-            alert("Please Enter Amount!");
-            return;
-        }
-        if (
-            !/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim())
-        ) {
-            alert("Please enter valid Amount (e.g. 123,456.78)");
-            return;
-        }
 
-        if (!textInputName.trim()) {
-            alert("Please Enter Name!");
-            return;
-        }
-        if (textInputName.trim().length < 2) {
-            alert("Username must have more than 2 letters");
-            return;
-        }
-
-        if (!textInputNumber.trim()) {
-            alert("Please Enter Account Number!");
-            return;
-        }
-        if (!/^[0-9]+$/.test(textInputNumber.trim())) {
-            alert("Please enter valid Account Number");
-            return;
-        }
-
-        if (!textInputDescription.trim()) {
-            alert("Please Enter Description!");
-            return
-        }
-
-        //Checked Successfully
-        //Do whatever you want
-        submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription)
+        //submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription)
     };
 
     const checkTextInputForSaveEdit = () => {
+
+    };
+
+    const checkTextEmpty = () => {
         if (!textInputAmount.trim()) {
             alert("Please Enter Amount!");
             return;
         }
-        if (
-            !/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim())
-        ) {
-            alert("Please enter valid Amount (e.g. 123,456.78)");
+        if (!textInputPaymentType.trim()) {
+            alert("Please Enter PaymentType!");
             return;
         }
-
         if (!textInputName.trim()) {
             alert("Please Enter Name!");
             return;
         }
-        if (textInputName.trim().length < 2) {
-            alert("Username must have more than 2 letters");
-            return;
-        }
-
         if (!textInputNumber.trim()) {
             alert("Please Enter Account Number!");
             return;
         }
-        if (!/^[0-9]+$/.test(textInputNumber.trim())) {
-            alert("Please enter valid Account Number");
-            return;
-        }
-
         if (!textInputDescription.trim()) {
             alert("Please Enter Description!");
             return
         }
+    }
+    const checkAmountValidForSave = () => {
 
-        return true;
-    };
-
-
-    const createNewTemplate = () => {
-        if (checkTextInputForSaveEdit()) {
-            createTemplate(0, textInputTitle, textInputAmount, textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
+        if (!/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim()) && textInputAmount.trim()) {
+            alert("Please enter valid Amount (e.g. 123,456.78)");
+            return;
         }
 
+
+
+        return true;
+
+    }
+
+    const createNewTemplate = () => {
+        if (checkAmountValidForSave()) {
+            createTemplate("1", textInputTitle, textInputAmount, textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
+        }
+        Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
 
 
-    const checkAmountInput = () => {
-        if (!textInputAmount.trim()) {
-            alert("Please Enter Amount!");
-            return;
-        }
-        if (
-            !/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim())
-        ) {
-            alert("Please enter valid Amount (e.g. 123,456.78)");
-            return;
-        }
 
-        //Checked Successfully
-        //Do whatever you want
-        Alert.alert("Transaction Successful!");
+    const checkAmountInput = () => {
+
     };
 
 
@@ -196,6 +151,7 @@ const TransactionScreen = ({navigation }) => {
 
 
         // console.log("OVDJEEE IDD",id)
+        const [title, setTitle] = useState(selectedItem?.title)
         const [amount, setAmount] = useState(selectedItem?.amount)
         const [paymentType, setPaymentType] = useState(selectedItem?.paymentType)
         const [recipientName, setRecipientName] = useState(selectedItem?.recipientName)
@@ -210,12 +166,18 @@ const TransactionScreen = ({navigation }) => {
                 <View style={styles.container}>
                     <View style={styles.elipseContainer}>
                         <View style={styles.saveButtonAndTransactionContainer}>
-                           
-                            <TextInput style={styles.newTransactionTitle} onChangeText={(value) => setTextInputTitle(value)} editable={editableBoolean}>New Transaction</TextInput>
-                   
+
+                            <TextInput
+                                style={styles.newTransactionTitle}
+                                defaultValue={selectedItem.title}
+                                onChangeText={(value) => setTextInputTitle(value)}
+                                editable={editableBoolean}
+                            >
+                            </TextInput>
+
                             {
                                 showComponent
-                                && <Pressable style={styles.saveButton} onPress={handleSaveButton}>
+                                && <Pressable style={styles.saveButton} onPress={createNewTemplate}>
                                     <Text style={styles.saveButtonText}>SAVE</Text>
                                 </Pressable>
                             }
@@ -228,6 +190,7 @@ const TransactionScreen = ({navigation }) => {
                                     keyboardType="phone-pad"
                                     defaultValue={selectedItem.amount}
                                     editable={editableBoolean}
+                                    onChangeText={handleAmountInput}
                                     placeholderTextColor="#6e749d"
                                 />
                                 <Picker
@@ -301,7 +264,11 @@ const TransactionScreen = ({navigation }) => {
                 <View style={styles.container}>
                     <View style={styles.elipseContainer}>
                         <View style={styles.saveButtonAndTransactionContainer}>
-                            <TextInput style={styles.newTransactionTitle} onChangeText={(value) => setTextInputTitle(value)}>New Transaction</TextInput>
+                            <TextInput
+                                style={styles.newTransactionTitle}
+                                onChangeText={(value) => setTextInputTitle(value)}
+                                defaultValue={selectedItem.title}
+                            >New Transaction</TextInput>
 
                             <Pressable style={styles.saveButton} onPress={createNewTemplate}>
                                 <Text style={styles.saveButtonText}>SAVE</Text>
@@ -314,7 +281,7 @@ const TransactionScreen = ({navigation }) => {
                                 <TextInput
                                     style={styles.amountInput}
                                     placeholder="Transaction amount"
-                                    onChangeText={(value) => setTextInputAmount(value)}
+                                    onChangeText={handleAmountInput}
                                     keyboardType="phone-pad"
                                     placeholderTextColor="#6e749d"
                                 />

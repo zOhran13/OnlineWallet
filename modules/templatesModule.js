@@ -1,8 +1,9 @@
 import { AppState } from "react-native";
 
-var link = 'https://6f9d-188-127-122-32.eu.ngrok.io';
-export const getTemplates = () => {
-    const fetchedData = fetch(link + '/api/Template')
+var link = 'https://3ea9-5-43-126-189.eu.ngrok.io';
+
+export const getTemplates = (userId) => {
+    const fetchedData = fetch(link + '/api/Template/User/' + userId)
     .then(result => result.json())
     .then(data => {
         return data;
