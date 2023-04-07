@@ -24,6 +24,7 @@ const TokenStatus = {
 export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [userData, setUserData] = useState({});
 
   const [_, __, fbPromptAsync] = Facebook.useAuthRequest({
     clientId: "1370313683731054"
@@ -134,14 +135,24 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Moj token je:");
     console.log(socialToken);
 
-    let data = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-      headers: { Authorization: `Bearer ${socialToken.value}` },
-    }).then(res => res.json());
+    let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/google?token=" + socialToken.value).then(res => res.json());
 
-    console.log("Vraćeni podaci su: ");
+    console.log("Moji user podaci su: ");
     console.log(data);
 
-    loginUser(data.email, "Pa$$w0rd" ,false);
+    if (!data.token) {
+      Alert.alert(
+        'Login error',
+        'User with this account does not exist, or token is not valid!'
+      );  
+
+      await SecureStore.setItemAsync('social_token', '');
+      return;
+    }
+
+    setUserData(data);
+    setToken(data.token);
+    navigation.navigate("EmailOrPhoneVerification");
   }
 
   async function handleFacebookLogin() {
@@ -170,22 +181,23 @@ export default LoginScreen = ({ navigation }) => {
     //onda se logujemo dalje na stranicu
     //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
     console.log(socialToken);
-    let data_fb = await fetch("https://graph.facebook.com/me?fields=last_name,first_name,email&access_token=" + socialToken.value).then(res => res.json());
 
     let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
     console.log(data);
 
-    if (data.tokenStatus == TokenStatus.INVALID) {
-      const tokenValue = await facebookRegister();
-      socialToken = {
-        "name": "facebook_token",
-        "value": tokenValue
-      };
-      await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
-      data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
+    if (!data.result.token) {
+      Alert.alert(
+        'Login error',
+        'User with this account does not exist or token is not valid!'
+      );  
+
+      await SecureStore.setItemAsync('social_token', '');
+      return;
     }
 
-    loginUser(data_fb.email, "Pa$$w0rd", false);
+    setToken(data.result.token);
+    setUserData(data);
+    navigation.navigate("EmailOrPhoneVerification");
   }
 
   async function handleMicrosoftLogin() {
