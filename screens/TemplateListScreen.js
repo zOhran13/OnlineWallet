@@ -11,7 +11,7 @@ const TemplateListScreen = ({ navigation }) => {
     const fetchTemplates = async () => {
       const data = await getTemplates("1");
       setTemplates(data);
-    };x
+    };
       const backAction = () => {
           navigation.navigate('Home');
           return true;

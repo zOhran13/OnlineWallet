@@ -9,18 +9,28 @@ import {
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
-import { getUsers, getUser } from "../modules/userModule";
 import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
-import { getTemplate, deleteTemplate, getTemplates, update, createTemplate } from "../modules/templatesModule";
+import { getTemplate, deleteTemplate,  updateTemplate, createTemplate } from "../modules/templatesModule";
 import { useNavigation, StackActions } from '@react-navigation/native';
 
+import CurrencyInput from 'react-native-currency-input';
+
 const TransactionScreen = ({ navigation }) => {
+    
+
     const [selectedTemplate, setSelectedTemplate] = useState({});
+    const [currency, setCurrency] = useState("KM");
+    const [textInputTitle, setTextInputTitle] = useState("New Transaction");
+    const [textInputPaymentType, setTextInputPaymentType] = useState("")
+    const [textInputName, setTextInputName] = useState("");
+    const [textInputDescription, setTextInputDescription] = useState("");
+    const [textInputNumber, setTextInputNumber] = useState("");
+    const [textInputAmount, setTextInputAmount] = useState("");
 
     const { params } = useRoute();
-    const id = params?.id
-    if (id != null)
+    const id = params?.id;
+    if (id != null) {
         useEffect(() => {
             const fetchTemplate = async () => {
                 const data = await getTemplate(id);
@@ -28,34 +38,31 @@ const TransactionScreen = ({ navigation }) => {
             };
 
             fetchTemplate();
-        }, []);
+        }, [id]);
 
-    const selectedItem = selectedTemplate;
-    console.log(selectedItem)
-
-    const [currency, setCurrency] = useState("US Dollar");
-    const [textInputTitle, setTextInputTitle] = useState("New Transaction");
-    const [textInputPaymentType, setTextInputPaymentType] = useState("")
-    const [textInputName, setTextInputName] = useState("");
-    const [textInputDescription, setTextInputDescription] = useState("");
-    const [textInputNumber, setTextInputNumber] = useState("");
-    const [textInputAmount, setTextInputAmount] = useState("");
-    const [editableBoolean, setEditableBoolean] = useState(false);
-    const [disableSubmitButton, setDisableSubmitButton] = useState(false);
-    const [showComponent, setShowComponent] = useState(false);
-
-    const handleEditPress = () => {
-        setTextInputTitle(selectedItem.title);
-        setTextInputName(selectedItem.recipientName)
-        setTextInputNumber(selectedItem.recipientAccountNumber)
-        setTextInputDescription(selectedItem.description)
-        setEditableBoolean(true);
-        setShowComponent(true);
-        setDisableSubmitButton(true);
-        Alert.alert("You are in edit mode.");
-        console.log(selectedItem.title);
+        useEffect(() => {
+            if (selectedTemplate != null) {
+                console.log(selectedTemplate);
+                setTextInputTitle(selectedTemplate.title);
+                setTextInputAmount(selectedTemplate.amount);
+                setTextInputPaymentType(selectedTemplate.paymentType);
+                setTextInputName(selectedTemplate.recipientName);
+                setTextInputNumber(selectedTemplate.recipientAccountNumber);
+                setTextInputDescription(selectedTemplate.description);
+                setCurrency(selectedTemplate.currency);
+            }
+        }, [selectedTemplate])
     }
-    const handleAmountInput = () => { }
+
+
+    
+
+  
+    
+
+   
+
+
     const handleDeletePress = () => {
         Alert.alert('Delete template', 'Are you sure you want to delete this template?', [
             {
@@ -75,92 +82,68 @@ const TransactionScreen = ({ navigation }) => {
 
     }
 
-    const handleSaveButton = () => {
-        if (checkTextInputForSaveEdit()) {
-            setEditableBoolean(false);
-            setShowComponent(false);
-            setDisableSubmitButton(false);
-            update(id, selectedItem.userId, selectedItem.title, textInputName, textInputNumber, textInputDescription, currency)
-
-        }
-    }
+    
 
 
-    const checkTextInput = () => {
 
-        //submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription)
-    };
-
-    const checkTextInputForSaveEdit = () => {
-
-    };
 
     const checkTextEmpty = () => {
-        if (!textInputAmount.trim()) {
+        if (!textInputAmount.toString().trim()) {
             alert("Please Enter Amount!");
-            return;
+            return false;
         }
         if (!textInputPaymentType.trim()) {
             alert("Please Enter PaymentType!");
-            return;
+            return false;
         }
         if (!textInputName.trim()) {
             alert("Please Enter Name!");
-            return;
+            return false;
         }
         if (!textInputNumber.trim()) {
             alert("Please Enter Account Number!");
-            return;
+            return false;
         }
         if (!textInputDescription.trim()) {
             alert("Please Enter Description!");
-            return
+            return false;
         }
-    }
-    const checkAmountValidForSave = () => {
-
-        if (!/^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/.test(textInputAmount.trim()) && textInputAmount.trim()) {
-            alert("Please enter valid Amount (e.g. 123,456.78)");
-            return;
-        }
-
-
-
         return true;
-
     }
+
 
     const createNewTemplate = () => {
-        if (checkAmountValidForSave()) {
-            createTemplate("1", textInputTitle, textInputAmount, textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
-        }
+        createTemplate("1", textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
+    const handleUpdatePress = () => {
+        updateTemplate(selectedTemplate.id, "1", textInputTitle, textInputAmount, textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency)
+        Alert.alert(" Template \"" + textInputTitle + "\" updated.");
+
+    }
+    const checkAndSubmitTransaction = () => {
+        if (checkTextEmpty()) {
+
+            submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription);
+        }
+
+    }
+    function getCurrencyName(code) {
+        switch (code) {
+            case 'KM':
+                return 'Bosnian Mark';
+            case '$':
+                return 'US Dollar';
+            case '\u20AC':
+                return 'Euro';
+        }
+    }
+    
 
 
-
-    const checkAmountInput = () => {
-
-    };
-
-
-    if (id != null) {
-        // const templates = getTemplates();
-        //const selectedItem = templates.find(item => item.id === id)
-
-
-        // console.log("OVDJEEE IDD",id)
-        const [title, setTitle] = useState(selectedItem?.title)
-        const [amount, setAmount] = useState(selectedItem?.amount)
-        const [paymentType, setPaymentType] = useState(selectedItem?.paymentType)
-        const [recipientName, setRecipientName] = useState(selectedItem?.recipientName)
-        const [recipientAccountNumber, setRecipientAccountNumber] = useState(selectedItem?.recipientAccountNumber)
-        const [description, setDescription] = useState(selectedItem?.description)
-        const [currencyTemplate, setCurrencyTemplate] = useState(selectedItem?.currency)
-
-
-
+    if (selectedTemplate?.id != null) {
+        console.log(selectedTemplate);
         return (
             <>
                 <View style={styles.container}>
@@ -169,87 +152,87 @@ const TransactionScreen = ({ navigation }) => {
 
                             <TextInput
                                 style={styles.newTransactionTitle}
-                                defaultValue={selectedItem.title}
                                 onChangeText={(value) => setTextInputTitle(value)}
-                                editable={editableBoolean}
-                            >
-                            </TextInput>
+                                defaultValue={textInputTitle}
+                            ></TextInput>
 
-                            {
-                                showComponent
-                                && <Pressable style={styles.saveButton} onPress={createNewTemplate}>
-                                    <Text style={styles.saveButtonText}>SAVE</Text>
-                                </Pressable>
-                            }
+                        
+
                         </View>
+
                         <View>
                             <View style={styles.amountCurrencyContainer}>
-                                <TextInput
-                                    style={styles.amountInput}
+                                <CurrencyInput
                                     placeholder="Transaction amount"
-                                    keyboardType="phone-pad"
-                                    defaultValue={selectedItem.amount}
-                                    editable={editableBoolean}
-                                    onChangeText={handleAmountInput}
                                     placeholderTextColor="#6e749d"
+                                    style={styles.amountInput}
+                                    value={textInputAmount}
+                                    onChangeValue={(value) => {
+                                        setTextInputAmount(value)
+                                    }}
+                                    prefix={currency === 'BAM' ? 'KM' : currency}
+                                    delimiter=","
+                                    separator="."
+                                    precision={2}
+                                    minValue={0}
+
                                 />
                                 <Picker
-                                    defaultValue={selectedItem.currencyTemplate}
-                                    enable={false}
+                                    selectedValue={currency}
+                                    onValueChange={(currentCurrency) =>
+                                        setCurrency(currentCurrency)
+                                    }
+
                                     mode={'dropdown'}
                                     style={styles.currencyPicker}
                                 >
-                                    <Picker.Item label="BAM" value="Bosnian Mark" color="black" />
-                                    <Picker.Item label="EUR" value="Euro" color="black" />
-                                    <Picker.Item label="USD" value="US Dollar" color="black" />
+                                    <Picker.Item label="BAM" value="KM" color="black" />
+                                    <Picker.Item label="EUR" value={'\u20AC'} color="black" />
+                                    <Picker.Item label="USD" value="$" color="black" />
                                 </Picker>
                             </View>
+
 
                             <TextInput
                                 style={styles.input}
                                 placeholder="Payment type"
                                 placeholderTextColor="#6e749d"
-                                defaultValue={selectedItem.paymentType}
-                                editable={editableBoolean}
+                                value={textInputPaymentType}
                                 onChangeText={(value) => setTextInputPaymentType(value)}
                             />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Recipient name"
                                 placeholderTextColor="#6e749d"
-                                defaultValue={selectedItem.recipientName}
-                                editable={editableBoolean}
+                                value={textInputName}
                                 onChangeText={(value) => setTextInputName(value)}
                             />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Recipient account number"
-                                keyboardType="phone-pad"
                                 placeholderTextColor="#6e749d"
-                                editable={editableBoolean}
-                                defaultValue={selectedItem.recipientAccountNumber}
+                                value={textInputNumber}
                                 onChangeText={(value) => setTextInputNumber(value)}
                             />
                             <TextInput
                                 style={styles.input}
                                 placeholder="Description"
                                 placeholderTextColor="#6e749d"
-                                defaultValue={selectedItem.description}
-                                editable={editableBoolean}
+                                value={textInputDescription}
                                 onChangeText={(value) => setTextInputDescription(value)}
                             />
 
                             <Text style={styles.selectedCurrencyText}>
-                                Selected: {selectedItem.currency}
+                                Selected: {getCurrencyName(currency)}
                             </Text>
                         </View>
                     </View>
-                    <Pressable style={styles.submitButton} onPress={checkAmountInput} disabled={disableSubmitButton}>
+                    <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
                         <Text style={styles.text}>Submit</Text>
                     </Pressable>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-                        <Pressable style={styles.editButton} onPress={handleEditPress}>
-                            <Text style={styles.text}>Edit</Text>
+                        <Pressable style={styles.editButton} onPress={handleUpdatePress}>
+                            <Text style={styles.text}>Update</Text>
                         </Pressable>
                         <Pressable style={styles.deleteButton} onPress={handleDeletePress}>
                             <Text style={styles.text}>Delete</Text>
@@ -267,7 +250,7 @@ const TransactionScreen = ({ navigation }) => {
                             <TextInput
                                 style={styles.newTransactionTitle}
                                 onChangeText={(value) => setTextInputTitle(value)}
-                                defaultValue={selectedItem.title}
+                                
                             >New Transaction</TextInput>
 
                             <Pressable style={styles.saveButton} onPress={createNewTemplate}>
@@ -278,12 +261,20 @@ const TransactionScreen = ({ navigation }) => {
 
                         <View>
                             <View style={styles.amountCurrencyContainer}>
-                                <TextInput
-                                    style={styles.amountInput}
+                                <CurrencyInput
                                     placeholder="Transaction amount"
-                                    onChangeText={handleAmountInput}
-                                    keyboardType="phone-pad"
                                     placeholderTextColor="#6e749d"
+                                    style={styles.amountInput}
+                                    value={textInputAmount}
+                                    onChangeValue={(value) => {
+                                        setTextInputAmount(value)
+                                    }}
+                                    prefix={currency === 'BAM' ? 'KM' : currency}
+                                    delimiter=","
+                                    separator="."
+                                    precision={2}
+                                    minValue={0}
+
                                 />
                                 <Picker
                                     selectedValue={currency}
@@ -294,9 +285,9 @@ const TransactionScreen = ({ navigation }) => {
                                     mode={'dropdown'}
                                     style={styles.currencyPicker}
                                 >
-                                    <Picker.Item label="BAM" value="Bosnian Mark" color="black" />
-                                    <Picker.Item label="EUR" value="Euro" color="black" />
-                                    <Picker.Item label="USD" value="US Dollar" color="black" />
+                                    <Picker.Item label="BAM" value="KM" color="black" />
+                                    <Picker.Item label="EUR" value={'\u20AC'} color="black" />
+                                    <Picker.Item label="USD" value="$" color="black" />
                                 </Picker>
                             </View>
 
@@ -328,11 +319,11 @@ const TransactionScreen = ({ navigation }) => {
                             />
 
                             <Text style={styles.selectedCurrencyText}>
-                                Selected: {currency}
+                                Selected: {getCurrencyName(currency)}
                             </Text>
                         </View>
                     </View>
-                    <Pressable style={styles.submitButton} onPress={checkTextInput}>
+                    <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
                         <Text style={styles.text}>Submit</Text>
                     </Pressable>
                 </View>

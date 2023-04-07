@@ -23,7 +23,7 @@ export async function getTemplate(id) {
   return fetchedData;
   }
 
-  export async function update(id,userId,title,amount, paymentType, recipientName, recipientAccountNumber, description, currency) {
+  export async function updateTemplate(id,userId,title,amount, paymentType, recipientName, recipientAccountNumber, description, currency) {
       fetch(link + '/api/Template/' + id, {
   method: 'PUT',
   body: JSON.stringify({
