@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { 
+  hasHardwareAsync,
+  isEnrolledAsync,
+  authenticateAsync,
+  supportedAuthenticationTypesAsync
+} from 'expo-local-authentication';
 import {
   Text,
   View,
@@ -105,7 +111,34 @@ export default LoginScreen = ({ navigation }) => {
     navigation.navigate('Registration');
   }
 
+  const biometricAuthentication = async () => {
+    const compatible = await hasHardwareAsync();
+    console.log("Compatible: ", compatible);
+    if (!compatible) {
+      Alert.alert("Authentication error", "This device is not compatible for biometric authentication");
+      return false;
+    }
 
+    const types = await supportedAuthenticationTypesAsync();
+    console.log("Tipovi: ", types);
+
+    const enrolled = await isEnrolledAsync();
+    console.log("Enrolled: ", enrolled);
+    if (!enrolled) {
+      Alert.alert("Authentication error", "This device doesn't have biometric authentication enabled");
+      return false;
+    }
+
+    const result = await authenticateAsync()
+    console.log("Result: ", result);
+    if (!result.success) {
+      Alert.alert("Authentication error", "Authentication unsuccessfull");
+      return false;
+    } 
+
+    Alert.alert("Authentication success", "You successfully authenticated yourself!");
+    return true;
+  };
 
   async function handleGoogleLogin() {
     let socialTokenString = await SecureStore.getItemAsync('social_token');
@@ -209,19 +242,11 @@ export default LoginScreen = ({ navigation }) => {
   }
 
   async function handleFaceIDLogin() {
-    await SecureStore.setItemAsync("social_token", '');
-    Alert.alert(
-      'Login with Face ID',
-      'Login with Face ID button was pressed'
-    );
+    await biometricAuthentication();
   }
 
   async function handleTouchIDLogin() {
-    await SecureStore.setItemAsync("social_token", '');
-    Alert.alert(
-      'Login with Touch ID',
-      'Login with Touch ID button was pressed'
-    );
+    await biometricAuthentication();
   }
 
   async function setToken(token) {
@@ -333,14 +358,14 @@ export default LoginScreen = ({ navigation }) => {
         </Pressable>
 
     <View style={{flexDirection:'row', justifyContent: 'center' }}>
-        <Pressable onPress={handleMicrosoftLogin} style={styles.TouchIDButton}>
+        <Pressable onPress={handleTouchIDLogin} style={styles.TouchIDButton}>
           <Image
             source={require('../assets/images/toucid_icon.png')}
             style={styles.icon} />
           <Text style={styles.googleText}>Touch ID</Text>
         </Pressable>
 
-        <Pressable onPress={handleMicrosoftLogin} style={styles.FaceIDButton}>
+        <Pressable onPress={handleFaceIDLogin} style={styles.FaceIDButton}>
           <Image
             source={require('../assets/images/faceid_icon.png')}
             style={styles.icon} />
