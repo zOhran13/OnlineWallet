@@ -29,7 +29,8 @@
     "react-dom": "18.2.0",
     "@expo/webpack-config": "^18.0.1",
     "react-query": "^3.39.3",
-    "expo-application": "~5.1.1"
+    "expo-application": "~5.1.1",
+    "expo-local-authentication": "~13.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
