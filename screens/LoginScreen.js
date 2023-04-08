@@ -357,22 +357,13 @@ export default LoginScreen = ({ navigation }) => {
           <Text style={styles.googleText}>Login with Microsoft</Text>
         </Pressable>
 
-    <View style={{flexDirection:'row', justifyContent: 'center' }}>
-        <Pressable onPress={handleTouchIDLogin} style={styles.TouchIDButton}>
+        <Pressable onPress={handleTouchIDLogin} style={styles.googleButton}>
           <Image
-            source={require('../assets/images/toucid_icon.png')}
+            source={require('../assets/images/biometric.png')}
             style={styles.icon} />
-          <Text style={styles.googleText}>Touch ID</Text>
+          <Text style={styles.googleText}>Login with Biometrics</Text>
         </Pressable>
-
-        <Pressable onPress={handleFaceIDLogin} style={styles.FaceIDButton}>
-          <Image
-            source={require('../assets/images/faceid_icon.png')}
-            style={styles.icon} />
-          <Text style={styles.googleText}>Face ID</Text>
-        </Pressable>
-        </View>
-        
+       
 
 
       </View><Text style={styles.signupText}>
