@@ -1,8 +1,9 @@
 import { AppState } from "react-native";
 
-var link = 'https://3741-188-127-122-32.eu.ngrok.io';
-export const getTemplates = () => {
-    const fetchedData = fetch(link + '/api/Template')
+var link = 'https://3ea9-5-43-126-189.eu.ngrok.io';
+
+export const getTemplates = (userId) => {
+    const fetchedData = fetch(link + '/api/Template/User/' + userId)
     .then(result => result.json())
     .then(data => {
         return data;
@@ -22,12 +23,14 @@ export async function getTemplate(id) {
   return fetchedData;
   }
 
-  export async function update(id,userId,title, recipientName, recipientAccountNumber, description, currency) {
-  fetch(link+id, {
+  export async function updateTemplate(id,userId,title,amount, paymentType, recipientName, recipientAccountNumber, description, currency) {
+      fetch(link + '/api/Template/' + id, {
   method: 'PUT',
   body: JSON.stringify({
     userId: userId,
     title: title,
+    amount: amount,
+    paymentType: paymentType,
     description: description,
     currency: currency,
     recipientName: recipientName,
@@ -54,17 +57,19 @@ export async function deleteTemplate(id) {
   }
 }
 
-export async function createTemplate(userId, title, recipientName, recipientAccountNumber, description, currency) {
+export async function createTemplate(userId, title, amount, paymentType, recipientName, recipientAccountNumber, description, currency) {
   fetch(link + '/api/Template', {
   method: 'POST',
-  body: JSON.stringify({
-    userId: userId,
-    title: title,
-    description: description,
-    currency: currency,
-    recipientName: recipientName,
-    recipientAccountNumber: recipientAccountNumber
-  }),
+      body: JSON.stringify({
+          userId: userId,
+          title: title,
+          amount: amount,
+          paymentType: paymentType,
+          description: description,
+          currency: currency,
+          recipientName: recipientName,
+          recipientAccountNumber: recipientAccountNumber
+      }),
   headers: {
     'Content-type': 'application/json; charset=UTF-8',
   },

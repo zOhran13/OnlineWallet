@@ -3,9 +3,9 @@ namespace SIWallet.Services.TemplateService
     public class TemplateService : ITemplateService
     {
         private static List<Template> templates = new List<Template> {
-            new Template { Id=1, UserId=1, Title="Plin", Description="placanje racuna za plin", Currency="BAM", 
+            new Template { Id=1, UserId="1", Title="Plin", Description="placanje racuna za plin", Currency="BAM", 
             RecipientName="sarajevoGas", RecipientAccountNumber="123456" },
-            new Template { Id=2, UserId=1, Title="Voda", Description="placanje racuna za vodu", Currency="BAM", 
+            new Template { Id=2, UserId="2", Title="Voda", Description="placanje racuna za vodu", Currency="BAM", 
             RecipientName="vodovod", RecipientAccountNumber="123457" }
         };
 
@@ -15,10 +15,11 @@ namespace SIWallet.Services.TemplateService
             _context=context;
         }
 
-        public async Task<List<Template>> GetAllTemplates()
+        public async Task<List<Template>> GetAllTemplates(string userId)
         {
-            return await _context.Templates.ToListAsync();
+            return await _context.Templates.Where(t => t.UserId == userId).ToListAsync();
         }
+
 
         public async Task<Template?> GetOneTemplate(int id)
         {
