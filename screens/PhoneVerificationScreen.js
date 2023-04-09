@@ -39,7 +39,7 @@ const EmailVerificationScreen = ({ navigation, route }) => {
       })
       .then((data) => {
         if (data.message != "Username or code incorrect!") {
-          navigation.navigate("Home");
+          navigation.navigate("Login");
           ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
           console.log(JSON.stringify(data));
         } else {

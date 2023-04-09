@@ -127,6 +127,7 @@ const RegistrationScreen = ({ navigation }) => {
               placeholder="Email" 
               keyboardType="email-address" 
               placeholderTextColor ='#6e749d'
+              caretHidden={false}
                onChangeText={(text) => onChangeTextHandle(text, 'email')}/>
 
         <TextInput style={styles.input} 
@@ -200,7 +201,12 @@ const RegistrationScreen = ({ navigation }) => {
 					<Text style={styles.registerText}>REGISTER</Text>
 				</Pressable>
 
-          <Text style={styles.login}>Already have an account? Log in</Text>
+          <Text style={styles.login}>
+            <Text>Already have an account? </Text>
+            <Text style={{ color: '#ffc022ef' }} onPress={() => navigation.goBack()}>
+              Log in
+            </Text>
+          </Text>
         </View>
       </ScrollView>
     </>
