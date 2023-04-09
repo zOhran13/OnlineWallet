@@ -18,12 +18,12 @@ import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Stack = createNativeStackNavigator();
-//<Stack.Screen name='Login' component={LoginScreen} />
-//<Stack.Screen name="Registration" component={RegistrationScreen}/>
 export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
+                <Stack.Screen name='Login' component={LoginScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
 
 
                 <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
