@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import { 
+  hasHardwareAsync,
+  isEnrolledAsync,
+  authenticateAsync,
+  supportedAuthenticationTypesAsync
+} from 'expo-local-authentication';
 import {
   Text,
   View,
@@ -8,22 +14,25 @@ import {
   Alert,
   Pressable,
   Image,
-  ToastAndroid,
-  StatusBar,
+  ToastAndroid
 } from 'react-native';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
-import Expo from "expo";
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const TokenStatus = {
-  VALID: 'Token valid',
-  INVALID: 'Token invalid'
-}
+const requestOptionPOST = {
+  method: "POST",
+  headers: {
+    accept: "text/plain",
+    "Content-Type": "application/json",
+  }
+};
+
 
 export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [userData, setUserData] = useState({});
 
   const [_, __, fbPromptAsync] = Facebook.useAuthRequest({
     clientId: "1370313683731054"
@@ -104,7 +113,34 @@ export default LoginScreen = ({ navigation }) => {
     navigation.navigate('Registration');
   }
 
+  const biometricAuthentication = async () => {
+    const compatible = await hasHardwareAsync();
+    console.log("Compatible: ", compatible);
+    if (!compatible) {
+      Alert.alert("Authentication error", "This device is not compatible for biometric authentication");
+      return false;
+    }
 
+    const types = await supportedAuthenticationTypesAsync();
+    console.log("Tipovi: ", types);
+
+    const enrolled = await isEnrolledAsync();
+    console.log("Enrolled: ", enrolled);
+    if (!enrolled) {
+      Alert.alert("Authentication error", "This device doesn't have biometric authentication enabled");
+      return false;
+    }
+
+    const result = await authenticateAsync()
+    console.log("Result: ", result);
+    if (!result.success) {
+      Alert.alert("Authentication error", "Authentication unsuccessfull");
+      return false;
+    } 
+
+    Alert.alert("Authentication success", "You successfully authenticated yourself!");
+    return true;
+  };
 
   async function handleGoogleLogin() {
     let socialTokenString = await SecureStore.getItemAsync('social_token');
@@ -134,14 +170,38 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Moj token je:");
     console.log(socialToken);
 
-    let data = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-      headers: { Authorization: `Bearer ${socialToken.value}` },
-    }).then(res => res.json());
+    let data = await fetch("http://siprojekat.duckdns.org:5051/api/User/login/google?token=" + socialToken.value, requestOptionPOST).then(res => res.json());
 
-    console.log("Vraćeni podaci su: ");
+    console.log("Moji google podaci su: ");
     console.log(data);
+    
+    if (!data.token) {
+      Alert.alert(
+        'Login error',
+        'User with this account does not exist, or token is not valid!'
+      );  
 
-    loginUser(data.email, "Pa$$w0rd" ,false);
+      await SecureStore.setItemAsync('social_token', '');
+      return;
+    }
+
+    const userRequestOptions = {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + data.token
+      }
+    };
+
+    const user = await fetch("http://siprojekat.duckdns.org:5051/api/User", userRequestOptions).then(res => res.json());    
+
+    console.log("Moj vraćeni user je: ");
+    console.log(user);
+
+    setUserData(user);
+    setToken(data.token);
+    navigation.navigate("EmailOrPhoneVerification");
   }
 
   async function handleFacebookLogin() {
@@ -170,22 +230,38 @@ export default LoginScreen = ({ navigation }) => {
     //onda se logujemo dalje na stranicu
     //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
     console.log(socialToken);
-    let data_fb = await fetch("https://graph.facebook.com/me?fields=last_name,first_name,email&access_token=" + socialToken.value).then(res => res.json());
 
-    let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
+    let data = await fetch("http://siprojekat.duckdns.org:5051/api/User/login/facebook?token=" + socialToken.value, requestOptionPOST).then(res => res.json());
+    console.log("Moji podaci na fb-u su: ");
     console.log(data);
 
-    if (data.tokenStatus == TokenStatus.INVALID) {
-      const tokenValue = await facebookRegister();
-      socialToken = {
-        "name": "facebook_token",
-        "value": tokenValue
-      };
-      await SecureStore.setItemAsync("social_token", JSON.stringify(socialToken));
-      data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
+    if (!data.token) {
+      Alert.alert(
+        'Login error',
+        'User with this account does not exist or token is not valid!'
+      );  
+
+      await SecureStore.setItemAsync('social_token', '');
+      return;
     }
 
-    loginUser(data_fb.email, "Pa$$w0rd", false);
+    const userRequestOptions = {
+      method: "GET",
+      headers: {
+        accept: "*/*",    
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + data.token
+      }
+    };
+
+    const user = await fetch("http://siprojekat.duckdns.org:5051/api/User", userRequestOptions).then(res => res.json());    
+
+    console.log("Moj vraćeni user je: ");
+    console.log(user);
+
+    setToken(data.token);
+    setUserData(user);
+    navigation.navigate("EmailOrPhoneVerification");
   }
 
   async function handleMicrosoftLogin() {
@@ -197,25 +273,22 @@ export default LoginScreen = ({ navigation }) => {
   }
 
   async function handleFaceIDLogin() {
-    await SecureStore.setItemAsync("social_token", '');
-    Alert.alert(
-      'Login with Face ID',
-      'Login with Face ID button was pressed'
-    );
+    await biometricAuthentication();
   }
 
   async function handleTouchIDLogin() {
-    await SecureStore.setItemAsync("social_token", '');
-    Alert.alert(
-      'Login with Touch ID',
-      'Login with Touch ID button was pressed'
-    );
+    await biometricAuthentication();
   }
 
   async function setToken(token) {
     await SecureStore.setItemAsync("secure_token", token)
     const tok = await SecureStore.getItemAsync("secure_token")
     console.log("Tokic " + tok)
+  }
+
+  async function getToken() {
+    const token = await SecureStore.getItemAsync("secure_token");
+    return token;
   }
   
   const loginUser = (emailOrPhoneValue, password, realLogin) => {
@@ -320,22 +393,13 @@ export default LoginScreen = ({ navigation }) => {
           <Text style={styles.googleText}>Login with Microsoft</Text>
         </Pressable>
 
-    <View style={{flexDirection:'row', justifyContent: 'center' }}>
-        <Pressable onPress={handleMicrosoftLogin} style={styles.TouchIDButton}>
+        <Pressable onPress={handleTouchIDLogin} style={styles.googleButton}>
           <Image
-            source={require('../assets/images/toucid_icon.png')}
+            source={require('../assets/images/biometric.png')}
             style={styles.icon} />
-          <Text style={styles.googleText}>Touch ID</Text>
+          <Text style={styles.googleText}>Login with Biometrics</Text>
         </Pressable>
-
-        <Pressable onPress={handleMicrosoftLogin} style={styles.FaceIDButton}>
-          <Image
-            source={require('../assets/images/faceid_icon.png')}
-            style={styles.icon} />
-          <Text style={styles.googleText}>Face ID</Text>
-        </Pressable>
-        </View>
-        
+       
 
 
       </View><Text style={styles.signupText}>
