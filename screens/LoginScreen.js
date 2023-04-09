@@ -14,18 +14,20 @@ import {
   Alert,
   Pressable,
   Image,
-  ToastAndroid,
-  StatusBar,
+  ToastAndroid
 } from 'react-native';
 import * as Facebook from 'expo-auth-session/providers/facebook';
 import * as Google from 'expo-auth-session/providers/google';
-import Expo from "expo";
 import { FontAwesome5 } from '@expo/vector-icons';
 
-const TokenStatus = {
-  VALID: 'Token valid',
-  INVALID: 'Token invalid'
-}
+const requestOptionPOST = {
+  method: "POST",
+  headers: {
+    accept: "text/plain",
+    "Content-Type": "application/json",
+  }
+};
+
 
 export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
@@ -168,11 +170,11 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Moj token je:");
     console.log(socialToken);
 
-    let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/google?token=" + socialToken.value).then(res => res.json());
+    let data = await fetch("http://siprojekat.duckdns.org:5051/api/User/login/google?token=" + socialToken.value, requestOptionPOST).then(res => res.json());
 
-    console.log("Moji user podaci su: ");
+    console.log("Moji google podaci su: ");
     console.log(data);
-
+    
     if (!data.token) {
       Alert.alert(
         'Login error',
@@ -183,7 +185,21 @@ export default LoginScreen = ({ navigation }) => {
       return;
     }
 
-    setUserData(data);
+    const userRequestOptions = {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + data.token
+      }
+    };
+
+    const user = await fetch("http://siprojekat.duckdns.org:5051/api/User", userRequestOptions).then(res => res.json());    
+
+    console.log("Moj vraćeni user je: ");
+    console.log(user);
+
+    setUserData(user);
     setToken(data.token);
     navigation.navigate("EmailOrPhoneVerification");
   }
@@ -215,10 +231,11 @@ export default LoginScreen = ({ navigation }) => {
     //ovdje privremeno dobavljamo podatke sa facebook-a, jer nije gotov BE!
     console.log(socialToken);
 
-    let data = await fetch("http://siprojekat.duckdns.org:5051/api/Register/validate/facebook?token=" + socialToken.value).then(res => res.json());
+    let data = await fetch("http://siprojekat.duckdns.org:5051/api/User/login/facebook?token=" + socialToken.value, requestOptionPOST).then(res => res.json());
+    console.log("Moji podaci na fb-u su: ");
     console.log(data);
 
-    if (!data.result.token) {
+    if (!data.token) {
       Alert.alert(
         'Login error',
         'User with this account does not exist or token is not valid!'
@@ -228,8 +245,22 @@ export default LoginScreen = ({ navigation }) => {
       return;
     }
 
-    setToken(data.result.token);
-    setUserData(data);
+    const userRequestOptions = {
+      method: "GET",
+      headers: {
+        accept: "*/*",    
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + data.token
+      }
+    };
+
+    const user = await fetch("http://siprojekat.duckdns.org:5051/api/User", userRequestOptions).then(res => res.json());    
+
+    console.log("Moj vraćeni user je: ");
+    console.log(user);
+
+    setToken(data.token);
+    setUserData(user);
     navigation.navigate("EmailOrPhoneVerification");
   }
 
@@ -253,6 +284,11 @@ export default LoginScreen = ({ navigation }) => {
     await SecureStore.setItemAsync("secure_token", token)
     const tok = await SecureStore.getItemAsync("secure_token")
     console.log("Tokic " + tok)
+  }
+
+  async function getToken() {
+    const token = await SecureStore.getItemAsync("secure_token");
+    return token;
   }
   
   const loginUser = (emailOrPhoneValue, password, realLogin) => {

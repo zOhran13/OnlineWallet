@@ -175,7 +175,7 @@ const RegistrationScreen = ({ navigation }) => {
                 username: inputs.username
               });
 
-							fetch("http://siprojekat.duckdns.org:5051/api/Register", requestOption).then(res => {
+							fetch("http://siprojekat.duckdns.org:5051/api/User", requestOption).then(res => {
                 return res.json();
               }).then(data => {
 								console.log(data)
