@@ -62,7 +62,7 @@ const TransactionScreen = ({ navigation }) => {
                 setTextInputName(selectedTemplate.recipientName);
                 setTextInputNumber(selectedTemplate.recipientAccountNumber);
                 setTextInputDescription(selectedTemplate.description);
-                setCurrency(selectedTemplate.currency);
+                setCurrency(getCurrencyTag(selectedTemplate.currency));
             }
         }, [selectedTemplate])
 
@@ -115,30 +115,51 @@ const TransactionScreen = ({ navigation }) => {
 
 
     const createNewTemplate = async () => {
-        createTemplate(userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
+        createTemplate(userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
     const handleUpdatePress = () => {
-        updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency)
+        updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency))
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
     }
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty()) {
 
-            submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription);
+            submitTransaction(textInputAmount, getCurrencyCode(currency), textInputPaymentType, textInputName, textInputNumber, textInputDescription);
         }
 
     }
-    function getCurrencyName(code) {
-        switch (code) {
+    function getCurrencyName(tag) {
+        switch (tag) {
             case 'KM':
                 return 'Bosnian Mark';
             case '$':
                 return 'US Dollar';
             case '\u20AC':
                 return 'Euro';
+        }
+    }
+    function getCurrencyCode(tag) {
+        switch (tag) {
+            case 'KM':
+                return 'BAM';
+            case '$':
+                return 'USD';
+            case '\u20AC':
+                return 'EUR';
+        }
+    }
+
+    function getCurrencyTag(code) {
+        switch (code) {
+            case 'BAM':
+                return 'KM';
+            case 'USD':
+                return '$';
+            case 'EUR':
+                return '\u20AC';
         }
     }
     
