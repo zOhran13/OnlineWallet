@@ -1,21 +1,21 @@
-import { getUsers } from "./userModule";
+import { getUsers, getUserDetails, getRecipientDetails } from "./userModule";
 
+import * as SecureStore from 'expo-secure-store';
 var link = 'https://processingserver.herokuapp.com'
-export async function submitTransaction(amount, currency, paymentType, recipinetName, recipientAccountNumber, description) {
+
+async function getToken() {
+    const token = await SecureStore.getItemAsync("secure_token");
+
+    return token;
+}
+
+export async function submitTransaction(amount, currency, paymentType, recipientName, recipientAccountNumber, description) {
     try {
-        /*checkTextInput();
-        let flag = false;
-        let users = getUsers();
-        users.forEach((element) => {
-          if (
-            element.name == textInputName &&
-            element.accountNumber == textInputNumber
-          )
-            flag = true;
-        });*/
-        flag = true;
-        if (flag) {
-            await fetch(link + '/Transaction/CreateTransaction?token=TEST', {
+
+        token = await getToken();
+            data = await getRecipientDetails(recipientName); 
+            console.log(data.firstName);
+            await fetch(link + '/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -29,7 +29,8 @@ export async function submitTransaction(amount, currency, paymentType, recipinet
                         paymentType: paymentType,
                         description: description,
                         recipientAccountNumber: recipientAccountNumber,
-                        recipientName: recipinetName
+                        recipientFirstName: data.firstName,
+                        recipientLastName: data.lastName
                     }
 
 
@@ -44,27 +45,10 @@ export async function submitTransaction(amount, currency, paymentType, recipinet
                     return;
                 }
             });
-        }
+        
     } catch (error) {
         console.error(error);
     }
 }
 
-export async function createTemplate(userId, title, recipientName, recipientAccountNumber, description, currency) {
-    fetch(link + '/api/Template', {
-        method: 'POST',
-        body: JSON.stringify({
-            userId: userId,
-            title: title,
-            description: description,
-            currency: currency,
-            recipientName: recipientName,
-            recipientAccountNumber: recipientAccountNumber
-        }),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    })
-        .then((response) => response.json())
-        .then((json) => console.log(json));
-}
+

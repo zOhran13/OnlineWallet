@@ -13,6 +13,7 @@ import { submitTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
 import { getTemplate, deleteTemplate,  updateTemplate, createTemplate } from "../modules/templatesModule";
 import { useNavigation, StackActions } from '@react-navigation/native';
+import * as User from '../modules/userModule';
 
 import CurrencyInput from 'react-native-currency-input';
 
@@ -27,24 +28,36 @@ const TransactionScreen = ({ navigation }) => {
     const [textInputDescription, setTextInputDescription] = useState("");
     const [textInputNumber, setTextInputNumber] = useState("");
     const [textInputAmount, setTextInputAmount] = useState("");
-
+    const [userId, setUserId] = useState("");
     const { params } = useRoute();
     const id = params?.id;
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            xid = await User.getUserDetails()
+            setUserId(xid.id);
+        };
+        fetchUserId();
+    }, []);
+
     if (id != null) {
+
+        
+        
         useEffect(() => {
             const fetchTemplate = async () => {
                 const data = await getTemplate(id);
                 setSelectedTemplate(data);
             };
-
             fetchTemplate();
+            
+
         }, [id]);
 
         useEffect(() => {
             if (selectedTemplate != null) {
-                console.log(selectedTemplate);
                 setTextInputTitle(selectedTemplate.title);
-                setTextInputAmount(selectedTemplate.amount);
+                setTextInputAmount(parseFloat(selectedTemplate.amount));
                 setTextInputPaymentType(selectedTemplate.paymentType);
                 setTextInputName(selectedTemplate.recipientName);
                 setTextInputNumber(selectedTemplate.recipientAccountNumber);
@@ -52,16 +65,8 @@ const TransactionScreen = ({ navigation }) => {
                 setCurrency(selectedTemplate.currency);
             }
         }, [selectedTemplate])
+
     }
-
-
-    
-
-  
-    
-
-   
-
 
     const handleDeletePress = () => {
         Alert.alert('Delete template', 'Are you sure you want to delete this template?', [
@@ -82,12 +87,9 @@ const TransactionScreen = ({ navigation }) => {
 
     }
 
-    
-
-
-
 
     const checkTextEmpty = () => {
+
         if (!textInputAmount.toString().trim()) {
             alert("Please Enter Amount!");
             return false;
@@ -112,17 +114,17 @@ const TransactionScreen = ({ navigation }) => {
     }
 
 
-    const createNewTemplate = () => {
-        createTemplate("1", textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
+    const createNewTemplate = async () => {
+        createTemplate(userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency);
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
     const handleUpdatePress = () => {
-        updateTemplate(selectedTemplate.id, "1", textInputTitle, textInputAmount, textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency)
+        updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, currency)
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
     }
-    const checkAndSubmitTransaction = () => {
+    const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty()) {
 
             submitTransaction(textInputAmount, currency, textInputPaymentType, textInputName, textInputNumber, textInputDescription);
@@ -143,7 +145,6 @@ const TransactionScreen = ({ navigation }) => {
 
 
     if (selectedTemplate?.id != null) {
-        console.log(selectedTemplate);
         return (
             <>
                 <View style={styles.container}>
@@ -307,7 +308,6 @@ const TransactionScreen = ({ navigation }) => {
                             <TextInput
                                 style={styles.input}
                                 placeholder="Recipient account number"
-                                keyboardType="phone-pad"
                                 placeholderTextColor="#6e749d"
                                 onChangeText={(value) => setTextInputNumber(value)}
                             />

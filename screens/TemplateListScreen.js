@@ -4,29 +4,41 @@ import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import { getTemplates } from "../modules/templatesModule";
 import { BackHandler } from 'react-native';
 
+import * as User from "../modules/userModule";
+
 const TemplateListScreen = ({ navigation }) => {
     const [templates, setTemplates] = useState([]);
+    const [userId, setUserId] = useState("");
 
-  useEffect(() => {
-    const fetchTemplates = async () => {
-      const data = await getTemplates("1");
-      setTemplates(data);
-    };
-      const backAction = () => {
-          navigation.navigate('Home');
-          return true;
-      };
+    useEffect(() => {
+        const fetchUserId = async () => {
+            xid = await User.getUserDetails();
+            setUserId(xid.id);
+            const data = await getTemplates(xid.id);
+            setTemplates(data);
+        };
+        fetchUserId();
 
-      const backHandler = BackHandler.addEventListener(
-          'hardwareBackPress',
-          backAction
-      );
 
-      fetchTemplates();
-      return () => backHandler.remove();
 
-    
-  }, []);
+
+        const backAction = () => {
+            navigation.navigate('Home');
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction
+        );
+
+        return () => backHandler.remove();
+    }, []);
+
+   
+     
+
+   
 
   const handlePress = (id) => {
     navigation.navigate("Transaction", { id });
