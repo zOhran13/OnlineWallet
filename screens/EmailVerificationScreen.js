@@ -64,7 +64,7 @@ const EmailVerificationScreen = ({ navigation, route }) => {
               .then((data) => {
                 if (data.message != "Username or code incorrect!") {
                   if (route.params.isChecked == false)
-                    navigation.navigate("Home");
+                    navigation.navigate("Login");
                   else {
                     const requestOption = {
                       method: "GET",
@@ -116,7 +116,9 @@ const EmailVerificationScreen = ({ navigation, route }) => {
                 ToastAndroid.show(err.message, ToastAndroid.SHORT);
               });
           }}
-        ></Pressable>
+        >
+          <Text style={styles.verifyText}>VERIFY</Text>
+        </Pressable>
       </View>
     </View>
   );
