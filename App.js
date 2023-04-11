@@ -25,7 +25,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const Stack = createNativeStackNavigator();
 export default function App() {
 
-  registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
+registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
 
 
  

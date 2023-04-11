@@ -16,6 +16,8 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import * as User from '../modules/userModule';
 
 import CurrencyInput from 'react-native-currency-input';
+import DialogInput from 'react-native-dialog-input';
+
 
 const TransactionScreen = ({ navigation }) => {
     
@@ -124,6 +126,13 @@ const TransactionScreen = ({ navigation }) => {
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
     }
+    const [visible, setVisible] = useState(false);
+    function handleSendTemplate() {
+
+        setVisible(true)
+       // Alert.alert(" UBIT CU SE");
+        
+      }
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty()) {
 
@@ -326,6 +335,7 @@ const TransactionScreen = ({ navigation }) => {
                                 placeholderTextColor="#6e749d"
                                 onChangeText={(value) => setTextInputName(value)}
                             />
+    
                             <TextInput
                                 style={styles.input}
                                 placeholder="Recipient account number"
@@ -347,6 +357,25 @@ const TransactionScreen = ({ navigation }) => {
                     <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
                         <Text style={styles.text}>Submit</Text>
                     </Pressable>
+                    
+                    <Pressable >
+        <Text style={styles.sendText} onPress={handleSendTemplate}>
+          Send to
+        </Text>
+      </Pressable>
+      <View>
+                            <DialogInput 
+                isDialogVisible={visible}
+                title={"Feedback"}
+                message={"Message for Feedback"}
+                hintInput ={"Enter Text"}
+                submitInput={ (inputText) => {
+                    //setInput(inputText),
+                    setVisible(false);
+                }}
+                closeDialog={() => setVisible(false)}>
+            </DialogInput>
+            </View>
                 </View>
             </>
         );
@@ -457,7 +486,17 @@ const styles = StyleSheet.create({
         color: "#FFC021",
         fontWeight: 'bold',
         fontSize: 18
-    }
+    },
+    sendText: {
+        fontSize: 16,
+        lineHeight: 15,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: '#6e749d',
+        marginVertical: 1,
+        textDecorationLine: 'underline',
+        color: '#ffc022ef'
+      }
 
 });
 

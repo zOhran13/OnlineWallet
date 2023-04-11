@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 var link = 'http://siprojekat.duckdns.org:5051';
 
 
+
 async function getToken() {
     const token = await SecureStore.getItemAsync("secure_token");
     
