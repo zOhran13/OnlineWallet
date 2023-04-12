@@ -364,7 +364,7 @@ const TransactionScreen = ({ navigation }) => {
         </Text>
       </Pressable>
       <View>
-                            <DialogInput 
+        <DialogInput 
                 isDialogVisible={visible}
                 title={"Feedback"}
                 message={"Message for Feedback"}
@@ -374,7 +374,7 @@ const TransactionScreen = ({ navigation }) => {
                     setVisible(false);
                 }}
                 closeDialog={() => setVisible(false)}>
-            </DialogInput>
+        </DialogInput>
             </View>
                 </View>
             </>
