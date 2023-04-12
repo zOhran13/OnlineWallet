@@ -51,6 +51,7 @@ export const getRecipientDetails = async (userName) => {
             }
         });
         const data = await fetchedData.json();
+        console.log(data)
         return data;
     } catch (error) {
         console.log(error);

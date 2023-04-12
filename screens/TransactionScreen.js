@@ -128,12 +128,34 @@ const TransactionScreen = ({ navigation }) => {
     }
     const [visible, setVisible] = useState(false);
     const [inputUsername, setUsernameForSend] = React.useState('');
+
+    const sendTemplate = async (user) => {
+        console.log("OVDJE MI ISPISI USERA",user)
+        uid = User.getRecipientDetails(user);
+        console.log("OVDJE MI ID ISPISI",uid)
+        if (uid) {
+
+            createTemplate(userId, textInputTitle, textInputAmount?.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
+            Alert.alert("\"" + textInputTitle + "\" sent as a template to user " + user);
+
+        }
+        else
+            Alert.alert("User \"" + user + "\" dosent exist");
+    }
+
     function handleSendTemplate() {
 
         setVisible(true)
-       // Alert.alert(" UBIT CU SE");
         
-      }
+    }
+
+
+    const handleSubmitUsername = async (username) => {
+        setUsernameForSend(inputUsername),
+        setVisible(false);
+        sendTemplate(username)
+    }
+
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty()) {
 
@@ -370,10 +392,7 @@ const TransactionScreen = ({ navigation }) => {
                 title={"Send template"}
                 message={"Send your template to another user"}
                 hintInput ={"Enter Username"}
-                submitInput={ (inputUsername) => {
-                    setUsernameForSend(inputUsername),
-                    setVisible(false);
-                }}
+                submitInput={ (inputUsername) => handleSubmitUsername(inputUsername)}
                 closeDialog={() => setVisible(false)}>
         </DialogInput>
        
