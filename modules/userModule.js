@@ -51,7 +51,6 @@ export const getRecipientDetails = async (userName) => {
             }
         });
         const data = await fetchedData.json();
-        console.log(data)
         return data;
     } catch (error) {
         console.log(error);
@@ -66,7 +65,6 @@ export async function getUsers() {
         authorization: `Bearer ${token}`
     }).then(result => result.json())
         .then(data => {
-            console.log(data)
             return data;
         })
 

@@ -65,8 +65,7 @@ export async function updateTemplate(id, userId, title, amount, paymentType, rec
               'Authorization': `Bearer ${token}`
           },
 })
-  .then((response) => response.json())
-  .then((json) => console.log(json));
+  .then((response) => response.json());
 }
 
 export async function deleteTemplate(id) {
@@ -81,7 +80,6 @@ export async function deleteTemplate(id) {
             }
         });
         let json = await response.text();
-        console.log("Heeej: ", json);
         return json;
     } catch (error) {
         console.error(error);
@@ -110,6 +108,5 @@ export async function createTemplate(userId, title, amount, paymentType, recipie
      
   },
 })
-  .then((response) => response.json())
-  .then((json) => console.log(json));
+  .then((response) => response.json());
 }

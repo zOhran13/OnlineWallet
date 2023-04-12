@@ -14,7 +14,6 @@ export async function submitTransaction(amount, currency, paymentType, recipient
 
         token = await getToken();
             data = await getRecipientDetails(recipientName); 
-            console.log(data.firstName);
             await fetch(link + '/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",
                 headers: {

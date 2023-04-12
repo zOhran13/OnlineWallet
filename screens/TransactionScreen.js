@@ -131,11 +131,11 @@ const TransactionScreen = ({ navigation }) => {
 
     const sendTemplate = async (user) => {
         console.log("OVDJE MI ISPISI USERA",user)
-        uid = User.getRecipientDetails(user);
+        uid = await User.getRecipientDetails(user);
         console.log("OVDJE MI ID ISPISI",uid)
         if (uid) {
 
-            createTemplate(userId, textInputTitle, textInputAmount?.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
+            createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
             Alert.alert("\"" + textInputTitle + "\" sent as a template to user " + user);
 
         }
