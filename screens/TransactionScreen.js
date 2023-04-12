@@ -127,6 +127,7 @@ const TransactionScreen = ({ navigation }) => {
 
     }
     const [visible, setVisible] = useState(false);
+    const [inputUsername, setUsernameForSend] = React.useState('');
     function handleSendTemplate() {
 
         setVisible(true)
@@ -366,16 +367,18 @@ const TransactionScreen = ({ navigation }) => {
       <View>
         <DialogInput 
                 isDialogVisible={visible}
-                title={"Feedback"}
-                message={"Message for Feedback"}
-                hintInput ={"Enter Text"}
-                submitInput={ (inputText) => {
-                    //setInput(inputText),
+                title={"Send template"}
+                message={"Send your template to another user"}
+                hintInput ={"Enter Username"}
+                submitInput={ (inputUsername) => {
+                    setUsernameForSend(inputUsername),
                     setVisible(false);
                 }}
                 closeDialog={() => setVisible(false)}>
         </DialogInput>
+       
             </View>
+
                 </View>
             </>
         );
