@@ -30,6 +30,7 @@ const TransactionScreen = ({ navigation }) => {
     const [textInputDescription, setTextInputDescription] = useState("");
     const [textInputNumber, setTextInputNumber] = useState("");
     const [textInputAmount, setTextInputAmount] = useState("");
+    const [category, setCategory] = useState("");
     const [userId, setUserId] = useState("");
     const { params } = useRoute();
     const id = params?.id;
@@ -275,6 +276,25 @@ const TransactionScreen = ({ navigation }) => {
                                 value={textInputDescription}
                                 onChangeText={(value) => setTextInputDescription(value)}
                             />
+                            <Picker
+                                selectedValue={category}
+                                onValueChange={(currentCategory) =>
+                                    setCategory(currentCategory)
+                                }
+
+                                style={styles.categoryPicker}
+                            >
+                                <Picker.Item label="Category" value={null} color="darkgrey" />
+                                <Picker.Item label="Food and Drink" value="Food and Drink" color="black" />
+                                <Picker.Item label="Entertainment" value="Entertainment" color="black" />
+                                <Picker.Item label="Transportation" value="Transportation" color="black" />
+                                <Picker.Item label="Shopping" value="Shopping" color="black" />
+                                <Picker.Item label="Health and Wellness" value="Health and Wellness" color="black" />
+                                <Picker.Item label="Travel" value="$" color="black" />
+                                <Picker.Item label="Bills and Utilities" value="Bills and Utilities" color="black" />
+                                <Picker.Item label="Other" value="Other" color="black" />
+
+                            </Picker>
 
                             <Text style={styles.selectedCurrencyText}>
                                 Selected: {getCurrencyName(currency)}
@@ -372,6 +392,26 @@ const TransactionScreen = ({ navigation }) => {
                                 onChangeText={(value) => setTextInputDescription(value)}
                             />
 
+                            <Picker
+                                selectedValue={category}
+                                onValueChange={(currentCategory) =>
+                                    setCategory(currentCategory)
+                                }
+
+                                style={styles.categoryPicker}
+                            >
+                                <Picker.Item label="Category" value={null} color="darkgrey" />
+                                <Picker.Item label="Food and Drink" value="Food and Drink" color="black" />
+                                <Picker.Item label="Entertainment" value="Entertainment" color="black" />
+                                <Picker.Item label="Transportation" value="Transportation" color="black" />
+                                <Picker.Item label="Shopping" value="Shopping" color="black" />
+                                <Picker.Item label="Health and Wellness" value="Health and Wellness" color="black" />
+                                <Picker.Item label="Travel" value="$" color="black" />
+                                <Picker.Item label="Bills and Utilities" value="Bills and Utilities" color="black" />
+                                <Picker.Item label="Other" value="Other" color="black" />
+                                
+                            </Picker>
+
                             <Text style={styles.selectedCurrencyText}>
                                 Selected: {getCurrencyName(currency)}
                             </Text>
@@ -439,6 +479,12 @@ const styles = StyleSheet.create({
         height: "10%",
         backgroundColor: "#6e749d",
         marginBottom: 5,
+    },
+    categoryPicker: {
+        width: "91%",
+        marginTop: 5,
+        marginLeft: 6,
+        backgroundColor: "#6e749d"
     },
     selectedCurrencyText: {
         color: "#6e749d",
