@@ -25,12 +25,13 @@ export async function submitTransaction(amount, currency, paymentType, recipient
                     {
                         amount: amount,
                         currency: currency,
-                        paymentType: paymentType,
-                        description: description,
+                        transaction_type: paymentType,
+                        transaction_purpose: description,
                         category: category,
-                        recipientAccountNumber: recipientAccountNumber,
-                        recipientFirstName: data.firstName,
-                        recipientLastName: data.lastName
+                        name: recipientName,
+                        account_number: recipientAccountNumber,
+                        bank_name: bankName,
+                        type: recipientTypewa
                     }
 
 
