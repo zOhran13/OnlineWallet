@@ -51,4 +51,18 @@ export async function submitTransaction(amount, currency, paymentType, recipient
     }
 }
 
+export async function getTransactions() {
+    try {
+
+        const token = await getToken();
+    const fetchedData = fetch(link + '/Transaction/GetTransactionsForUser/?token=' + token + '&pageNumber=1&pageSize=20')
+            const data = await fetchedData.json();
+
+        return data;
+   
+ 
+    } catch (error) {
+        console.error(error);
+    }
+}
 
