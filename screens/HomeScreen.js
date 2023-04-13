@@ -3,6 +3,8 @@ import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import AccountBalance from "../components/AccountBalance";
 
 const HomeScreen = ({ navigation }) => {
+
+
   return (
     <View style={styles.container}>
       <AccountBalance />

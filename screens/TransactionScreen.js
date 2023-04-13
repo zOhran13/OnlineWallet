@@ -6,6 +6,7 @@ import {
     TextInput,
     Alert,
     Pressable,
+    Image
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
@@ -113,17 +114,21 @@ const TransactionScreen = ({ navigation }) => {
             alert("Please Enter Description!");
             return false;
         }
+        if (!category) {
+            alert("Please chose Category")
+            return false;
+        }
         return true;
     }
 
 
     const createNewTemplate = async () => {
-        createTemplate(userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
+        createTemplate(userId, textInputTitle, textInputAmount?.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
     const handleUpdatePress = () => {
-        updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency))
+        updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency))
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
     }
@@ -160,7 +165,7 @@ const TransactionScreen = ({ navigation }) => {
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty()) {
 
-            submitTransaction(textInputAmount, getCurrencyCode(currency), textInputPaymentType, textInputName, textInputNumber, textInputDescription);
+            submitTransaction(textInputAmount, getCurrencyCode(currency), textInputPaymentType, textInputName, textInputNumber, textInputDescription, category);
         }
 
     }
@@ -202,6 +207,46 @@ const TransactionScreen = ({ navigation }) => {
         return (
             <>
                 <View style={styles.container}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10 }} >
+                        <Pressable
+                            style={styles.listTemplatesButton}
+                            onPress={() => handleSendTemplate()}
+                        >
+                            <Image
+                                source={require("../assets/images/sendIcon.png")}
+                                style={styles.buttonImage}
+                            />
+                        </Pressable>
+                        <Pressable
+                            style={styles.listTemplatesButton}
+                            onPress={() => handleUpdatePress()}
+                        >
+                            <Image
+                                source={require("../assets/images/saveIcon.png")}
+                                style={styles.buttonImage}
+                            />
+                        </Pressable>
+                        <Pressable
+                            style={styles.listTemplatesButton}
+                            onPress={() => handleDeletePress()}
+                        >
+                            <Image
+                                source={require("../assets/images/deleteIcon.png")}
+                                style={styles.buttonImage}
+                            />
+                        </Pressable>
+                    </View>
+                    <View>
+                        <DialogInput
+                            isDialogVisible={visible}
+                            title={"Send template"}
+                            message={"Send your template to another user"}
+                            hintInput={"Enter Username"}
+                            submitInput={(inputUsername) => handleSubmitUsername(inputUsername)}
+                            closeDialog={() => setVisible(false)}>
+                        </DialogInput>
+
+                    </View>
                     <View style={styles.elipseContainer}>
                         <View style={styles.saveButtonAndTransactionContainer}>
 
@@ -304,14 +349,8 @@ const TransactionScreen = ({ navigation }) => {
                     <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
                         <Text style={styles.text}>Submit</Text>
                     </Pressable>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} >
-                        <Pressable style={styles.editButton} onPress={handleUpdatePress}>
-                            <Text style={styles.text}>Update</Text>
-                        </Pressable>
-                        <Pressable style={styles.deleteButton} onPress={handleDeletePress}>
-                            <Text style={styles.text}>Delete</Text>
-                        </Pressable>
-                    </View>
+                    
+                   
                 </View>
             </>
         );
@@ -452,6 +491,13 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 3,
     },
+    listTemplatesButton: {
+        marginLeft: "5%",
+    },
+    buttonImage: {
+        width: 50,
+        height: 50,
+    },
     container: {
         flex: 1,
         backgroundColor: "#1B1938",
@@ -507,7 +553,7 @@ const styles = StyleSheet.create({
         width: "50%",
         padding: "5%",
         backgroundColor: "#FFC021",
-        margin: 30,
+        margin: 5,
     },
     text: {
         fontSize: 20,
