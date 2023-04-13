@@ -1,12 +1,30 @@
 
 import React, { useState, useEffect } from "react";
-import { Text, View, Image, StyleSheet, Pressable } from "react-native";
+import { Text, View, Image, StyleSheet, Pressable,Alert } from "react-native";
 import { getTemplates } from "../modules/templatesModule";
 import { BackHandler } from 'react-native';
 
 import * as User from "../modules/userModule";
 
 const TemplateListScreen = ({ navigation }) => {
+  const [isPressed, setIsPressed] = useState(false);
+  const [isLongPress, setIsLongPress] = useState(false); // Added state for long press
+
+  let timeoutId; // Added timeoutId to keep track of timeout
+
+  const handleLongPressIn = () => {
+    setIsPressed(true);
+    setIsLongPress(true); // Set isLongPress to true for long press
+    timeoutId = setTimeout(() => {
+      Alert.alert("Long Pressed!", "You pressed and held the button for a while.");
+    }, 1000); // Duration for long press in milliseconds (1 second = 1000 milliseconds)
+  };
+
+  const handleLongPressOut = () => {
+    setIsPressed(false);
+    setIsLongPress(false); // Set isLongPress to false for long press
+    clearTimeout(timeoutId); // Clear the timeout using the timeoutId
+  }
     const [templates, setTemplates] = useState([]);
     const [userId, setUserId] = useState("");
 
@@ -41,14 +59,23 @@ const TemplateListScreen = ({ navigation }) => {
    
 
   const handlePress = (id) => {
-    navigation.navigate("Transaction", { id });
+    if (isLongPress) {
+      // Perform actions for long press
+      setIsLongPress(false); // Reset isLongPress after long press
+    } else {
+      // Perform actions for regular press
+      navigation.navigate("Transaction", { id });
+    }
   };
 
   return (
     <View style={styles.container}>
       {templates.map((template) => (
         <View style={styles.container1} key={template.id}>
-          <Pressable onPress={() => handlePress(template.id)}>
+          <Pressable  onPress={() => handlePress(template.id)}
+            onPressIn={handleLongPressIn}
+            onPressOut={handleLongPressOut}
+          >
             <Text style={styles.text}>{template.title}</Text>
           </Pressable>
         </View>
