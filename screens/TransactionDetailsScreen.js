@@ -30,24 +30,36 @@ export default function TransactionDetailsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={{ color: "white" }}>
-        Recipient Name: {transaction.recipient.name}
-      </Text>
-      <Text style={{ color: "white" }}>
-        Recipient Account: {transaction.recipient.account_number}
-      </Text>
-      <Text style={{ color: "white" }}>Amount: {transaction.amount}</Text>
-      <Text style={{ color: "white" }}>
-        PaymentType: {transaction.transaction_type}
-      </Text>
-      <Text style={{ color: "white" }}>Category: {transaction.category}</Text>
-      <Text style={{ color: "white" }}>
-        Description: {transaction.transaction_purpose}
-      </Text>
-      <Text style={{ color: "white" }}>
-        Transaction ID: {transaction.transaction_id}
-      </Text>
-      <Text style={{ color: "white" }}>Processed: {transaction.date}</Text>
+      <Text style={styles.title}>Transaction Details</Text>
+
+      <View style={styles.detailsContainer}>
+        <View style={styles.row}>
+          <Text style={styles.label}>Amount:</Text>
+          <Text style={styles.value}>
+            {transaction.amount} {transaction.currency}
+          </Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Date:</Text>
+          <Text style={styles.value}>{transaction.date}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Transaction Type:</Text>
+          <Text style={styles.value}>{transaction.transaction_type}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Transaction Purpose:</Text>
+          <Text style={styles.value}>{transaction.transaction_purpose}</Text>
+        </View>
+
+        <View style={styles.row}>
+          <Text style={styles.label}>Category:</Text>
+          <Text style={styles.value}>{transaction.category}</Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -56,10 +68,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1B1938",
-    alignItems: "center",
+    padding: 20,
     justifyContent: "center",
-    padding: 0,
-    marginTop: 0,
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 20,
+    color: "white",
+  },
+  detailsContainer: {
+    backgroundColor: "#2E2C4A",
+    borderRadius: 10,
+    padding: 20,
+  },
+  row: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  label: {
+    flex: 1,
+    color: "white",
+  },
+  value: {
+    flex: 2,
     color: "white",
   },
 });
