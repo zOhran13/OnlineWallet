@@ -20,28 +20,55 @@ const MyTransactionsScreen = ({ navigation }) => {
     },
     {
       id: 6,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 7,
       title: "Matija Kokor",
       date: "11.04.2023",
       amount: 2.05,
       currency: "BAM",
     },
+    {
+      id: 8,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 9,
+      title: "Matija Kokor",
+      date: "11.04.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 10,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 11,
+      title: "Matija Kokor",
+      date: "11.04.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 12,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
   ]);
   const [userId, setUserId] = useState("");
-
-  const niz = [
-    {
-      id: 5,
-      username: "Matija Kokor",
-      date: "11.04.2023",
-      amount: 2.05,
-    },
-    {
-      id: 6,
-      username: "Matija Kokor",
-      date: "11.04.2023",
-      amount: 2.05,
-    },
-  ];
 
   useEffect(() => {
     /*const fetchUserId = async () => {
@@ -70,30 +97,32 @@ const MyTransactionsScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {transactions.map((transaction) => (
-        <View style={styles.transactionContainer} key={transaction.id}>
-          <Pressable
-            style={styles.transactionContainer}
-            onPress={() => handlePress(transaction.id)}
-          >
-            <View style={styles.imageContainer}>
-              <Image
-                style={styles.image}
-                source={require("../assets/images/red_arrow.png")}
-              />
-            </View>
-            <View style={styles.detailsContainer}>
-              <Text style={styles.text}>{transaction.title}</Text>
-              <Text>{transaction.date}</Text>
-              <Text>
-                {transaction.amount} {transaction.currency}
-              </Text>
-            </View>
-          </Pressable>
-        </View>
-      ))}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        {transactions.map((transaction) => (
+          <View style={styles.transactionContainer} key={transaction.id}>
+            <Pressable
+              style={styles.transactionContainer}
+              onPress={() => handlePress(transaction.id)}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  style={styles.image}
+                  source={require("../assets/images/red_arrow.png")}
+                />
+              </View>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.text}>{transaction.title}</Text>
+                <Text>{transaction.date}</Text>
+                <Text>
+                  {transaction.amount} {transaction.currency}
+                </Text>
+              </View>
+            </Pressable>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
