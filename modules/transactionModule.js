@@ -9,7 +9,9 @@ async function getToken() {
     return token;
 }
 
-export async function submitTransaction(amount, currency, paymentType, recipientName, recipientAccountNumber, description, category) {
+
+export async function submitTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
+    currency, category) {
     try {
 
         token = await getToken();
@@ -30,8 +32,8 @@ export async function submitTransaction(amount, currency, paymentType, recipient
                         category: category,
                         name: recipientName,
                         account_number: recipientAccountNumber,
-                        bank_name: bankName,
-                        type: recipientTypewa
+                        phone_number: phoneNumber
+                        
                     }
 
 
