@@ -20,20 +20,43 @@ import registerNNPushToken from 'native-notify';
 import { TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useEffect } from 'react';
 
+import { getTransactions } from "./modules/transactionModule";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
 
-registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
+    registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
 
+    const transactions = [];
 
- 
-  return (
+    useEffect(() => {
+        const getTransactionList = async () => {
+            data = await getTransactions();
+            for (let i = 0; i < transactions.length; i++) {
+
+                transactions.push({
+                    paymentType: data[i].transaction_type,
+                    recipientName: data[i].recipient.name,
+                    recipientAccountNumber: data[i].recipient.account_number,
+                    recipientPhone: data[i].recipient.phone_number,
+                    description: data[i].transaction_purpose,
+                    category: data[i].category
+                });
+
+            }
+
+        };
+
+        //getTransactionList();
+    }, []);
+
+    return (
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Login' component={LoginScreen} />
-               <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
 
 
                 <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
@@ -59,7 +82,7 @@ registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
                     name='PhoneVerification'
                     component={PhoneVerificationScreen}
                 />
-        <Stack.Screen
+                <Stack.Screen
                     name='EmailOrPhoneVerification'
                     component={EmailOrPhoneVerificationScreen}
                 />
@@ -73,8 +96,8 @@ registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    backgroundColor: '#1B1938',
-    alignItems: 'center',
-    justifyContent: 'center',
+        backgroundColor: '#1B1938',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });

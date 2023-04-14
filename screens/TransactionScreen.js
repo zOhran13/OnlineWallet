@@ -7,7 +7,8 @@ import {
     Alert,
     Pressable,
     Image,
-    ScrollView
+    ScrollView,
+    Keyboard
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
@@ -16,7 +17,6 @@ import { useRoute } from '@react-navigation/native';
 import { getTemplate, deleteTemplate, updateTemplate, createTemplate } from "../modules/templatesModule";
 import { useNavigation, StackActions } from '@react-navigation/native';
 import * as User from '../modules/userModule';
-
 import CurrencyInput from 'react-native-currency-input';
 import DialogInput from 'react-native-dialog-input';
 
@@ -39,6 +39,7 @@ const TransactionScreen = ({ navigation }) => {
     const [c2c, setC2c] = useState(false)
     const id = params?.id;
 
+
     useEffect(() => {
         const fetchUserId = async () => {
             xid = await User.getUserDetails()
@@ -52,7 +53,8 @@ const TransactionScreen = ({ navigation }) => {
 
 
         useEffect(() => {
-            const fetchTemplate = async () => {3
+            const fetchTemplate = async () => {
+
                 const data = await getTemplate(id);
                 setSelectedTemplate(data);
             };
@@ -76,7 +78,6 @@ const TransactionScreen = ({ navigation }) => {
         }, [selectedTemplate])
 
     }
-
     const handleDeletePress = () => {
         Alert.alert('Delete template', 'Are you sure you want to delete this template?', [
             {
@@ -104,7 +105,7 @@ const TransactionScreen = ({ navigation }) => {
             return false;
         }
 
-        if (paymentType != "C2C"){
+        if (paymentType != "C2C") {
             if (!textInputName.trim()) {
                 alert("Please Enter Name!");
                 return false;
@@ -124,12 +125,12 @@ const TransactionScreen = ({ navigation }) => {
             alert("Please Enter Description!");
             return false;
         }
-        
+
         if (!category) {
             alert("Please choose Category")
             return false;
         }
-        
+
 
         return true;
     }
@@ -138,7 +139,7 @@ const TransactionScreen = ({ navigation }) => {
     const createNewTemplate = async () => {
         if (paymentType == "C2C")
             createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, phoneNumber, getCurrencyCode(currency), category);
-        else 
+        else
             createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
@@ -156,7 +157,7 @@ const TransactionScreen = ({ navigation }) => {
 
     const sendTemplate = async (user) => {
         uid = await User.getRecipientDetails(user);
-        
+
         if (uid) {
 
             if (paymentType == "C2C")
@@ -184,8 +185,8 @@ const TransactionScreen = ({ navigation }) => {
     }
 
     const checkAndSubmitTransaction = async () => {
-        if (checkTextEmpty(paymentType) ) {
-            
+        if (checkTextEmpty(paymentType)) {
+
             submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, phoneNumber, getCurrencyCode(currency), category);
         }
 
@@ -220,6 +221,175 @@ const TransactionScreen = ({ navigation }) => {
             case 'EUR':
                 return '\u20AC';
         }
+    }
+    const keyboardDidHideListener = Keyboard.addListener(
+        'keyboardDidHide',
+        () => {
+            autoCategory();
+            keyboardDidHideListener.remove();
+        }
+    );
+    const transactions = [
+
+        {
+            paymentType: 'B2C',
+            recipientName: 'Jane Smith',
+            recipientAccountNumber: '987654321',
+            recipientPhone: '9876543210',
+            description: 'Salary payment',
+            category: 'Bills and Utilities',
+        },
+        {
+            paymentType: 'C2C',
+            recipientName: 'Alice Brown',
+            recipientAccountNumber: '555555555',
+            recipientPhone: '5555555555',
+            description: 'Payment for groceries',
+            category: 'Shopping',
+        },
+        {
+            paymentType: 'C2B',
+            recipientName: 'Bob Johnson',
+            recipientAccountNumber: '234567890',
+            recipientPhone: '2345678901',
+            description: 'Payment for dinner',
+            category: 'Food and Drink',
+        },
+        {
+            paymentType: 'B2C',
+            recipientName: 'Sarah Williams',
+            recipientAccountNumber: '876543210',
+            recipientPhone: '8765432109',
+            description: 'Utility bill payment',
+            category: 'Bills and Utilities',
+        },
+        {
+            paymentType: 'C2C',
+            recipientName: 'Bob Johnson',
+            recipientAccountNumber: '234567890',
+            recipientPhone: '2345678901',
+            description: 'Payment for concert tickets',
+            category: 'Entertainment',
+        },
+        {
+            paymentType: 'C2B',
+            recipientName: 'Alice Brown',
+            recipientAccountNumber: '555555555',
+            recipientPhone: '5555555555',
+            description: 'Payment for lunch',
+            category: 'Bills and Utilities',
+        },
+        {
+            paymentType: 'B2C',
+            recipientName: 'John Doe',
+            recipientAccountNumber: '123456789',
+            recipientPhone: '1234567890',
+            description: 'Rent payment',
+            category: 'Bills and Utilities',
+        },
+        {
+            paymentType: 'C2C',
+            recipientName: 'Sarah Williams',
+            recipientAccountNumber: '876543210',
+            recipientPhone: '8765432109',
+            description: 'Payment for movie tickets',
+            category: 'Entertainment',
+        },
+        {
+            paymentType: 'C2B',
+            recipientName: 'Jane Smith',
+            recipientAccountNumber: '987654321',
+            recipientPhone: '9876543210',
+            description: 'Payment for coffee',
+            category: 'Food and Drink',
+        },
+        {
+            paymentType: 'B2C',
+            recipientName: 'Bob Johnson',
+            recipientAccountNumber: '234567890',
+            recipientPhone: '2345678901',
+            description: 'Phone bill payment',
+            category: 'Bills and Utilities',
+        },
+        {
+            paymentType: 'C2C',
+            recipientName: 'John Doe',
+            recipientAccountNumber: '123456789',
+            recipientPhone: '1234567890',
+            description: 'Payment for museum tickets',
+            category: 'Travel',
+        },
+        {
+            paymentType: 'C2B',
+            recipientName: 'Sarah Williams',
+            recipientAccountNumber: '876543210',
+            recipientPhone: '8765432109',
+            description: 'Payment for dinner',
+            category: 'Food and Drink',
+        }]
+
+    function autoCategory() {
+        const highestCategory = filterAndSumCategories(transactions);
+        setCategory(highestCategory);
+    }
+
+
+
+
+    function filterAndSumCategories(transactions) {
+        const accountNumber = textInputNumber;
+        const phoneNumber = phoneNumber;
+        const recipientName = textInputName;
+        const descriptionWords = textInputDescription.split(' ');
+        const englishExcludedWords = [
+            'and','but','or','yet','for','nor','so','at','by',
+            'from','in','of','on','to','for', 'payment', 'transfer', 'from', 'with'
+        ];
+
+
+        const accountNumberList = transactions.filter((transaction) => {
+            const number = transaction.recipientAccountNumber ? transaction.recipientAccountNumber.toLowerCase() : '';
+            return number === accountNumber;
+        });
+
+        const phoneNumberList = transactions.filter((transaction) => {
+
+            const phone = transaction.recipientPhone ? transaction.recipientPhone.toLowerCase() : '';
+            return phone === phoneNumber;
+        });
+
+        const recipientNameList = transactions.filter((transaction) => {
+            const name = transaction.recipientName ? transaction.recipientName.toLowerCase() : '';
+            return name === recipientName
+
+        });
+        const descriptionList = transactions.filter((transaction) => {
+
+            const description = transaction.description ? transaction.description.toLowerCase() : '';
+            return descriptionWords.some((word) => {
+                if (!englishExcludedWords.includes(word.toLowerCase()))
+                    return description.includes(word.toLowerCase());
+            });
+        });
+
+
+
+        const allLists = [accountNumberList, phoneNumberList, recipientNameList, descriptionList];
+        const categoryCounts = {};
+
+        allLists.forEach((list) => {
+            list.forEach((transaction) => {
+                const category = transaction.category;
+                categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+            });
+        });
+
+        const highestCategory = Object.keys(categoryCounts).reduce((a, b) => {
+            return categoryCounts[a] > categoryCounts[b] ? a : b;
+        }, []);
+
+
+        return highestCategory;
     }
 
 
@@ -348,7 +518,10 @@ const TransactionScreen = ({ navigation }) => {
                                     style={styles.input}
                                     placeholder="Recipient name"
                                     placeholderTextColor="#6e749d"
-                                    onChangeText={(value) => setTextInputName(value)}
+                                    onChangeText={(value) => {
+                                        setTextInputName(value);
+                                    }
+                                    }
                                 />
 
                                 <TextInput
@@ -357,7 +530,7 @@ const TransactionScreen = ({ navigation }) => {
                                     placeholderTextColor="#6e749d"
                                     onChangeText={(value) => setTextInputNumber(value)}
                                 />
-                            
+
                             </>)}
                             <TextInput
                                 style={styles.input}
@@ -367,11 +540,13 @@ const TransactionScreen = ({ navigation }) => {
                             />
 
 
-                            
+
                             <Picker
                                 selectedValue={category}
-                                onValueChange={(category) =>
-                                    setCategory(category)
+                                onValueChange={(category) => {
+
+                                    setCategory(category);
+                                }
                                 }
 
                                 style={styles.categoryPicker}
@@ -382,7 +557,7 @@ const TransactionScreen = ({ navigation }) => {
                                 <Picker.Item label="Transportation" value="Transportation" color="black" />
                                 <Picker.Item label="Shopping" value="Shopping" color="black" />
                                 <Picker.Item label="Health and Wellness" value="Health and Wellness" color="black" />
-                                <Picker.Item label="Travel" value="$" color="black" />
+                                <Picker.Item label="Travel" value="Travel" color="black" />
                                 <Picker.Item label="Bills and Utilities" value="Bills and Utilities" color="black" />
                                 <Picker.Item label="Other" value="Other" color="black" />
 
@@ -396,12 +571,14 @@ const TransactionScreen = ({ navigation }) => {
                     <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
                         <Text style={styles.text}>Submit</Text>
                     </Pressable>
+                    {!id && (
+                        <Pressable >
+                            <Text style={styles.sendText} onPress={handleSendTemplate}>
+                                Send to
+                            </Text>
+                        </Pressable>
+                    )}
 
-                    <Pressable >
-                        <Text style={styles.sendText} onPress={handleSendTemplate}>
-                            Send to
-                        </Text>
-                    </Pressable>
                     <View>
                         <DialogInput
                             isDialogVisible={visible}
@@ -451,8 +628,8 @@ const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         backgroundColor: "#1B1938",
-        paddingTop: 30,
-        paddingBottom: '25%'
+        paddingTop: '5%',
+        paddingBottom: '30%'
     },
     currencyPicker: {
         backgroundColor: "#6e749d",
