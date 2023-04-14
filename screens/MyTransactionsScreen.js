@@ -74,11 +74,16 @@ const MyTransactionsScreen = ({ navigation }) => {
       {transactions.map((transaction) => (
         <View style={styles.container1} key={transaction.id}>
           <Pressable onPress={() => handlePress(transaction.id)}>
-            <Text style={styles.text}>{transaction.title}</Text>
-            <Text>{transaction.date}</Text>
-            <Text>
-              {transaction.amount} {transaction.currency}
-            </Text>
+            <View style={styles.imageContainer}>
+              <Image style={styles.image} source={require("../assets/images/red_arrow.png")} />
+            </View>
+            <View style={styles.container2}>
+              <Text style={styles.text}>{transaction.title}</Text>
+              <Text>{transaction.date}</Text>
+              <Text>
+                {transaction.amount} {transaction.currency}
+              </Text>
+            </View>
           </Pressable>
         </View>
       ))}
@@ -95,20 +100,6 @@ const styles = StyleSheet.create({
     padding: 0,
     marginTop: 0,
   },
-  listtransactionsButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    height: "2%",
-    width: "50%",
-    padding: 20,
-    backgroundColor: "#FFC021",
-  },
-  transactionButtonContainer: {
-    width: "100%",
-    alignItems: "center",
-    padding: 7,
-  },
   text: {
     fontSize: 18,
     lineHeight: 21,
@@ -117,15 +108,28 @@ const styles = StyleSheet.create({
     color: "black",
   },
   container1: {
-    alignItems: "center",
-    justifyContent: "center",
     borderColor: "black",
     borderRadius: 10,
     backgroundColor: "#FFC021",
     padding: 10,
     width: "80%",
     marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
+  },
+  imageContainer: {
+    marginRight: 10,
+  },
+  container2: {
+    marginLeft: 70,
+    marginTop: 0,
+    paddingTop: 0,
+  }
 });
 
 export default MyTransactionsScreen;
