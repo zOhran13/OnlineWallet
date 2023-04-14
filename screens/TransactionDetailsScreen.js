@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 export default function TransactionDetailsScreen() {
   const transaction = {
@@ -29,58 +29,103 @@ export default function TransactionDetailsScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Transaction Details</Text>
-
-      <View style={styles.detailsContainer}>
-        <View style={styles.row}>
-          <Text style={styles.label}>Amount:</Text>
-          <Text style={styles.value}>
-            {transaction.amount} {transaction.currency}
-          </Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Date:</Text>
-          <Text style={styles.value}>{transaction.date}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Transaction Type:</Text>
-          <Text style={styles.value}>{transaction.transaction_type}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Transaction Purpose:</Text>
-          <Text style={styles.value}>{transaction.transaction_purpose}</Text>
-        </View>
-
-        <View style={styles.row}>
-          <Text style={styles.label}>Category:</Text>
-          <Text style={styles.value}>{transaction.category}</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View>
+        <Text style={styles.title}>Transaction Details</Text>
+        <View style={styles.detailsContainer}>
+          <View style={styles.row}>
+            <Text style={styles.label}>Amount:</Text>
+            <Text style={styles.value}>
+              {transaction.amount} {transaction.currency}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Date:</Text>
+            <Text style={styles.value}>{transaction.date}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Transaction Type:</Text>
+            <Text style={styles.value}>{transaction.transaction_type}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Transaction Purpose:</Text>
+            <Text style={styles.value}>{transaction.transaction_purpose}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Category:</Text>
+            <Text style={styles.value}>{transaction.category}</Text>
+          </View>
         </View>
       </View>
-    </View>
+
+      <View>
+        <Text style={styles.title}>Sender</Text>
+        <View style={styles.detailsContainer}>
+          <View style={styles.row}>
+            <Text style={styles.label}>Name:</Text>
+            <Text style={styles.value}>
+              {transaction.sender.name}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Bank name:</Text>
+            <Text style={styles.value}>{transaction.sender.bank_name}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Account number:</Text>
+            <Text style={styles.value}>{transaction.sender.account_number}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Phone number:</Text>
+            <Text style={styles.value}>{transaction.sender.phone_number}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View>
+        <Text style={styles.title}>Receiver</Text>
+        <View style={styles.detailsContainer}>
+          <View style={styles.row}>
+            <Text style={styles.label}>Name:</Text>
+            <Text style={styles.value}>
+              {transaction.recipient.name}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Bank name:</Text>
+            <Text style={styles.value}>{transaction.recipient.bank_name}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Account number:</Text>
+            <Text style={styles.value}>{transaction.recipient.account_number}</Text>
+          </View>
+        </View>
+      </View>
+      
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: "#1B1938",
     padding: 20,
     justifyContent: "center",
   },
   title: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 20,
     color: "white",
+    marginTop: 20,
+    marginBottom: 10,
   },
   detailsContainer: {
     backgroundColor: "#2E2C4A",
     borderRadius: 10,
     padding: 20,
+    marginTop: 0,
   },
   row: {
     flexDirection: "row",
@@ -91,7 +136,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   value: {
-    flex: 2,
     color: "white",
+    textAlign: 'right',
   },
 });
