@@ -27,7 +27,7 @@ const TransactionScreen = ({ navigation }) => {
     const [selectedTemplate, setSelectedTemplate] = useState({});
     const [currency, setCurrency] = useState("KM");
     const [textInputTitle, setTextInputTitle] = useState("New Transaction");
-    const [paymentType, setPaymenType] = useState("B2C")
+    const [paymentType, setPaymenType] = useState("C2B")
     const [textInputName, setTextInputName] = useState("");
     const [textInputDescription, setTextInputDescription] = useState("");
     const [textInputNumber, setTextInputNumber] = useState("");
@@ -36,6 +36,7 @@ const TransactionScreen = ({ navigation }) => {
     const [recipientType, setRecipientType] = useState("");
     const [category, setCategory] = useState("");
     const [userId, setUserId] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
     const { params } = useRoute();
     const [c2c, setC2c] = useState(false)
     const id = params?.id;
@@ -66,11 +67,15 @@ const TransactionScreen = ({ navigation }) => {
             if (selectedTemplate != null) {
                 setTextInputTitle(selectedTemplate.title);
                 setTextInputAmount(parseFloat(selectedTemplate.amount));
-                
+                setPaymenType(selectedTemplate.paymentType);
+                setCurrency(getCurrencyTag(selectedTemplate.currency));
                 setTextInputName(selectedTemplate.recipientName);
                 setTextInputNumber(selectedTemplate.recipientAccountNumber);
                 setTextInputDescription(selectedTemplate.description);
-                setCurrency(getCurrencyTag(selectedTemplate.currency));
+                setTextInputBank(selectedTemplate.bank);
+                setRecipientType(selectedTemplate.recipientType);
+                setPhoneNumber(selectedTemplate.phoneNumber);
+                setCategory(selectedTemplate.category);
             }
         }, [selectedTemplate])
 
@@ -96,32 +101,48 @@ const TransactionScreen = ({ navigation }) => {
     }
 
 
-    const checkTextEmpty = () => {
+    const checkTextEmpty = (paymentType) => {
 
         if (!textInputAmount.toString().trim()) {
             alert("Please Enter Amount!");
             return false;
         }
-        if (!textInputPaymentType.trim()) {
-            alert("Please Enter PaymentType!");
+
+        if (paymentType != "C2C"){
+            if (!textInputName.trim()) {
+                alert("Please Enter Name!");
+                return false;
+            }
+            if (!textInputNumber.trim()) {
+                alert("Please Enter Account Number!");
+                return false;
+            }
+            if (!textInputBank.trim()) {
+                alert("Please enter Bank Name");
+                return false;
+            }
+            if (!recipientType) {
+                alert("Please choose Recipient Type");
+                return false;
+            }
+        }
+
+        if (!phoneNumber.toString().trim()) {
+            alert("Please enter Phone Number");
             return false;
         }
-        if (!textInputName.trim()) {
-            alert("Please Enter Name!");
-            return false;
-        }
-        if (!textInputNumber.trim()) {
-            alert("Please Enter Account Number!");
-            return false;
-        }
+
         if (!textInputDescription.trim()) {
             alert("Please Enter Description!");
             return false;
         }
+        
         if (!category) {
-            alert("Please chose Category")
+            alert("Please choose Category")
             return false;
         }
+        
+
         return true;
     }
 
@@ -140,9 +161,8 @@ const TransactionScreen = ({ navigation }) => {
     const [inputUsername, setUsernameForSend] = React.useState('');
 
     const sendTemplate = async (user) => {
-        console.log("OVDJE MI ISPISI USERA", user)
         uid = await User.getRecipientDetails(user);
-        console.log("OVDJE MI ID ISPISI", uid)
+        
         if (uid) {
 
             createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), textInputPaymentType, textInputName, textInputNumber, textInputDescription, getCurrencyCode(currency));
@@ -167,7 +187,7 @@ const TransactionScreen = ({ navigation }) => {
     }
 
     const checkAndSubmitTransaction = async () => {
-        if (checkTextEmpty()) {
+        if (checkTextEmpty(paymentType) ) {
 
             submitTransaction(textInputAmount, getCurrencyCode(currency), textInputPaymentType, textInputName, textInputNumber, textInputDescription, category);
         }
@@ -207,155 +227,155 @@ const TransactionScreen = ({ navigation }) => {
 
 
 
-    
-        return (
-            <>
-                <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={true}>
-                    <View style={styles.container}>
-                        {id && (
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10, paddingTop: -10 }} >
-                                <Pressable
-                                    style={styles.listTemplatesButton}
-                                    onPress={() => handleSendTemplate()}
-                                >
-                                    <Image
-                                        source={require("../assets/images/sendIcon.png")}
-                                        style={styles.buttonImage}
-                                    />
+
+    return (
+        <>
+            <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={true}>
+                <View style={styles.container}>
+                    {id && (
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingBottom: 10, paddingTop: -10 }} >
+                            <Pressable
+                                style={styles.listTemplatesButton}
+                                onPress={() => handleSendTemplate()}
+                            >
+                                <Image
+                                    source={require("../assets/images/sendIcon.png")}
+                                    style={styles.buttonImage}
+                                />
+                            </Pressable>
+                            <Pressable
+                                style={styles.listTemplatesButton}
+                                onPress={() => handleUpdatePress()}
+                            >
+                                <Image
+                                    source={require("../assets/images/saveIcon.png")}
+                                    style={styles.buttonImage}
+                                />
+                            </Pressable>
+                            <Pressable
+                                style={styles.listTemplatesButton}
+                                onPress={() => handleDeletePress()}
+                            >
+                                <Image
+                                    source={require("../assets/images/deleteIcon.png")}
+                                    style={styles.buttonImage}
+                                />
+                            </Pressable>
+                        </View>)}
+
+                    <View style={styles.elipseContainer}>
+                        <View style={styles.saveButtonAndTransactionContainer}>
+                            <TextInput
+                                style={styles.newTransactionTitle}
+                                onChangeText={(value) => setTextInputTitle(value)}
+
+                            >New Transaction</TextInput>
+                            {!id && (
+
+                                <Pressable style={styles.saveButton} onPress={createNewTemplate}>
+                                    <Text style={styles.saveButtonText}>SAVE</Text>
                                 </Pressable>
-                                <Pressable
-                                    style={styles.listTemplatesButton}
-                                    onPress={() => handleUpdatePress()}
+                            )}
+
+                        </View>
+
+                        <View>
+
+                            <View style={styles.amountCurrencyContainer}>
+                                <Text style={{ color: "white" }}>Payment Type:</Text>
+
+                                <Picker
+                                    selectedValue={paymentType}
+                                    onValueChange={(type) => {
+                                        setPaymenType(type)
+                                        if (type == "C2C")
+                                            setC2c(true);
+                                        else
+                                            setC2c(false);
+                                    }
+
+                                    }
+
+                                    mode={'dropdown'}
+                                    style={styles.paymentPicker}
                                 >
-                                    <Image
-                                        source={require("../assets/images/saveIcon.png")}
-                                        style={styles.buttonImage}
-                                    />
-                                </Pressable>
-                                <Pressable
-                                    style={styles.listTemplatesButton}
-                                    onPress={() => handleDeletePress()}
-                                >
-                                    <Image
-                                        source={require("../assets/images/deleteIcon.png")}
-                                        style={styles.buttonImage}
-                                    />
-                                </Pressable>
-                            </View>)}
-
-                        <View style={styles.elipseContainer}>
-                            <View style={styles.saveButtonAndTransactionContainer}>
-                                <TextInput
-                                    style={styles.newTransactionTitle}
-                                    onChangeText={(value) => setTextInputTitle(value)}
-
-                                >New Transaction</TextInput>
-                                {!id && (
-
-                                    <Pressable style={styles.saveButton} onPress={createNewTemplate}>
-                                        <Text style={styles.saveButtonText}>SAVE</Text>
-                                    </Pressable>
-                                    )}
-
+                                    <Picker.Item label="C2B" value="C2B" color="black" />
+                                    <Picker.Item label="C2C" value="C2C" color="black" />
+                                    <Picker.Item label="B2C" value="B2C" color="black" />
+                                </Picker>
                             </View>
 
-                            <View>
 
-                                <View style={styles.amountCurrencyContainer}>
-                                    <Text style={{ color: "white" }}>Payment Type:</Text>
+                            <View style={styles.amountCurrencyContainer}>
+                                <CurrencyInput
+                                    placeholder="Transaction amount"
+                                    placeholderTextColor="#6e749d"
+                                    style={styles.amountInput}
+                                    value={textInputAmount}
+                                    onChangeValue={(value) => {
+                                        setTextInputAmount(value)
+                                    }}
+                                    prefix={currency === 'BAM' ? 'KM' : currency}
+                                    delimiter=","
+                                    separator="."
+                                    precision={2}
+                                    minValue={0}
 
-                                    <Picker
-                                        selectedValue={paymentType}
-                                        onValueChange={(type) => {
-                                            setPaymenType(type)
-                                            if (type == "C2C")
-                                                setC2c(true);
-                                            else
-                                                setC2c(false);
-                                        }
+                                />
+                                <Picker
+                                    selectedValue={currency}
+                                    onValueChange={(currentCurrency) =>
+                                        setCurrency(currentCurrency)
+                                    }
 
-                                        }
+                                    mode={'dropdown'}
+                                    style={styles.currencyPicker}
+                                >
+                                    <Picker.Item label="BAM" value="KM" color="black" />
+                                    <Picker.Item label="EUR" value={'\u20AC'} color="black" />
+                                    <Picker.Item label="USD" value="$" color="black" />
+                                </Picker>
+                            </View>
 
-                                        mode={'dropdown'}
-                                        style={styles.paymentPicker}
-                                    >
-                                        <Picker.Item label="C2B" value="C2B" color="black" />
-                                        <Picker.Item label="C2C" value="C2C" color="black" />
-                                        <Picker.Item label="B2C" value="B2C" color="black" />
-                                    </Picker>
-                                </View>
-
-
-                                <View style={styles.amountCurrencyContainer}>
-                                    <CurrencyInput
-                                        placeholder="Transaction amount"
-                                        placeholderTextColor="#6e749d"
-                                        style={styles.amountInput}
-                                        value={textInputAmount}
-                                        onChangeValue={(value) => {
-                                            setTextInputAmount(value)
-                                        }}
-                                        prefix={currency === 'BAM' ? 'KM' : currency}
-                                        delimiter=","
-                                        separator="."
-                                        precision={2}
-                                        minValue={0}
-
-                                    />
-                                    <Picker
-                                        selectedValue={currency}
-                                        onValueChange={(currentCurrency) =>
-                                            setCurrency(currentCurrency)
-                                        }
-
-                                        mode={'dropdown'}
-                                        style={styles.currencyPicker}
-                                    >
-                                        <Picker.Item label="BAM" value="KM" color="black" />
-                                        <Picker.Item label="EUR" value={'\u20AC'} color="black" />
-                                        <Picker.Item label="USD" value="$" color="black" />
-                                    </Picker>
-                                </View>
-
-                                {c2c && (
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Recipient phone number"
-                                        placeholderTextColor="#6e749d"
-                                        keyboardType='number-pad'
-                                        onChangeText={(value) => setTextInputName(value)}
-                                    />)}
-
-                                {!c2c && (<>
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Recipient name"
-                                        placeholderTextColor="#6e749d"
-                                        onChangeText={(value) => setTextInputName(value)}
-                                    />
-
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Recipient account number"
-                                        placeholderTextColor="#6e749d"
-                                        onChangeText={(value) => setTextInputNumber(value)}
-                                    />
-                                    <TextInput
-                                        style={styles.input}
-                                        placeholder="Bank name"
-                                        placeholderTextColor="#6e749d"
-                                        onChangeText={(value) => setTextInputBank(value)}
-                                    />
-                                </>)}
+                            {c2c && (
                                 <TextInput
                                     style={styles.input}
-                                    placeholder="Description"
+                                    placeholder="Recipient phone number"
                                     placeholderTextColor="#6e749d"
-                                    onChangeText={(value) => setTextInputDescription(value)}
+                                    keyboardType='number-pad'
+                                    onChangeText={(value) => setTextInputName(value)}
+                                />)}
+
+                            {!c2c && (<>
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Recipient name"
+                                    placeholderTextColor="#6e749d"
+                                    onChangeText={(value) => setTextInputName(value)}
                                 />
 
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Recipient account number"
+                                    placeholderTextColor="#6e749d"
+                                    onChangeText={(value) => setTextInputNumber(value)}
+                                />
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Bank name"
+                                    placeholderTextColor="#6e749d"
+                                    onChangeText={(value) => setTextInputBank(value)}
+                                />
+                            </>)}
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Description"
+                                placeholderTextColor="#6e749d"
+                                onChangeText={(value) => setTextInputDescription(value)}
+                            />
 
 
+                            {!c2c && (
                                 <Picker
                                     selectedValue={recipientType}
                                     onValueChange={(type) =>
@@ -368,58 +388,58 @@ const TransactionScreen = ({ navigation }) => {
                                     <Picker.Item label="Person" value="Person" color="black" />
                                     <Picker.Item label="Company" value="Company" color="black" />
 
-                                </Picker>
-                                <Picker
-                                    selectedValue={category}
-                                    onValueChange={(category) =>
-                                        setCategory(category)
-                                    }
+                                </Picker>)}
+                            <Picker
+                                selectedValue={category}
+                                onValueChange={(category) =>
+                                    setCategory(category)
+                                }
 
-                                    style={styles.categoryPicker}
-                                >
-                                    <Picker.Item label="Category" value={null} color="darkgrey" />
-                                    <Picker.Item label="Food and Drink" value="Food and Drink" color="black" />
-                                    <Picker.Item label="Entertainment" value="Entertainment" color="black" />
-                                    <Picker.Item label="Transportation" value="Transportation" color="black" />
-                                    <Picker.Item label="Shopping" value="Shopping" color="black" />
-                                    <Picker.Item label="Health and Wellness" value="Health and Wellness" color="black" />
-                                    <Picker.Item label="Travel" value="$" color="black" />
-                                    <Picker.Item label="Bills and Utilities" value="Bills and Utilities" color="black" />
-                                    <Picker.Item label="Other" value="Other" color="black" />
+                                style={styles.categoryPicker}
+                            >
+                                <Picker.Item label="Category" value={null} color="darkgrey" />
+                                <Picker.Item label="Food and Drink" value="Food and Drink" color="black" />
+                                <Picker.Item label="Entertainment" value="Entertainment" color="black" />
+                                <Picker.Item label="Transportation" value="Transportation" color="black" />
+                                <Picker.Item label="Shopping" value="Shopping" color="black" />
+                                <Picker.Item label="Health and Wellness" value="Health and Wellness" color="black" />
+                                <Picker.Item label="Travel" value="$" color="black" />
+                                <Picker.Item label="Bills and Utilities" value="Bills and Utilities" color="black" />
+                                <Picker.Item label="Other" value="Other" color="black" />
 
-                                </Picker>
+                            </Picker>
 
-                                <Text style={styles.selectedCurrencyText}>
-                                    Selected: {getCurrencyName(currency)}
-                                </Text>
-                            </View>
-                        </View>
-                        <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
-                            <Text style={styles.text}>Submit</Text>
-                        </Pressable>
-
-                        <Pressable >
-                            <Text style={styles.sendText} onPress={handleSendTemplate}>
-                                Send to
+                            <Text style={styles.selectedCurrencyText}>
+                                Selected: {getCurrencyName(currency)}
                             </Text>
-                        </Pressable>
-                        <View>
-                            <DialogInput
-                                isDialogVisible={visible}
-                                title={"Send template"}
-                                message={"Send your template to another user"}
-                                hintInput={"Enter Username"}
-                                submitInput={(inputUsername) => handleSubmitUsername(inputUsername)}
-                                closeDialog={() => setVisible(false)}>
-                            </DialogInput>
-
                         </View>
+                    </View>
+                    <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
+                        <Text style={styles.text}>Submit</Text>
+                    </Pressable>
+
+                    <Pressable >
+                        <Text style={styles.sendText} onPress={handleSendTemplate}>
+                            Send to
+                        </Text>
+                    </Pressable>
+                    <View>
+                        <DialogInput
+                            isDialogVisible={visible}
+                            title={"Send template"}
+                            message={"Send your template to another user"}
+                            hintInput={"Enter Username"}
+                            submitInput={(inputUsername) => handleSubmitUsername(inputUsername)}
+                            closeDialog={() => setVisible(false)}>
+                        </DialogInput>
 
                     </View>
-                </ScrollView>
-            </>
-        );
-    
+
+                </View>
+            </ScrollView>
+        </>
+    );
+
 };
 
 const styles = StyleSheet.create({
@@ -453,7 +473,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#1B1938",
         paddingTop: 30,
-        paddingBottom: '14%'
+        paddingBottom: '25%'
     },
     currencyPicker: {
         backgroundColor: "#6e749d",
