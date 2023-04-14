@@ -72,12 +72,18 @@ const MyTransactionsScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {transactions.map((transaction) => (
-        <View style={styles.container1} key={transaction.id}>
-          <Pressable onPress={() => handlePress(transaction.id)}>
+        <View style={styles.transactionContainer} key={transaction.id}>
+          <Pressable
+            style={styles.transactionContainer}
+            onPress={() => handlePress(transaction.id)}
+          >
             <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require("../assets/images/red_arrow.png")} />
+              <Image
+                style={styles.image}
+                source={require("../assets/images/red_arrow.png")}
+              />
             </View>
-            <View style={styles.container2}>
+            <View style={styles.detailsContainer}>
               <Text style={styles.text}>{transaction.title}</Text>
               <Text>{transaction.date}</Text>
               <Text>
@@ -96,9 +102,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#1B1938",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 0,
-    marginTop: 0,
+    padding: 10,
+  },
+  transactionContainer: {
+    borderColor: "black",
+    borderRadius: 10,
+    backgroundColor: "#FFC021",
+    padding: 10,
+    width: "90%",
+    marginBottom: 10,
+    flexDirection: "row",
+  },
+  imageContainer: {
+    marginRight: 10,
   },
   text: {
     fontSize: 18,
@@ -107,29 +123,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "black",
   },
-  container1: {
-    borderColor: "black",
-    borderRadius: 10,
-    backgroundColor: "#FFC021",
-    padding: 10,
-    width: "80%",
-    marginBottom: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   image: {
     width: 50,
     height: 50,
-    marginRight: 10,
   },
-  imageContainer: {
-    marginRight: 10,
-  },
-  container2: {
-    marginLeft: 70,
-    marginTop: 0,
-    paddingTop: 0,
-  }
 });
 
 export default MyTransactionsScreen;
