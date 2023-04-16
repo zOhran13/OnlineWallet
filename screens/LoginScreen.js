@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import * as SecureStore from 'expo-secure-store';
+import Checkbox from 'expo-checkbox';
 import { 
   hasHardwareAsync,
   isEnrolledAsync,
@@ -33,6 +34,7 @@ export default LoginScreen = ({ navigation }) => {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [userData, setUserData] = useState({});
+  const [isChecked, setChecked] = useState(false);
 
   const [_, __, fbPromptAsync] = Facebook.useAuthRequest({
     clientId: "1370313683731054"
@@ -303,10 +305,11 @@ export default LoginScreen = ({ navigation }) => {
           },
           body: JSON.stringify({
             email: emailOrPhoneValue,
-            password: password
+            password: password,
+            method: "email"
           })
         };
-      } else if (isValidPhoneNumber(emailOrPhoneValue)) {
+      } else if (isValidPhoneNumber(emailOrPhoneValue) && isChecked) {
         requestOption = {
           method: 'POST',
           headers: {
@@ -314,20 +317,33 @@ export default LoginScreen = ({ navigation }) => {
           },
           body: JSON.stringify({
             phone: emailOrPhoneValue,
-            password: password
+            password: password,
+            method: "sms"
+          })
+        };
+      } else if (isValidPhoneNumber(emailOrPhoneValue) && !isChecked){
+        requestOption = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            phone: emailOrPhoneValue,
+            password: password,
+            method: "email"
           })
         };
       }
 
-      fetch("http://siprojekat.duckdns.org:5051/api/User/login", requestOption).then(response => {
+      fetch("http://siprojekat.duckdns.org:5051/api/User/otc/generate", requestOption).then(response => {
         return response.json();
       }).then(data => {
-        if (data.errors != null || data.token == null) {
+        if (data.errors != null) {
           showAlert("Login error", "Login data incorrect")
         } else {
-          setToken(data.token)
-          console.log("User data: " + data)
-          navigation.navigate("EmailOrPhoneVerification")
+          navigation.navigate("EmailOrPhoneVerification", {
+            method: requestOption.method
+          })
         }
       }).catch(err => {
         console.log(err.message)
@@ -361,6 +377,19 @@ export default LoginScreen = ({ navigation }) => {
             secureTextEntry
             onChangeText={setPassword}
             value={password} />
+            
+            <View style={styles.section}>
+                <Checkbox
+                  style={styles.checkbox}
+                  value={isChecked}
+                  onValueChange={setChecked}
+                  color={isChecked ? "#6e749d" : undefined}
+                />
+                <Text style={styles.paragraph}>
+                  Send one time code to my phone number
+                </Text>
+              </View>
+
         </View>
         <Pressable
           style={styles.loginButton}
@@ -419,6 +448,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: '#1B1938',
   },
+  checkbox: {
+    marginLeft: 8,
+    marginRight: 6,
+    marginTop: 5
+  },
   formContainer: {
     alignItems: 'center',
   },
@@ -461,6 +495,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1,
   },
+  
   signupText: {
     fontSize: 14,
     lineHeight: 21,
@@ -485,6 +520,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 1,
     color: 'white',
+  },
+  section: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  paragraph: {
+    fontSize: 14,
+    marginTop: 3,
+    color: "#6e749d",
+    letterSpacing: 0.25,
   },
   googleButton: {
     flexDirection: 'row',
