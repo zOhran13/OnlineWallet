@@ -20,7 +20,6 @@ import registerNNPushToken from 'native-notify';
 import { TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { useEffect } from 'react';
 
 import { getTransactions } from "./modules/transactionModule";
 
@@ -29,28 +28,7 @@ export default function App() {
 
     registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
 
-    const transactions = [];
-
-    useEffect(() => {
-        const getTransactionList = async () => {
-            data = await getTransactions();
-            for (let i = 0; i < transactions.length; i++) {
-
-                transactions.push({
-                    paymentType: data[i].transaction_type,
-                    recipientName: data[i].recipient.name,
-                    recipientAccountNumber: data[i].recipient.account_number,
-                    recipientPhone: data[i].recipient.phone_number,
-                    description: data[i].transaction_purpose,
-                    category: data[i].category
-                });
-
-            }
-
-        };
-
-        //getTransactionList();
-    }, []);
+    
 
     return (
         <NavigationContainer>

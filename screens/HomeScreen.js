@@ -1,9 +1,30 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import AccountBalance from "../components/AccountBalance";
+import { getTransactions } from "../modules/transactionModule";
 
+import { useEffect } from 'react';
 const HomeScreen = ({ navigation }) => {
+    const transactions = [];
+  useEffect(() => {
+            const getTransactionList = async () => {
+                data = await getTransactions();
+                for (let i = 0; i < data.length; i++) {
+                    transactions.push({
+                        paymentType: data[i].transactionType,
+                        recipientName: data[i].recipient.name,
+                        recipientAccountNumber: data[i].recipient.accountNumber,
+                        recipientPhone: data[i].recipient.phoneNumber,
+                        description: data[i].transactionPurpose,
+                        category: data[i].category
+                    });
 
+                }
+    
+            };
+    
+      getTransactionList();
+        }, []);
 
 
   return (

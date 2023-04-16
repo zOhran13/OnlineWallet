@@ -12,13 +12,14 @@ import {
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
-import { submitTransaction } from "../modules/transactionModule";
+import { submitTransaction, submitPhoneTransaction } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
 import { getTemplate, deleteTemplate, updateTemplate, createTemplate } from "../modules/templatesModule";
 import { useNavigation, StackActions } from '@react-navigation/native';
 import * as User from '../modules/userModule';
 import CurrencyInput from 'react-native-currency-input';
 import DialogInput from 'react-native-dialog-input';
+import {t } from '..'
 
 
 const TransactionScreen = ({ navigation }) => {
@@ -27,7 +28,7 @@ const TransactionScreen = ({ navigation }) => {
     const [selectedTemplate, setSelectedTemplate] = useState({});
     const [currency, setCurrency] = useState("KM");
     const [textInputTitle, setTextInputTitle] = useState("New Transaction");
-    const [paymentType, setPaymenType] = useState("C2B")
+    const [paymentType, setPaymentType] = useState("C2B")
     const [textInputName, setTextInputName] = useState("");
     const [textInputDescription, setTextInputDescription] = useState("");
     const [textInputNumber, setTextInputNumber] = useState("");
@@ -38,6 +39,7 @@ const TransactionScreen = ({ navigation }) => {
     const { params } = useRoute();
     const [c2c, setC2c] = useState(false)
     const id = params?.id;
+    const [userCategory, setUserCategory] = useState(false);
 
 
     useEffect(() => {
@@ -67,13 +69,15 @@ const TransactionScreen = ({ navigation }) => {
             if (selectedTemplate != null) {
                 setTextInputTitle(selectedTemplate.title);
                 setTextInputAmount(parseFloat(selectedTemplate.amount));
-                setPaymenType(selectedTemplate.paymentType);
+                setPaymentType(selectedTemplate.paymentType);
                 setCurrency(getCurrencyTag(selectedTemplate.currency));
                 setTextInputName(selectedTemplate.recipientName);
                 setTextInputNumber(selectedTemplate.recipientAccountNumber);
                 setTextInputDescription(selectedTemplate.description);
                 setPhoneNumber(selectedTemplate.phoneNumber);
                 setCategory(selectedTemplate.category);
+                if (selectedTemplate.paymentType == "C2C")
+                    setC2c(true);
             }
         }, [selectedTemplate])
 
@@ -115,8 +119,7 @@ const TransactionScreen = ({ navigation }) => {
                 return false;
             }
         }
-
-        if (!phoneNumber.toString().trim()) {
+        if (paymentType == "C2C" && !phoneNumber.toString().trim()) {
             alert("Please enter Phone Number");
             return false;
         }
@@ -146,9 +149,9 @@ const TransactionScreen = ({ navigation }) => {
     }
     const handleUpdatePress = async () => {
         if (paymentType == "C2C")
-            createTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, phoneNumber, getCurrencyCode(currency), category);
+            updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, phoneNumber, getCurrencyCode(currency), category);
         else
-            createTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
+            updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
     }
@@ -186,8 +189,12 @@ const TransactionScreen = ({ navigation }) => {
 
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty(paymentType)) {
+            if (paymentType != "C2C")
+                submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, phoneNumber, getCurrencyCode(currency), category);
+            else
+                submitPhoneTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, phoneNumber, getCurrencyCode(currency), category);
 
-            submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, phoneNumber, getCurrencyCode(currency), category);
+
         }
 
     }
@@ -222,13 +229,7 @@ const TransactionScreen = ({ navigation }) => {
                 return '\u20AC';
         }
     }
-    const keyboardDidHideListener = Keyboard.addListener(
-        'keyboardDidHide',
-        () => {
-            autoCategory();
-            keyboardDidHideListener.remove();
-        }
-    );
+
     const transactions = [
 
         {
@@ -340,10 +341,10 @@ const TransactionScreen = ({ navigation }) => {
         const accountNumber = textInputNumber;
         const phoneNumber = phoneNumber;
         const recipientName = textInputName;
-        const descriptionWords = textInputDescription.split(' ');
+        const descriptionWords = textInputDescription?.split(' ');
         const englishExcludedWords = [
-            'and','but','or','yet','for','nor','so','at','by',
-            'from','in','of','on','to','for', 'payment', 'transfer', 'from', 'with'
+            'and', 'but', 'or', 'yet', 'for', 'nor', 'so', 'at', 'by',
+            'from', 'in', 'of', 'on', 'to', 'for', 'payment', 'transfer', 'from', 'with'
         ];
 
 
@@ -366,7 +367,7 @@ const TransactionScreen = ({ navigation }) => {
         const descriptionList = transactions.filter((transaction) => {
 
             const description = transaction.description ? transaction.description.toLowerCase() : '';
-            return descriptionWords.some((word) => {
+            return descriptionWords?.some((word) => {
                 if (!englishExcludedWords.includes(word.toLowerCase()))
                     return description.includes(word.toLowerCase());
             });
@@ -453,8 +454,9 @@ const TransactionScreen = ({ navigation }) => {
 
                                 <Picker
                                     selectedValue={paymentType}
+                                    value={paymentType}
                                     onValueChange={(type) => {
-                                        setPaymenType(type)
+                                        setPaymentType(type)
                                         if (type == "C2C")
                                             setC2c(true);
                                         else
@@ -480,6 +482,7 @@ const TransactionScreen = ({ navigation }) => {
                                     style={styles.amountInput}
                                     value={textInputAmount}
                                     onChangeValue={(value) => {
+
                                         setTextInputAmount(value)
                                     }}
                                     prefix={currency === 'BAM' ? 'KM' : currency}
@@ -508,9 +511,15 @@ const TransactionScreen = ({ navigation }) => {
                                 <TextInput
                                     style={styles.input}
                                     placeholder="Recipient phone number"
+                                    value={phoneNumber}
                                     placeholderTextColor="#6e749d"
                                     keyboardType='number-pad'
-                                    onChangeText={(value) => setTextInputName(value)}
+                                    onChangeText={(value) => {
+                                        if (!userCategory)
+                                            autoCategory();
+                                        setPhoneNumber(value)
+                                    }
+                                    }
                                 />)}
 
                             {!c2c && (<>
@@ -518,7 +527,10 @@ const TransactionScreen = ({ navigation }) => {
                                     style={styles.input}
                                     placeholder="Recipient name"
                                     placeholderTextColor="#6e749d"
+                                    value={textInputName}
                                     onChangeText={(value) => {
+                                        if (!userCategory)
+                                            autoCategory();
                                         setTextInputName(value);
                                     }
                                     }
@@ -527,16 +539,27 @@ const TransactionScreen = ({ navigation }) => {
                                 <TextInput
                                     style={styles.input}
                                     placeholder="Recipient account number"
+                                    value={textInputNumber}
                                     placeholderTextColor="#6e749d"
-                                    onChangeText={(value) => setTextInputNumber(value)}
+                                    onChangeText={(value) => {
+                                        if (!userCategory)
+                                            autoCategory();
+                                        setTextInputNumber(value)
+                                    }}
                                 />
 
                             </>)}
                             <TextInput
                                 style={styles.input}
                                 placeholder="Description"
+                                value={textInputDescription}
                                 placeholderTextColor="#6e749d"
-                                onChangeText={(value) => setTextInputDescription(value)}
+                                onChangeText={(value) => {
+                                    if (!userCategory)
+                                        autoCategory();
+                                    setTextInputDescription(value)
+                                }
+                                }
                             />
 
 
@@ -544,7 +567,7 @@ const TransactionScreen = ({ navigation }) => {
                             <Picker
                                 selectedValue={category}
                                 onValueChange={(category) => {
-
+                                    setUserCategory(true);
                                     setCategory(category);
                                 }
                                 }
