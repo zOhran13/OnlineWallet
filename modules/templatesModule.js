@@ -75,7 +75,7 @@ export async function createTemplate(userId, title, amount, paymentType, recipie
 }
 
 export async function updateTemplate(id, userId, title, amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber, currency, category, received = "false") {
-
+    
     const token = await getToken();
     fetch(link + '/api/Template/' + id, {
         method: 'PUT',

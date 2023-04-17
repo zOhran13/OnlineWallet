@@ -12,7 +12,7 @@ import {
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
-import { submitTransaction, submitPhoneTransaction } from "../modules/transactionModule";
+import { submitTransaction, submitPhoneTransaction, getTransactions } from "../modules/transactionModule";
 import { useRoute } from '@react-navigation/native';
 import { getTemplate, deleteTemplate, updateTemplate, createTemplate } from "../modules/templatesModule";
 import { useNavigation, StackActions } from '@react-navigation/native';
@@ -35,20 +35,40 @@ const TransactionScreen = ({ navigation }) => {
     const [textInputAmount, setTextInputAmount] = useState("");
     const [category, setCategory] = useState("");
     const [userId, setUserId] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
+    const [textInputPhoneNumber, setTextInputPhoneNumber] = useState("");
     const { params } = useRoute();
     const [c2c, setC2c] = useState(false)
     const id = params?.id;
     const [userCategory, setUserCategory] = useState(false);
-
+    const [transactions, setTransactions] = useState([])
 
     useEffect(() => {
         const fetchUserId = async () => {
             xid = await User.getUserDetails()
             setUserId(xid.id);
+
         };
         fetchUserId();
     }, []);
+
+
+    useEffect(() => {
+        const getTransactionList = async () => {
+            const data = await getTransactions();
+            console.log("Sada");
+            const newTransactions = data.map(item => ({
+                paymentType: item.transactionType,
+                recipientName: item.recipient.name,
+                recipientAccountNumber: item.recipient.accountNumber,
+                recipientPhone: item.recipient.phoneNumber,
+                description: item.transactionPurpose,
+                category: item.category
+            }));
+            setTransactions(newTransactions);
+        };
+        getTransactionList();
+    }, []);
+
 
     if (id != null) {
 
@@ -74,7 +94,7 @@ const TransactionScreen = ({ navigation }) => {
                 setTextInputName(selectedTemplate.recipientName);
                 setTextInputNumber(selectedTemplate.recipientAccountNumber);
                 setTextInputDescription(selectedTemplate.description);
-                setPhoneNumber(selectedTemplate.phoneNumber);
+                setTextInputPhoneNumber(selectedTemplate.phoneNumber);
                 setCategory(selectedTemplate.category);
                 if (selectedTemplate.paymentType == "C2C")
                     setC2c(true);
@@ -119,7 +139,7 @@ const TransactionScreen = ({ navigation }) => {
                 return false;
             }
         }
-        if (paymentType == "C2C" && !phoneNumber.toString().trim()) {
+        if (paymentType == "C2C" && !textInputPhoneNumber.toString().trim()) {
             alert("Please enter Phone Number");
             return false;
         }
@@ -141,15 +161,16 @@ const TransactionScreen = ({ navigation }) => {
 
     const createNewTemplate = async () => {
         if (paymentType == "C2C")
-            createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, phoneNumber, getCurrencyCode(currency), category);
+            createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
         else
             createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
     const handleUpdatePress = async () => {
+        console.log(textInputTitle)
         if (paymentType == "C2C")
-            updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, phoneNumber, getCurrencyCode(currency), category);
+            updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
         else
             updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
@@ -160,13 +181,14 @@ const TransactionScreen = ({ navigation }) => {
 
     const sendTemplate = async (user) => {
         uid = await User.getRecipientDetails(user);
+        console.log(uid.id);
 
         if (uid) {
 
             if (paymentType == "C2C")
-                createTemplate(user, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, phoneNumber, getCurrencyCode(currency), category, "true");
+                createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category, "true");
             else
-                createTemplate(user, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category, "true");
+                createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category, "true");
             Alert.alert("\"" + textInputTitle + "\" sent as a template to user " + user);
 
         }
@@ -190,10 +212,10 @@ const TransactionScreen = ({ navigation }) => {
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty(paymentType)) {
             if (paymentType != "C2C")
-                submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, phoneNumber, getCurrencyCode(currency), category);
+                submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
             else
-                submitPhoneTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, phoneNumber, getCurrencyCode(currency), category);
-
+                submitPhoneTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
+            setUserCategory(false);
 
         }
 
@@ -230,116 +252,19 @@ const TransactionScreen = ({ navigation }) => {
         }
     }
 
-    const transactions = [
-
-        {
-            paymentType: 'B2C',
-            recipientName: 'Jane Smith',
-            recipientAccountNumber: '987654321',
-            recipientPhone: '9876543210',
-            description: 'Salary payment',
-            category: 'Bills and Utilities',
-        },
-        {
-            paymentType: 'C2C',
-            recipientName: 'Alice Brown',
-            recipientAccountNumber: '555555555',
-            recipientPhone: '5555555555',
-            description: 'Payment for groceries',
-            category: 'Shopping',
-        },
-        {
-            paymentType: 'C2B',
-            recipientName: 'Bob Johnson',
-            recipientAccountNumber: '234567890',
-            recipientPhone: '2345678901',
-            description: 'Payment for dinner',
-            category: 'Food and Drink',
-        },
-        {
-            paymentType: 'B2C',
-            recipientName: 'Sarah Williams',
-            recipientAccountNumber: '876543210',
-            recipientPhone: '8765432109',
-            description: 'Utility bill payment',
-            category: 'Bills and Utilities',
-        },
-        {
-            paymentType: 'C2C',
-            recipientName: 'Bob Johnson',
-            recipientAccountNumber: '234567890',
-            recipientPhone: '2345678901',
-            description: 'Payment for concert tickets',
-            category: 'Entertainment',
-        },
-        {
-            paymentType: 'C2B',
-            recipientName: 'Alice Brown',
-            recipientAccountNumber: '555555555',
-            recipientPhone: '5555555555',
-            description: 'Payment for lunch',
-            category: 'Bills and Utilities',
-        },
-        {
-            paymentType: 'B2C',
-            recipientName: 'John Doe',
-            recipientAccountNumber: '123456789',
-            recipientPhone: '1234567890',
-            description: 'Rent payment',
-            category: 'Bills and Utilities',
-        },
-        {
-            paymentType: 'C2C',
-            recipientName: 'Sarah Williams',
-            recipientAccountNumber: '876543210',
-            recipientPhone: '8765432109',
-            description: 'Payment for movie tickets',
-            category: 'Entertainment',
-        },
-        {
-            paymentType: 'C2B',
-            recipientName: 'Jane Smith',
-            recipientAccountNumber: '987654321',
-            recipientPhone: '9876543210',
-            description: 'Payment for coffee',
-            category: 'Food and Drink',
-        },
-        {
-            paymentType: 'B2C',
-            recipientName: 'Bob Johnson',
-            recipientAccountNumber: '234567890',
-            recipientPhone: '2345678901',
-            description: 'Phone bill payment',
-            category: 'Bills and Utilities',
-        },
-        {
-            paymentType: 'C2C',
-            recipientName: 'John Doe',
-            recipientAccountNumber: '123456789',
-            recipientPhone: '1234567890',
-            description: 'Payment for museum tickets',
-            category: 'Travel',
-        },
-        {
-            paymentType: 'C2B',
-            recipientName: 'Sarah Williams',
-            recipientAccountNumber: '876543210',
-            recipientPhone: '8765432109',
-            description: 'Payment for dinner',
-            category: 'Food and Drink',
-        }]
+    
 
     function autoCategory() {
-        const highestCategory = filterAndSumCategories(transactions);
+        const highestCategory = filterAndSumCategories();
         setCategory(highestCategory);
     }
 
 
 
 
-    function filterAndSumCategories(transactions) {
+    function filterAndSumCategories() {
         const accountNumber = textInputNumber;
-        const phoneNumber = phoneNumber;
+        const phoneNumber = textInputPhoneNumber;
         const recipientName = textInputName;
         const descriptionWords = textInputDescription?.split(' ');
         const englishExcludedWords = [
@@ -356,6 +281,7 @@ const TransactionScreen = ({ navigation }) => {
         const phoneNumberList = transactions.filter((transaction) => {
 
             const phone = transaction.recipientPhone ? transaction.recipientPhone.toLowerCase() : '';
+            
             return phone === phoneNumber;
         });
 
@@ -374,8 +300,8 @@ const TransactionScreen = ({ navigation }) => {
         });
 
 
-
-        const allLists = [accountNumberList, phoneNumberList, recipientNameList, descriptionList];
+        //daje se prednost opisu
+        const allLists = [accountNumberList, phoneNumberList, recipientNameList, descriptionList, descriptionList, descriptionList, descriptionList, descriptionList];
         const categoryCounts = {};
 
         allLists.forEach((list) => {
@@ -388,7 +314,7 @@ const TransactionScreen = ({ navigation }) => {
         const highestCategory = Object.keys(categoryCounts).reduce((a, b) => {
             return categoryCounts[a] > categoryCounts[b] ? a : b;
         }, []);
-
+        
 
         return highestCategory;
     }
@@ -435,9 +361,12 @@ const TransactionScreen = ({ navigation }) => {
                         <View style={styles.saveButtonAndTransactionContainer}>
                             <TextInput
                                 style={styles.newTransactionTitle}
-                                onChangeText={(value) => setTextInputTitle(value)}
+                                onChangeText={(value) => {
+                                    setTextInputTitle(value)
+                                }
+                                }
 
-                            >New Transaction</TextInput>
+                            >{textInputTitle}</TextInput>
                             {!id && (
 
                                 <Pressable style={styles.saveButton} onPress={createNewTemplate}>
@@ -511,13 +440,13 @@ const TransactionScreen = ({ navigation }) => {
                                 <TextInput
                                     style={styles.input}
                                     placeholder="Recipient phone number"
-                                    value={phoneNumber}
+                                    value={textInputPhoneNumber}
                                     placeholderTextColor="#6e749d"
                                     keyboardType='number-pad'
                                     onChangeText={(value) => {
                                         if (!userCategory)
                                             autoCategory();
-                                        setPhoneNumber(value)
+                                        setTextInputPhoneNumber(value)
                                     }
                                     }
                                 />)}

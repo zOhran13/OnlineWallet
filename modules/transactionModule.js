@@ -72,7 +72,7 @@ export async function submitPhoneTransaction(amount, paymentType, recipientName,
                     transactionType: paymentType,
                     transactionPurpose: description,
                     category: category,
-                    recipient: {
+                    recipientByPhone: {
                         phoneNumber: phoneNumber
                     }
 
