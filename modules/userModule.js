@@ -65,7 +65,6 @@ export async function getUsers() {
         authorization: `Bearer ${token}`
     }).then(result => result.json())
         .then(data => {
-            console.log(data)
             return data;
         })
 

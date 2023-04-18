@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\SuperHeroApiDotNet7.props" />
-</Project>

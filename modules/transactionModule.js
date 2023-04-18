@@ -9,13 +9,14 @@ async function getToken() {
     return token;
 }
 
-export async function submitTransaction(amount, currency, paymentType, recipientName, recipientAccountNumber, description) {
+
+export async function submitTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
+    currency, category) {
     try {
 
         token = await getToken();
             data = await getRecipientDetails(recipientName); 
-            console.log(data.firstName);
-            await fetch(link + '/Transaction/CreateTransaction?token=' + token , {
+            await fetch(link + '/api/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -26,14 +27,15 @@ export async function submitTransaction(amount, currency, paymentType, recipient
                     {
                         amount: amount,
                         currency: currency,
-                        paymentType: paymentType,
-                        description: description,
-                        recipientAccountNumber: recipientAccountNumber,
-                        recipientFirstName: data.firstName,
-                        recipientLastName: data.lastName
+                        transactionType: paymentType,
+                        transactionPurpose: description,
+                        category: category,
+                        recipient: {
+                            name: recipientName,
+                            accountNumber: recipientAccountNumber
+                        }
+                        
                     }
-
-
 
               ),
             }).then((response) => {
@@ -50,5 +52,62 @@ export async function submitTransaction(amount, currency, paymentType, recipient
         console.error(error);
     }
 }
+export async function submitPhoneTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
+    currency, category) {
+    try {
 
+        token = await getToken();
+        data = await getRecipientDetails(recipientName);
+        await fetch(link + '/api/Transaction/CreateTransactionRecipientPhone?token=' + token, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify(
+                {
+                    amount: amount,
+                    currency: currency,
+                    transactionType: paymentType,
+                    transactionPurpose: description,
+                    category: category,
+                    recipientByPhone: {
+                        phoneNumber: phoneNumber
+                    }
+
+                }
+
+            ),
+        }).then((response) => {
+            if (response.status == 200) {
+                alert("Transaction successful!");
+                return;
+            } else {
+                alert("Transaction not successful!");
+                return;
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function getTransactions() {
+    try {
+
+        const token = await getToken();
+        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=1&pageSize=20')
+
+            const data = await fetchedData.json();
+
+        return data;
+   
+ 
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
 
