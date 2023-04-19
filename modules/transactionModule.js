@@ -99,9 +99,9 @@ export async function getTransactions() {
 
         const token = await getToken();
         const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=1&pageSize=20')
-
-            const data = await fetchedData.json();
-
+       
+        const data = await fetchedData.json();
+        
         return data;
    
  

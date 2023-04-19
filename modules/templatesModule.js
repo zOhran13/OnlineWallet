@@ -30,19 +30,22 @@ export const getTemplates = async (userId) => {
 
 export async function getTemplate(id) {
     
+    try {
 
-    const token = await getToken();
-    const fetchedData = fetch(link + '/api/Template/' + id, {
-        headers: {
-            authorization: `Bearer ${token}`
-        }
-    })
-        .then(result => result.json())
-        .then(data => {
-            return data;
-        })
-
-    return fetchedData;
+        const token = await getToken();
+        const fetchedData = await fetch(link + '/api/Template/' + id, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+        const data = await fetchedData.json();
+     
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+        throw error;
+    }
 }
 
 
