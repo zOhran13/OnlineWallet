@@ -55,16 +55,18 @@ const TransactionScreen = ({ navigation }) => {
     useEffect(() => {
         const getTransactionList = async () => {
             const data = await getTransactions();
-            console.log("Sada");
-            const newTransactions = data.map(item => ({
-                paymentType: item.transactionType,
-                recipientName: item.recipient.name,
-                recipientAccountNumber: item.recipient.accountNumber,
-                recipientPhone: item.recipient.phoneNumber,
-                description: item.transactionPurpose,
-                category: item.category
-            }));
-            setTransactions(newTransactions);
+            if (Array.isArray(data)) {
+
+                const newTransactions = data.map(item => ({
+                    paymentType: item.transactionType,
+                    recipientName: item.recipient.name,
+                    recipientAccountNumber: item.recipient.accountNumber,
+                    recipientPhone: item.recipient.phoneNumber,
+                    description: item.transactionPurpose,
+                    category: item.category
+                }));
+                setTransactions(newTransactions);
+            }
         };
         getTransactionList();
     }, []);
@@ -181,10 +183,9 @@ const TransactionScreen = ({ navigation }) => {
 
     const sendTemplate = async (user) => {
         uid = await User.getRecipientDetails(user);
-        console.log(uid.id);
-
-        if (uid) {
-
+        if (typeof uid !== 'undefined') {
+            
+            console.log(uid);
             if (paymentType == "C2C")
                 createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category, "true");
             else
