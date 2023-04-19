@@ -3,12 +3,29 @@ import React, { useState, useEffect } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import { getTemplates } from "../modules/templatesModule";
 import { BackHandler } from 'react-native';
-
+import { Picker } from "@react-native-picker/picker";
 import * as User from "../modules/userModule";
+
 
 const TemplateListScreen = ({ navigation }) => {
     const [templates, setTemplates] = useState([]);
     const [userId, setUserId] = useState("");
+    const [selectedValue, setSelectedValue] = useState("myTemplates");
+    const [filteredTemplates, setFilteredTemplates] = useState([]);
+
+
+    useEffect(() => {
+        if (selectedValue === 'myTemplates') {
+          const receivedTemplates = templates.filter(item => item.received === "false");
+          setFilteredTemplates(receivedTemplates);
+        } else if (selectedValue === 'recivedTemplates') {
+          const receivedTemplates = templates.filter(item => item.received === "true");
+          setFilteredTemplates(receivedTemplates);
+        } else {
+          setFilteredTemplates(templates);
+        }
+      }, [selectedValue, templates]);
+
 
     useEffect(() => {
         const fetchUserId = async () => {
@@ -44,15 +61,30 @@ const TemplateListScreen = ({ navigation }) => {
         navigation.navigate("Transaction", { id });
     };
 
+
     return (
         <View style={styles.container}>
-            {templates.map((template) => (
+                <View style={styles.novi}>
+                <Picker
+                    mode="dropdown"
+                    selectedValue={selectedValue}
+                    onValueChange={(itemValue, itemIndex) =>
+                    setSelectedValue(itemValue)
+                    }
+                >
+                    <Picker.Item label="My templates" value="myTemplates" onPress/>
+                    <Picker.Item label="Recived templates" value="recivedTemplates" />
+                    <Picker.Item label="All templates" value="allTemplates" />
+                </Picker>
+            </View>
+            {filteredTemplates.map((template) => (
                 <View style={styles.container1} key={template.id}>
-                    <Pressable onPress={() => handlePress(template.id)}>
-                        <Text style={styles.text}>{template.title}</Text>
-                    </Pressable>
+                <Pressable onPress={() => handlePress(template.id)}>
+                    <Text style={styles.text}>{template.title}</Text>
+                </Pressable>
                 </View>
             ))}
+            
         </View>
     );
 };
@@ -97,6 +129,28 @@ const styles = StyleSheet.create({
         width: "80%",
         marginBottom: 10,
     },
+    currencyPicker: {
+        backgroundColor: "#6e749d",
+        height: "10%",
+        marginLeft: 2,
+        marginBottom: 5,
+        marginRight: 23,
+        width: "40%",
+    },
+    novi:{
+        backgroundColor: "#6e749d",
+        height: "8%",
+        marginLeft: 10,
+        marginBottom: 5,
+        marginTop:23,
+        marginRight: 23,
+        width: "55%",
+        position: 'absolute',
+        top: 0,
+        borderColor: "black",
+        borderRadius: 10,
+    }
 });
+
 
 export default TemplateListScreen;
