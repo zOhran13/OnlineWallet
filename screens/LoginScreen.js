@@ -402,13 +402,15 @@ export default LoginScreen = ({ navigation }) => {
        
 
 
-      </View><Text style={styles.signupText}>
+      </View>
+      <Text style={styles.signupText}>
         <Text>Don't have an account? </Text>
         <Text style={{ color: '#ffc022ef' }} onPress={handleSignup}>
           Sign up
         </Text>
       </Text>
-      </View></>
+      </View>
+      </>
   );
 };
 

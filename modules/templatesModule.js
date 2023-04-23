@@ -3,9 +3,10 @@ import * as SecureStore from 'expo-secure-store';
 var link = 'http://siprojekat.duckdns.org:5051';
 
 
+
 async function getToken() {
     const token = await SecureStore.getItemAsync("secure_token");
-    
+
     return token;
 }
 
@@ -28,44 +29,79 @@ export const getTemplates = async (userId) => {
 
 
 export async function getTemplate(id) {
- // console.log("Evo mene id",id)
+    
+    try {
+
+        const token = await getToken();
+        const fetchedData = await fetch(link + '/api/Template/' + id, {
+            headers: {
+                authorization: `Bearer ${token}`
+            }
+        });
+        const data = await fetchedData.json();
+     
+        return data;
+    }
+    catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+
+export async function createTemplate(userId, title, amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber, currency, category, received = "false") {
 
     const token = await getToken();
-    const fetchedData = fetch(link + '/api/Template/' + id, {
+    fetch(link + '/api/Template', {
+        method: 'POST',
+        body: JSON.stringify({
+            userId: userId,
+            title: title,
+            amount: amount,
+            paymentType: paymentType,
+            recipientName: recipientName,
+            recipientAccountNumber: recipientAccountNumber,
+            description: description,
+            phoneNumber: phoneNumber,
+            currency: currency,
+            category: category,
+            received: received
+
+        }),
         headers: {
-            authorization: `Bearer ${token}`
-        }
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': `Bearer ${token}`
+
+        },
     })
-  .then(result => result.json())
-  .then(data => {//console.log("Evo mene evo mene ovdje saaaam",data)
-          return data;
-  })
+        .then((response) => response.json());
+}
 
-  return fetchedData;
-  }
-
-export async function updateTemplate(id, userId, title, amount, paymentType, recipientName, recipientAccountNumber, description, currency) {
-
+export async function updateTemplate(id, userId, title, amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber, currency, category, received = "false") {
+    
     const token = await getToken();
-      fetch(link + '/api/Template/' + id, {
-  method: 'PUT',
-  body: JSON.stringify({
-    userId: userId,
-    title: title,
-    amount: amount,
-    paymentType: paymentType,
-    description: description,
-    currency: currency,
-    recipientName: recipientName,
-    recipientAccountNumber: recipientAccountNumber
-  }),
-  headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-              'Authorization': `Bearer ${token}`
-          },
-})
-  .then((response) => response.json())
-  .then((json) => console.log(json));
+    fetch(link + '/api/Template/' + id, {
+        method: 'PUT',
+        body: JSON.stringify({
+            userId: userId,
+            title: title,
+            amount: amount,
+            paymentType: paymentType,
+            recipientName: recipientName,
+            recipientAccountNumber: recipientAccountNumber,
+            description: description,
+            phoneNumber: phoneNumber,
+            currency: currency,
+            category: category,
+            received: received
+
+        }),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            'Authorization': `Bearer ${token}`
+        },
+    })
+        .then((response) => response.json());
 }
 
 export async function deleteTemplate(id) {
@@ -80,35 +116,9 @@ export async function deleteTemplate(id) {
             }
         });
         let json = await response.text();
-        console.log("Heeej: ", json);
         return json;
     } catch (error) {
         console.error(error);
     }
 }
 
-
-export async function createTemplate(userId, title, amount, paymentType, recipientName, recipientAccountNumber, description, currency) {
-
-    const token = await getToken();
-  fetch(link + '/api/Template', {
-  method: 'POST',
-      body: JSON.stringify({
-          userId: userId,
-          title: title,
-          amount: amount,
-          paymentType: paymentType,
-          description: description,
-          currency: currency,
-          recipientName: recipientName,
-          recipientAccountNumber: recipientAccountNumber
-      }),
-  headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-          'Authorization': `Bearer ${token}`
-     
-  },
-})
-  .then((response) => response.json())
-  .then((json) => console.log(json));
-}

@@ -21,19 +21,20 @@ import { TouchableOpacity } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import { getTransactions } from "./modules/transactionModule";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
 
-  registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
+    registerNNPushToken(7256, '49XqdeSbyrq5jqZH1ZctRG');
 
+    
 
- 
-  return (
+    return (
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Login' component={LoginScreen} />
-               <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
 
 
                 <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
@@ -59,7 +60,7 @@ export default function App() {
                     name='PhoneVerification'
                     component={PhoneVerificationScreen}
                 />
-        <Stack.Screen
+                <Stack.Screen
                     name='EmailOrPhoneVerification'
                     component={EmailOrPhoneVerificationScreen}
                 />
@@ -73,8 +74,8 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    backgroundColor: '#1B1938',
-    alignItems: 'center',
-    justifyContent: 'center',
+        backgroundColor: '#1B1938',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
