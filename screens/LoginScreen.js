@@ -297,7 +297,9 @@ export default LoginScreen = ({ navigation }) => {
     console.log("Da vidim telefon " + emailOrPhoneValue)
     if (!realLogin || validateFunction()) {
       let requestOption = {};
-      if (isValidEmail(emailOrPhoneValue)) {
+      let opt = "";
+      if (isValidEmail(emailOrPhoneValue) && !isChecked) {
+        opt = "email";
         requestOption = {
           method:'POST',
           headers: {
@@ -309,7 +311,21 @@ export default LoginScreen = ({ navigation }) => {
             method: "email"
           })
         };
+      } else if (isValidEmail(emailOrPhoneValue) && isChecked) {
+        opt = "email";
+        requestOption = {
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: emailOrPhoneValue,
+            password: password,
+            method: "sms"
+          })
+        };
       } else if (isValidPhoneNumber(emailOrPhoneValue) && isChecked) {
+        opt = "phone";
         requestOption = {
           method: 'POST',
           headers: {
@@ -322,6 +338,7 @@ export default LoginScreen = ({ navigation }) => {
           })
         };
       } else if (isValidPhoneNumber(emailOrPhoneValue) && !isChecked){
+        opt = "phone";
         requestOption = {
           method: 'POST',
           headers: {
@@ -341,8 +358,12 @@ export default LoginScreen = ({ navigation }) => {
         if (data.errors != null) {
           showAlert("Login error", "Login data incorrect")
         } else {
+          ToastAndroid.show('Confirmation code sent', ToastAndroid.SHORT);
           navigation.navigate("EmailOrPhoneVerification", {
-            method: requestOption.method
+            method: JSON.parse(requestOption.body).method,
+            emailOrPhoneVar: emailOrPhoneValue,
+            isChecked: isChecked,
+            option: opt
           })
         }
       }).catch(err => {
