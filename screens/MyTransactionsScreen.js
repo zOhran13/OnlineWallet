@@ -1,52 +1,160 @@
-import React, { useState } from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
-import AccountBalance from "../components/AccountBalance";
-import { getTemplates } from "../modules/templatesModule";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  Pressable,
+  ScrollView,
+} from "react-native";
+import { BackHandler } from "react-native";
 
 const MyTransactionsScreen = ({ navigation }) => {
-  getTemplates();
-  return (
-    <>
-      <AccountBalance/>
+  const [transactions, setTransactions] = useState([
+    {
+      id: 5,
+      title: "Matija Kokor",
+      date: "11.04.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 6,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 7,
+      title: "Matija Kokor",
+      date: "11.04.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 8,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 9,
+      title: "Matija Kokor",
+      date: "11.04.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 10,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 11,
+      title: "Matija Kokor",
+      date: "11.04.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+    {
+      id: 12,
+      title: "Rifet Rifko",
+      date: "13.01.2023",
+      amount: 2.05,
+      currency: "BAM",
+    },
+  ]);
+  const [userId, setUserId] = useState("");
 
-    </>
+  useEffect(() => {
+    /*const fetchUserId = async () => {
+      xid = await User.getUserDetails();
+      setUserId(xid.id);
+      const data = await gettransactions(xid.id);
+      settransactions(data);
+    };
+    fetchUserId();*/
+
+    const backAction = () => {
+      navigation.navigate("Home");
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  const handlePress = (id) => {
+    navigation.navigate("TransactionDetails", { id });
+  };
+
+  return (
+    <ScrollView>
+      <View style={styles.container}>
+        {transactions.map((transaction) => (
+          <View style={styles.transactionContainer} key={transaction.id}>
+            <Pressable
+              style={styles.transactionContainer}
+              onPress={() => handlePress(transaction.id)}
+            >
+              <View style={styles.imageContainer}>
+                <Image
+                  style={styles.image}
+                  source={require("../assets/images/red_arrow.png")}
+                />
+              </View>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.text}>{transaction.title}</Text>
+                <Text>{transaction.date}</Text>
+                <Text>
+                  {transaction.amount} {transaction.currency}
+                </Text>
+              </View>
+            </Pressable>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: "#1B1938",
     alignItems: "center",
-    justifyContent: "center",
+    padding: 10,
+  },
+  transactionContainer: {
     borderColor: "black",
-    borderRadius: 30,
-    backgroundColor: "#312e66",
-    padding: 30,
-    width: "80%",
-    marginTop: "80%",
-  },
-  payButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 30,
-    width: 150,
-    padding: 20,
+    borderRadius: 10,
     backgroundColor: "#FFC021",
+    padding: 10,
+    width: "90%",
+    marginBottom: 10,
+    flexDirection: "row",
   },
-  myTransactionsButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 30,
-    width: 300,
-    padding: 20,
-    backgroundColor: "#FFC021",
-    marginTop: 70,
+  imageContainer: {
+    marginRight: 10,
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
     color: "black",
+  },
+  image: {
+    width: 50,
+    height: 50,
   },
 });
 
