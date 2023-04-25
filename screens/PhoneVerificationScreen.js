@@ -39,7 +39,7 @@ const EmailVerificationScreen = ({ navigation, route }) => {
       })
       .then((data) => {
         if (data.message != "Username or code incorrect!") {
-          navigation.navigate("Login");
+          navigation.navigate("Home");
           ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
           console.log(JSON.stringify(data));
         } else {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   verifyButton: {
-    marginTop: 13,
+    marginTop: 15,
     backgroundColor: "#FFC022",
     width: 120,
     height: 35,
