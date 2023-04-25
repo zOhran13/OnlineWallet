@@ -180,7 +180,7 @@ const RegistrationScreen = ({ navigation }) => {
                 return res.json();
               }).then(data => {
 								console.log(data)
-                if(data.message === 'Registration successful'){
+                if(data.message != null && data.message === 'Registration successful'){
                   ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
                   navigation.navigate("EmailVerification", { 
                     isChecked: isChecked,

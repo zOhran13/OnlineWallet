@@ -19,45 +19,34 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
       return false;
     }
     return true
-
-    // const requestOption = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     username: route.params.username,
-    //     code: code,
-    //   }),
-    // };
-
-    // fetch(
-    //   "http://siprojekat.duckdns.org:5051/Register/confirm/phone",
-    //   requestOption
-    // )
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((data) => {
-    //     if (data.message != "Username or code incorrect!") {
-    //       navigation.navigate("Home");
-    //       ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
-    //       console.log(JSON.stringify(data));
-    //     } else {
-    //       ToastAndroid.show(JSON.stringify(data.message), ToastAndroid.SHORT);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     ToastAndroid.show(err.message, ToastAndroid.SHORT);
-    //   });
   };
+
+  const requestOption = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: route.params.emailOrPhoneVar,
+      code: code,
+      method: route.params.method
+    }),
+  };
+
+  const setTokenFunction = async (token) =>  {
+    await SecureStore.setItem("secure_token", token)
+    ToastAndroid.show("Welcome", ToastAndroid.SHORT);
+  }
+
+  
+
 
   return (
     <View style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.title}>Verify-code</Text>
         <Text style={styles.bodyText}>
-          Enter the confirmation code sent to your phone numbers to complete the
+          Enter the confirmation code, sent to your phone number or email, to complete the
           verification.
         </Text>
         <TextInput
@@ -74,9 +63,54 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
           style={styles.verifyButton}
           title="Verify"
           onPress={() => {
-            if(verifyCode()) {
-              //should be code to verify code from email or phone number... soon
-              navigation.navigate("Home")
+            if (verifyCode()) {
+              let requestOption = {}
+              if(route.params.option == "phone") {
+                 requestOption = {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    phone: route.params.emailOrPhoneVar,
+                    code: code,
+                    method: route.params.method
+                  }),
+                };
+              } else {
+                requestOption = {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    email: route.params.emailOrPhoneVar,
+                    code: code,
+                    method: route.params.method
+                  }),
+                };
+              }
+              
+              console.log(requestOption.body)
+              fetch(
+                "http://siprojekat.duckdns.org:5051/api/User/otc/activate",
+                requestOption
+              )
+                .then((res) => {
+                  return res.json();
+                })
+                .then((data) => {
+                  if (data.token != null) {
+                    ToastAndroid.show("Login confirmed. Welcome!", ToastAndroid.SHORT);
+                    setTokenFunction(data.token)
+                    navigation.navigate("Home");
+                  } else {
+                    ToastAndroid.show("Something went wrong while logging in", ToastAndroid.SHORT);
+                  }
+                })
+                .catch((err) => {
+                  ToastAndroid.show("Something went wrong while logging in", ToastAndroid.SHORT);
+                });
             };
 
           }}
@@ -88,7 +122,7 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
           style={styles.resendCode}
           title="SendToPhone"
           onPress={() => {
-            
+            console.log("Moji paramas. " + route.params.method)
           }}
         >
           <Text style={styles.resendCode}> Resend </Text>
@@ -112,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "90%",
-    height: "45%",
+    height: "50%",
     backgroundColor: "#312D65",
     borderRadius: 50,
     borderWidth: 2,
@@ -123,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     display: "flex",
     alignItems: "center",
-    marginBottom: 25,
+    marginBottom: 0,
   },
   bodyText: {
     color: "#CADAFFBF",
@@ -131,6 +165,7 @@ const styles = StyleSheet.create({
     display: "flex",
     textAlign: "center",
     paddingHorizontal: 32,
+    marginTop: 30
   },
   inputText: {
     backgroundColor: "#23204D",
@@ -143,7 +178,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   verifyButton: {
-    marginTop: 13,
+    marginTop: 15,
     backgroundColor: "#FFC022",
     width: 120,
     height: 35,
