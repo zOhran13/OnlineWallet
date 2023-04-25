@@ -110,7 +110,7 @@ export default LoginScreen = ({ navigation }) => {
   }
 
   function handleSignup() {
-    navigation.navigate('NewAccountCreation');
+    navigation.navigate('Registration');
   }
 
   const biometricAuthentication = async () => {

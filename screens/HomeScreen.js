@@ -20,6 +20,18 @@ const HomeScreen = ({ navigation }) => {
             style={styles.buttonImage}
           />
         </Pressable>
+
+        <Pressable
+          style={styles.listTemplatesButton}
+          onPress={() => navigation.navigate("NewAccountCreation")}
+        >
+          <Image
+            source={require("../assets/images/newbank.png")}
+            style={styles.bankImage}
+          />
+        </Pressable>
+
+        
       </View>
 
       <View style={styles.container1}>
@@ -53,6 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1B1938",
     alignItems: "center",
     justifyContent: "center",
+    
   },
   container1: {
     alignItems: "center",
@@ -62,7 +75,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#312e66",
     padding: 50,
     width: "80%",
-    marginTop: "80%",
+    
+   
   },
   payButton: {
     alignItems: "center",
@@ -71,6 +85,7 @@ const styles = StyleSheet.create({
     width: 150,
     padding: 20,
     backgroundColor: "#FFC021",
+    
   },
   myTransactionsButton: {
     alignItems: "center",
@@ -90,17 +105,28 @@ const styles = StyleSheet.create({
   },
 
   container2: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom:"80%",
+      
   },
   listTemplatesButton: {
-    marginLeft: "70%",
+    padding: 13,
+    
   },
   buttonImage: {
     width: 50,
     height: 50,
+    marginRight: "65%"
   },
+
+  bankImage: {
+    width: 55,
+    height: 55,
+   
+  },
+
 });
 
 export default HomeScreen;

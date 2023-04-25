@@ -97,19 +97,27 @@ const onChangeTextHandle = (text, input) => {
           onChangeText={(text) => onChangeTextHandle(text, 'description')}
         />
 
- <Text style={{fontSize: 17, color: "#6e749d", textAlign: 'center', marginTop:20}}>Currency of account:</Text>
     
-    <View>
-      <Picker
-        selectedValue={selectedValue}
-        onValueChange={(itemValue, itemIndex) =>  setSelectedValue(itemValue)}>
+ <View style={styles.inputmenu}>
+               
+                <Picker
+                    mode="dropdown"
+                    selectedValue={selectedValue}
+                    onValueChange={(itemValue, itemIndex) =>
+                    setSelectedValue(itemValue)
+                    }
+                >
         <Picker.Item label="BAM" value="Bosnian Convertible Mark (BAM)" color="#6e749d" />
         <Picker.Item label="USD" value="US dollar (USD)" color="#6e749d" />
         <Picker.Item label="EUR" value="Euro (EUR)" color="#6e749d" />
         <Picker.Item label="AUD" value="Australian Dollar (AUD)" color="#6e749d" />
-      </Picker>
-      <Text style={styles.selected}>{`Selected: ${selectedValue}`}</Text>
-    </View>
+                </Picker>
+            </View>
+            <Text style={styles.selected}>{`Selected currency of account:`}</Text>
+            <Text style={styles.selected}>{`${selectedValue}`}</Text>
+       
+
+
 
 
     <Text style={styles.pdf}>Upload documents for approval here:</Text>
@@ -184,6 +192,7 @@ const onChangeTextHandle = (text, input) => {
 };
 
 const styles = StyleSheet.create({
+    
     iconpdf: {
         width: 24,
         height: 24,
@@ -198,7 +207,7 @@ const styles = StyleSheet.create({
         color: "#6e749d",
         fontSize: 17,
         alignItems: "center",
-        marginBottom:35
+        
         
       },
       pdfButton: {
@@ -269,12 +278,24 @@ const styles = StyleSheet.create({
     
   },
 
+  inputmenu: {
+    fontSize: 17,
+    backgroundColor: "#23204d",
+    margin:4,
+    alignItems: "stretch",
+    width: 340,
+    height: 45,
+    borderRadius: 10,
+    color: "white",
+    
+  },
   pdf: {
     fontSize: 17, 
     color: "#6e749d", 
     textAlign: 'center',
     letterSpacing: 1,
-    marginBottom:20
+    marginBottom:10,
+    marginTop:40
     
   },
 
