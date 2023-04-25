@@ -167,14 +167,15 @@ const RegistrationScreen = ({ navigation }) => {
                   username: inputs.username,
                   password: inputs.password,
                   address: "Adress",
-                  phoneNumber: inputs.phone
+                  phoneNumber: inputs.phone,
+                  accountNumber: "05421"
                 })
 							}
               console.log("Req: " + requestOption.body)
-              navigation.navigate("EmailVerification", { 
-                isChecked: isChecked,
-                username: inputs.username
-              });
+              //navigation.navigate("EmailVerification", { 
+              //  isChecked: isChecked,
+              //  username: inputs.username
+              //});
 
 							fetch("http://siprojekat.duckdns.org:5051/api/User", requestOption).then(res => {
                 return res.json();
