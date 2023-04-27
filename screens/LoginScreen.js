@@ -203,7 +203,7 @@ export default LoginScreen = ({ navigation }) => {
 
     setUserData(user);
     setToken(data.token);
-    navigation.navigate("EmailOrPhoneVerification");
+    navigation.navigate("Home");
   }
 
   async function handleFacebookLogin() {
@@ -263,7 +263,7 @@ export default LoginScreen = ({ navigation }) => {
 
     setToken(data.token);
     setUserData(user);
-    navigation.navigate("EmailOrPhoneVerification");
+    navigation.navigate("Home");
   }
 
   async function handleMicrosoftLogin() {

@@ -45,6 +45,13 @@ const HomeScreen = ({ navigation }) => {
 
             <Text style={styles.text}>PAY</Text>
           </Pressable>
+          <View><Text>-----------------------------------------</Text></View>
+          <Pressable
+            style={styles.payButton}
+            onPress={() => navigation.navigate("RequestedAccounts")}
+          >
+            <Text style={styles.text}>Requested accounts</Text>
+          </Pressable>
         </View>
       </View>
       <View>
