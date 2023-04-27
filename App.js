@@ -1,17 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import AccountBalance from "./components/AccountBalance";
-import RegistrationScreen from "./screens/RegistrationScreen";
-import EmailVerificationScreen from "./screens/EmailVerificationScreen";
-import PhoneVerificationScreen from "./screens/PhoneVerificationScreen";
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import TransactionScreen from "./screens/TransactionScreen";
-import MyTransactionsScreen from "./screens/MyTransactionsScreen";
 import TransactionDetailsScreen from "./screens/TransactionDetailsScreen";
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View } from 'react-native';
+import AccountBalance from './components/AccountBalance';
+import RegistrationScreen from './screens/RegistrationScreen';
+import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import TransactionScreen from './screens/TransactionScreen';
+import MyTransactionsScreen from './screens/MyTransactionsScreen';
+import NewAccountCreationScreen from './screens/NewAccountCreationScreen';
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TemplateListScreen from "./screens/TemplateListScreen";
+import RequestedAccounts from "./screens/RequestedAccounts";
 
 import { NavigationContainer } from "@react-navigation/native";
 import EmailOrPhoneVerificationScreen from "./screens/EmailOrPhoneVerificationScreen";
@@ -29,12 +31,12 @@ export default function App() {
 
   registerNNPushToken(7256, "49XqdeSbyrq5jqZH1ZctRG");
     return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
-
+        <NavigationContainer>
+            <Stack.Navigator>
+                <Stack.Screen name='Login' component={LoginScreen} />
+                <Stack.Screen name="Registration" component={RegistrationScreen} />
+                <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
+                <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
         <Stack.Screen
           name="Home"
           component={HomeScreen}

@@ -167,7 +167,8 @@ const RegistrationScreen = ({ navigation }) => {
                   username: inputs.username,
                   password: inputs.password,
                   address: "Adress",
-                  phoneNumber: inputs.phone
+                  phoneNumber: inputs.phone,
+                  accountNumber: "05421"
                 })
 							}
               console.log("Req: " + requestOption.body)
