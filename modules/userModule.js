@@ -53,7 +53,7 @@ export const getRecipientDetails = async (userName) => {
         const data = await fetchedData.json();
         return data;
     } catch (error) {
-        console.log("ovjde "+error);
+        console.log("ovjde 2"+error);
         throw error;
     }
 };

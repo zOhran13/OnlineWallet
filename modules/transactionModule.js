@@ -13,9 +13,8 @@ async function getToken() {
 export async function submitTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
     currency, category) {
     try {
-
+        acc = 'ABC1'
         token = await getToken();
-            data = await getRecipientDetails(recipientName); 
             await fetch(link + '/api/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",
                 headers: {
@@ -30,14 +29,15 @@ export async function submitTransaction(amount, paymentType, recipientName, reci
                         transactionType: paymentType,
                         transactionPurpose: description,
                         category: category,
+                        sender: {
+                            accountNumber: acc
+                        },
                         recipient: {
                             name: recipientName,
                             accountNumber: recipientAccountNumber
                         }
                         
-                    }
-
-              ),
+                    }              ),
             }).then((response) => {
                 if (response.status == 200) {
                     alert("Transaction successful!");
@@ -52,60 +52,55 @@ export async function submitTransaction(amount, paymentType, recipientName, reci
         console.error(error);
     }
 }
-export async function submitPhoneTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
-    currency, category) {
+
+export async function getTransactions(page = "1", pageSize="10") {
     try {
+      
 
-        token = await getToken();
-        data = await getRecipientDetails(recipientName);
-        await fetch(link + '/api/Transaction/CreateTransactionRecipientPhone?token=' + token, {
-            method: "POST",
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
+        const token = await getToken();
+        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=' + page + '&pageSize=' + pageSize)
 
-            body: JSON.stringify(
-                {
-                    amount: amount,
-                    currency: currency,
-                    transactionType: paymentType,
-                    transactionPurpose: description,
-                    category: category,
-                    recipientByPhone: {
-                        phoneNumber: phoneNumber
-                    }
+        const data = await fetchedData.json();
 
-                }
+        return data;
 
-            ),
-        }).then((response) => {
-            if (response.status == 200) {
-                alert("Transaction successful!");
-                return;
-            } else {
-                alert("Transaction not successful!");
-                return;
-            }
-        });
 
     } catch (error) {
         console.error(error);
+        throw error;
+    }
+}
+export async function getTransactionById(id) {
+    try {
+        page = "1";
+
+        const token = await getToken();
+        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionById?token=' + token + '&transactionId=' + id)
+
+        const data = await fetchedData.json();
+
+        return data;
+
+
+    } catch (error) {
+        console.error(error);
+        throw error;
     }
 }
 
-export async function getTransactions() {
+
+export async function getAccounts() {
     try {
 
         const token = await getToken();
-        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=1&pageSize=20')
+        const fetchedData = await fetch(link + '/api/Account/GetAllAccountsForUser?token=' + token)
        
         const data = await fetchedData.json();
         
         return data;
    
  
-    } catch (error) {
+    } catch (error) { 
         console.error(error);
         throw error;
     }
