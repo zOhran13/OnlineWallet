@@ -8,76 +8,20 @@ import {
   ScrollView,
 } from "react-native";
 import { BackHandler } from "react-native";
-
+import * as User from '../modules/userModule';
+import { submitTransaction, submitPhoneTransaction, getTransactions } from "../modules/transactionModule";
 const MyTransactionsScreen = ({ navigation }) => {
-  const [transactions, setTransactions] = useState([
-    {
-      id: 5,
-      title: "Matija Kokor",
-      date: "11.04.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 6,
-      title: "Rifet Rifko",
-      date: "13.01.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 7,
-      title: "Matija Kokor",
-      date: "11.04.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 8,
-      title: "Rifet Rifko",
-      date: "13.01.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 9,
-      title: "Matija Kokor",
-      date: "11.04.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 10,
-      title: "Rifet Rifko",
-      date: "13.01.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 11,
-      title: "Matija Kokor",
-      date: "11.04.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-    {
-      id: 12,
-      title: "Rifet Rifko",
-      date: "13.01.2023",
-      amount: 2.05,
-      currency: "BAM",
-    },
-  ]);
+  const [transactions, setTransactions] = useState([]);
   const [userId, setUserId] = useState("");
 
   useEffect(() => {
-    /*const fetchUserId = async () => {
+    const fetchUserTransactions = async () => {
       xid = await User.getUserDetails();
       setUserId(xid.id);
-      const data = await gettransactions(xid.id);
-      settransactions(data);
+      const trans = await getTransactions();
+        setTransactions(trans);
     };
-    fetchUserId();*/
+    fetchUserTransactions();
 
     const backAction = () => {
       navigation.navigate("Home");
@@ -97,31 +41,35 @@ const MyTransactionsScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        {transactions.map((transaction) => (
-          <View style={styles.transactionContainer} key={transaction.id}>
-            <Pressable
-              style={styles.transactionContainer}
-              onPress={() => handlePress(transaction.id)}
-            >
-              <View style={styles.imageContainer}>
-                <Image
-                  style={styles.image}
-                  source={require("../assets/images/red_arrow.png")}
-                />
+      <ScrollView>
+          <View style={styles.background}>
+
+              <View style={styles.container}>
+                  {transactions.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((transaction) => (
+                      <View style={styles.transactionContainer} key={transaction.transactionId}>
+                          <Pressable
+                              style={styles.transactionContainer}
+                              onPress={() => handlePress(transaction.transactionId)}
+                          >
+                              <View style={styles.imageContainer}>
+                                  
+                                  <Image
+                                      style={styles.image}
+                                      source={require("../assets/images/red_arrow.png")}
+                                  />
+                              </View>
+                              <View style={styles.detailsContainer}>
+                                  <Text style={styles.text}>{transaction.recipient.name}</Text>
+                                  <Text>{transaction.createdAt.substring(0, 10)} {transaction.createdAt.substring(11, 16)}</Text>
+                                  <Text>
+                                      {transaction.amount} {transaction.currency}
+                                  </Text>
+                              </View>
+                          </Pressable>
+                      </View>
+                  ))}
               </View>
-              <View style={styles.detailsContainer}>
-                <Text style={styles.text}>{transaction.title}</Text>
-                <Text>{transaction.date}</Text>
-                <Text>
-                  {transaction.amount} {transaction.currency}
-                </Text>
-              </View>
-            </Pressable>
           </View>
-        ))}
-      </View>
     </ScrollView>
   );
 };
@@ -132,7 +80,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#1B1938",
     alignItems: "center",
     padding: 10,
-  },
+    },
+    background: {
+        flex: 1,
+        backgroundColor: "#1B1938",
+        width: "100%",
+        height: "100%"
+},
   transactionContainer: {
     borderColor: "black",
     borderRadius: 10,

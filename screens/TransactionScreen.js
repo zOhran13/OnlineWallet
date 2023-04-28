@@ -37,7 +37,6 @@ const TransactionScreen = ({ navigation }) => {
     const [userId, setUserId] = useState("");
     const [textInputPhoneNumber, setTextInputPhoneNumber] = useState("");
     const { params } = useRoute();
-    const [c2c, setC2c] = useState(false)
     const id = params?.id;
     const [userCategory, setUserCategory] = useState(false);
     const [transactions, setTransactions] = useState([])
@@ -98,8 +97,6 @@ const TransactionScreen = ({ navigation }) => {
                 setTextInputDescription(selectedTemplate.description);
                 setTextInputPhoneNumber(selectedTemplate.phoneNumber);
                 setCategory(selectedTemplate.category);
-                if (selectedTemplate.paymentType == "C2C")
-                    setC2c(true);
             }
         }, [selectedTemplate])
 
@@ -131,7 +128,7 @@ const TransactionScreen = ({ navigation }) => {
             return false;
         }
 
-        if (paymentType != "C2C") {
+        
             if (!textInputName.trim()) {
                 alert("Please Enter Name!");
                 return false;
@@ -140,12 +137,7 @@ const TransactionScreen = ({ navigation }) => {
                 alert("Please Enter Account Number!");
                 return false;
             }
-        }
-        if (paymentType == "C2C" && !textInputPhoneNumber.toString().trim()) {
-            alert("Please enter Phone Number");
-            return false;
-        }
-
+        
         if (!textInputDescription.trim()) {
             alert("Please Enter Description!");
             return false;
@@ -162,18 +154,12 @@ const TransactionScreen = ({ navigation }) => {
 
 
     const createNewTemplate = async () => {
-        if (paymentType == "C2C")
-            createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
-        else
-            createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
+       
+           createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
     const handleUpdatePress = async () => {
-        console.log(textInputTitle)
-        if (paymentType == "C2C")
-            updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
-        else
             updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
@@ -185,10 +171,6 @@ const TransactionScreen = ({ navigation }) => {
         uid = await User.getRecipientDetails(user);
         if (typeof uid !== 'undefined') {
             
-            console.log(uid);
-            if (paymentType == "C2C")
-                createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, "", "", textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category, "true");
-            else
                 createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category, "true");
             Alert.alert("\"" + textInputTitle + "\" sent as a template to user " + user);
 
@@ -212,10 +194,9 @@ const TransactionScreen = ({ navigation }) => {
 
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty(paymentType)) {
-            if (paymentType != "C2C")
+            
                 submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
-            else
-                submitPhoneTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
+            
             setUserCategory(false);
 
         }
@@ -387,10 +368,7 @@ const TransactionScreen = ({ navigation }) => {
                                     value={paymentType}
                                     onValueChange={(type) => {
                                         setPaymentType(type)
-                                        if (type == "C2C")
-                                            setC2c(true);
-                                        else
-                                            setC2c(false);
+                                
                                     }
 
                                     }
@@ -437,22 +415,7 @@ const TransactionScreen = ({ navigation }) => {
                                 </Picker>
                             </View>
 
-                            {c2c && (
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Recipient phone number"
-                                    value={textInputPhoneNumber}
-                                    placeholderTextColor="#6e749d"
-                                    keyboardType='number-pad'
-                                    onChangeText={(value) => {
-                                        if (!userCategory)
-                                            autoCategory();
-                                        setTextInputPhoneNumber(value)
-                                    }
-                                    }
-                                />)}
 
-                            {!c2c && (<>
                                 <TextInput
                                     style={styles.input}
                                     placeholder="Recipient name"
@@ -478,7 +441,6 @@ const TransactionScreen = ({ navigation }) => {
                                     }}
                                 />
 
-                            </>)}
                             <TextInput
                                 style={styles.input}
                                 placeholder="Description"
