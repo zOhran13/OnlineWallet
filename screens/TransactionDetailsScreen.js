@@ -1,5 +1,5 @@
 
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import {
     getTransactionById
 } from "../modules/transactionModule";
@@ -8,7 +8,7 @@ import { useRoute } from '@react-navigation/native';
 
 
 
-export default function TransactionDetailsScreen() {
+export default function TransactionDetailsScreen({navigation}) {
     const [transaction, setTransaction] = useState({
         transactionId: "",
         createdAt: "",
@@ -125,7 +125,17 @@ export default function TransactionDetailsScreen() {
                     </View>
                 </View>
             </View>
-
+            <View>
+                <Text>---------------------------------------------------------------------------------------</Text>
+            </View>
+            <Pressable
+                style={styles.myTransactionsButton}
+                onPress={() => navigation.navigate("Claim", {transaction: transaction})}
+            >
+                <View style={styles.detailsContainer}>
+                    <Text style={styles.title}>Raise a claim</Text>
+                </View>
+            </Pressable>
         </ScrollView>
     );
 }

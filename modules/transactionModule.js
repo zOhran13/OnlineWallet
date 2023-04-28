@@ -13,7 +13,7 @@ async function getToken() {
 export async function submitTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
     currency, category) {
     try {
-        acc = 'ABC1'
+        acc = 'ABC4'
         token = await getToken();
             await fetch(link + '/api/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",

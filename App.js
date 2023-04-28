@@ -25,6 +25,7 @@ import { TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import { getTransactions } from "./modules/transactionModule";
+import ClaimScreen from "./screens/ClaimScreen";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
                 <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
                 <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
+                <Stack.Screen name="Claim" component={ClaimScreen} />
         <Stack.Screen
           name="Home"
           component={HomeScreen}
