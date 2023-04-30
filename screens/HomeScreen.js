@@ -45,16 +45,19 @@ const HomeScreen = ({ navigation }) => {
 
             <Text style={styles.text}>PAY</Text>
           </Pressable>
-          <View><Text>-----------------------------------------</Text></View>
-          <Pressable
-            style={styles.payButton}
-            onPress={() => navigation.navigate("RequestedAccounts")}
-          >
-            <Text style={styles.text}>Requested accounts</Text>
-          </Pressable>
+          
+    
         </View>
       </View>
       <View>
+
+      <Pressable
+            style={styles.requestButton}
+            onPress={() => navigation.navigate("RequestedAccounts")}
+          >
+            <Text style={styles.text}>REQUESTED ACCOUNTS</Text>
+          </Pressable>
+
         <Pressable
           style={styles.myTransactionsButton}
           onPress={() => navigation.navigate("MyTransactions")}
@@ -92,16 +95,26 @@ const styles = StyleSheet.create({
     width: 150,
     padding: 20,
     backgroundColor: "#FFC021",
+
     
+  },
+  requestButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    width: 250,
+    padding: 20,
+    backgroundColor: "#FFC021",
+    marginTop:70    
   },
   myTransactionsButton: {
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 30,
-    width: "100%",
+    width: 250,
     padding: 20,
     backgroundColor: "#FFC021",
-    marginTop: 70,
+    marginTop: 15,
   },
   text: {
     fontSize: 20,
