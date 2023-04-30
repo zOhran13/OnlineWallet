@@ -8,6 +8,7 @@ import {
   ToastAndroid,
 } from "react-native";
 
+import * as SecureStore from 'expo-secure-store';
 const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
   const [code, setCode] = useState("");
   const saveCode = (text) => {
@@ -33,7 +34,8 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
     }),
   };
 
-  const setTokenFunction = async (token) =>  {
+    const setTokenFunction = async (token) => {
+        console.log(token)
     await SecureStore.setItem("secure_token", token)
     ToastAndroid.show("Welcome", ToastAndroid.SHORT);
   }

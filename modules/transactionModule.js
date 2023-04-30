@@ -5,7 +5,7 @@ var link = 'https://processingserver.herokuapp.com'
 
 async function getToken() {
     const token = await SecureStore.getItemAsync("secure_token");
-
+    
     return token;
 }
 
@@ -15,6 +15,7 @@ export async function submitTransaction(amount, paymentType, recipientName, reci
     try {
         acc = 'ABC4'
         token = await getToken();
+        
             await fetch(link + '/api/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",
                 headers: {
