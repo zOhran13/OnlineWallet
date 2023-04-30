@@ -55,14 +55,14 @@ const HomeScreen = ({ navigation }) => {
             style={styles.requestButton}
             onPress={() => navigation.navigate("RequestedAccounts")}
           >
-            <Text style={styles.text}>REQUESTED ACCOUNTS</Text>
+            <Text style={styles.text2}>REQUESTED ACCOUNTS</Text>
           </Pressable>
 
         <Pressable
           style={styles.myTransactionsButton}
           onPress={() => navigation.navigate("MyTransactions")}
         >
-          <Text style={styles.text}>MY TRANSACTIONS</Text>
+          <Text style={styles.text2}>MY TRANSACTIONS</Text>
         </Pressable>
       </View>
     </View>
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     width: 250,
-    padding: 20,
+    padding: 15,
     backgroundColor: "#FFC021",
     marginTop:70    
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     width: 250,
-    padding: 20,
+    padding: 15,
     backgroundColor: "#FFC021",
     marginTop: 15,
   },
@@ -123,7 +123,13 @@ const styles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "black",
   },
-
+  text2: {
+    fontSize: 18,
+    lineHeight: 21,
+    fontWeight: "bold",
+    letterSpacing: 0.25,
+    color: "black",
+  },
   container2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
