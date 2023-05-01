@@ -8,7 +8,7 @@ async function getToken() {
     
     const token = await SecureStore.getItemAsync("secure_token");
 
-    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI5MGZiZjZhMC05YTMyLTRkMTYtYjE5Yi03NjVjYTM2NjYwOTgiLCJVc2VyTmFtZSI6InRlc3QyIiwianRpIjoiZmEzMWRiNzUtNjYyOS00ZjQyLWJmN2YtNDY4NWM0ZDVkOTczIiwiZXhwIjoxNjgyODUwMDAyLCJpc3MiOiJodHRwOi8vc2lwcm9qZWthdC5kdWNrZG5zLm9yZzo1MDUxIiwiYXVkIjoiaHR0cDovL3NpcHJvamVrYXQuZHVja2Rucy5vcmc6MzAwMCJ9.ova48Y7qakwMt0Tym3oaDtqvquvQcs99uQVG9YKJNaQx';
+    return token;
 }
 
 export const getTemplates = async (userId) => {

@@ -36,7 +36,7 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
 
     const setTokenFunction = async (token) => {
         console.log(token)
-    await SecureStore.setItem("secure_token", token)
+    await SecureStore.setItemAsync("secure_token", token)
     ToastAndroid.show("Welcome", ToastAndroid.SHORT);
   }
 
@@ -104,7 +104,8 @@ const EmailOrPhoneVerificationScreen = ({ navigation, route }) => {
                 .then((data) => {
                   if (data.token != null) {
                     ToastAndroid.show("Login confirmed. Welcome!", ToastAndroid.SHORT);
-                    setTokenFunction(data.token)
+                      setTokenFunction(data.token)
+                      console.log("ovdje tokic " + data.token)
                     navigation.navigate("Home");
                   } else {
                     ToastAndroid.show("Something went wrong while logging in", ToastAndroid.SHORT);
