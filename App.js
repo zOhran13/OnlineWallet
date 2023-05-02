@@ -11,6 +11,7 @@ import TransactionScreen from './screens/TransactionScreen';
 import MyTransactionsScreen from './screens/MyTransactionsScreen';
 import NewAccountCreationScreen from './screens/NewAccountCreationScreen';
 
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TemplateListScreen from "./screens/TemplateListScreen";
 import RequestedAccounts from "./screens/RequestedAccounts";
@@ -45,7 +46,8 @@ export default function App() {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
+                <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
+                <Stack.Screen name="TransactionDetails" component={TransactionDetailsScreen} />
         <Stack.Screen
           name="Template List"
           component={TemplateListScreen}
@@ -84,10 +86,7 @@ export default function App() {
         />
 
         <Stack.Screen name="Transaction" component={TransactionScreen} />
-        <Stack.Screen
-          name="TransactionDetails"
-          component={TransactionDetailsScreen}
-        />
+    
       </Stack.Navigator>
     </NavigationContainer>
   );
