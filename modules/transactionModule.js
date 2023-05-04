@@ -5,7 +5,7 @@ var link = 'https://processingserver.herokuapp.com'
 
 async function getToken() {
     const token = await SecureStore.getItemAsync("secure_token");
-
+    
     return token;
 }
 
@@ -13,8 +13,16 @@ async function getToken() {
 export async function submitTransaction(amount, paymentType, recipientName, recipientAccountNumber, description, phoneNumber,
     currency, category) {
     try {
-        acc = 'ABC4'
+        acc = await getAccounts();
+        account = acc.filter(item => item.currency == currency)
+
+        accNumber = 'ABC'
+        if (account.length != 0)
+            accNumber = account[0].accountNumber
+        
+        
         token = await getToken();
+        
             await fetch(link + '/api/Transaction/CreateTransaction?token=' + token , {
                 method: "POST",
                 headers: {
@@ -30,7 +38,7 @@ export async function submitTransaction(amount, paymentType, recipientName, reci
                         transactionPurpose: description,
                         category: category,
                         sender: {
-                            accountNumber: acc
+                            accountNumber: accNumber
                         },
                         recipient: {
                             name: recipientName,
@@ -53,12 +61,12 @@ export async function submitTransaction(amount, paymentType, recipientName, reci
     }
 }
 
-export async function getTransactions(page = "1", pageSize="10") {
+export async function getTransactions(page, pageSize) {
     try {
       
 
         const token = await getToken();
-        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=' + page + '&pageSize=' + pageSize)
+        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=' + page + '&pageSize=' + pageSize + '&sortingOrder=createdatdesc')
 
         const data = await fetchedData.json();
 
@@ -72,7 +80,6 @@ export async function getTransactions(page = "1", pageSize="10") {
 }
 export async function getTransactionById(id) {
     try {
-        page = "1";
 
         const token = await getToken();
         const fetchedData = await fetch(link + '/api/Transaction/GetTransactionById?token=' + token + '&transactionId=' + id)
