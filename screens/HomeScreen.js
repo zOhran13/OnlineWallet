@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import AccountBalance from "../components/AccountBalance";
-import { getTransactions } from "../modules/transactionModule";
 
-import { useEffect } from 'react';
 const HomeScreen = ({ navigation }) => {
 
 
@@ -20,7 +18,15 @@ const HomeScreen = ({ navigation }) => {
                         style={styles.buttonImage}
                     />
                 </Pressable>
-
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("Voucher Reedem")}
+                >
+                    <Image
+                        source={require("../assets/images/voucher.png")}
+                        style={styles.buttonImage}
+                    />
+                </Pressable>
                 <Pressable
                     style={styles.listTemplatesButton}
                     onPress={() => navigation.navigate("NewAccountCreation")}
@@ -127,7 +133,7 @@ const styles = StyleSheet.create({
     buttonImage: {
         width: 50,
         height: 50,
-        marginRight: "65%"
+        marginRight: "0%"
     },
 
     bankImage: {

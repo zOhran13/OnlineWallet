@@ -66,7 +66,7 @@ export async function getTransactions(page, pageSize) {
       
 
         const token = await getToken();
-        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=' + page + '&pageSize=' + pageSize)
+        const fetchedData = await fetch(link + '/api/Transaction/GetTransactionsForUser?token=' + token + '&pageNumber=' + page + '&pageSize=' + pageSize + '&sortingOrder=createdatdesc')
 
         const data = await fetchedData.json();
 

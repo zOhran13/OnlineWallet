@@ -51,9 +51,6 @@ const MyTransactionsScreen = ({ navigation }) => {
         navigation.navigate("TransactionDetails", { id });
     };
     return (
-
-        <View style={{ flex: 1, backgroundColor: '#1B1938' }}>
-            {transactions.length > 0 ? (
             <FlatList
                     contentContainerStyle={styles.container}
                     data={transactions}
@@ -97,14 +94,9 @@ const MyTransactionsScreen = ({ navigation }) => {
                     onEndReached={moreTransactions}
                     onEndReachedThreshold={0.1}
                 />
-                ) : (
-                <ActivityIndicator size="large" color="#FFFFFF" />
-      )}
+      
 
-           
-
-
-        </View>
+          
 
     );
 };

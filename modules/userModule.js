@@ -75,11 +75,32 @@ export async function getUsers() {
 
 }
 
-export async function getUser(id) {
+
+export async function redeemVoucher(voucher) {
     try {
-        let response = await fetch(`url sa bekenda/users/${id}`);
-        let json = await response.json();
-        return json.user;
+        token = await getToken();
+        
+        await fetch(link + '/api/Voucher/Reedem', {
+            method: "POST",
+            headers: {
+                authorization: `Bearer ${token}`
+            },
+
+            body: JSON.stringify(
+                {
+                    voucher: voucher
+
+                }),
+        }).then((response) => {
+            if (response.status == 200) {
+                alert("Voucher Redeemed!");
+                return;
+            } else {
+                alert("Invalid Voucher!");
+                return;
+            }
+        });
+
     } catch (error) {
         console.error(error);
     }

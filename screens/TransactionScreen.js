@@ -19,7 +19,6 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import * as User from '../modules/userModule';
 import CurrencyInput from 'react-native-currency-input';
 import DialogInput from 'react-native-dialog-input';
-import { t } from '..'
 
 
 const TransactionScreen = ({ navigation }) => {
