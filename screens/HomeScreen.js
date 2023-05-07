@@ -1,47 +1,53 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet, Pressable } from "react-native";
 import AccountBalance from "../components/AccountBalance";
-import { getTransactions } from "../modules/transactionModule";
 
-import { useEffect } from 'react';
 const HomeScreen = ({ navigation }) => {
 
-    
-  return (
-    <View style={styles.container}>
-      <AccountBalance />
-      <View style={styles.container2}>
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("Template List")}
-        >
-          <Image
-            source={require("../assets/images/listTemplates.png")}
-            style={styles.buttonImage}
-          />
-        </Pressable>
 
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("NewAccountCreation")}
-        >
-          <Image
-            source={require("../assets/images/newbank.png")}
-            style={styles.bankImage}
-          />
-        </Pressable>
+    return (
+        <View style={styles.container}>
+            <AccountBalance />
+            <View style={styles.container2}>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("Template List")}
+                >
+                    <Image
+                        source={require("../assets/images/listTemplates.png")}
+                        style={styles.buttonImage}
+                    />
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("Voucher Reedem")}
+                >
+                    <Image
+                        source={require("../assets/images/voucher.png")}
+                        style={styles.buttonImage}
+                    />
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("NewAccountCreation")}
+                >
+                    <Image
+                        source={require("../assets/images/newbank.png")}
+                        style={styles.bankImage}
+                    />
+                </Pressable>
 
-        
-      </View>
 
-      <View style={styles.container1}>
-        <View>
+            </View>
+
+            <View style={styles.container1}>
+                <View>
 
 
-          <Pressable
-            style={styles.payButton}
-            onPress={() => navigation.navigate("Transaction")}
-          >
+                    <Pressable
+                        style={styles.payButton}
+                        onPress={() => navigation.navigate("Transaction")}
+                    >
 
             <Text style={styles.text}>PAY</Text>
           </Pressable>
@@ -147,11 +153,11 @@ const styles = StyleSheet.create({
     marginRight: "65%"
   },
 
-  bankImage: {
-    width: 55,
-    height: 55,
-   
-  },
+    bankImage: {
+        width: 55,
+        height: 55,
+
+    },
 
 });
 
