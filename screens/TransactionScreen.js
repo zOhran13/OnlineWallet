@@ -19,7 +19,6 @@ import { useNavigation, StackActions } from '@react-navigation/native';
 import * as User from '../modules/userModule';
 import CurrencyInput from 'react-native-currency-input';
 import DialogInput from 'react-native-dialog-input';
-import {t } from '..'
 
 
 const TransactionScreen = ({ navigation }) => {
@@ -53,7 +52,7 @@ const TransactionScreen = ({ navigation }) => {
 
     useEffect(() => {
         const getTransactionList = async () => {
-            const data = await getTransactions();
+            const data = await getTransactions("1", "20");
             if (Array.isArray(data)) {
 
                 const newTransactions = data.map(item => ({
@@ -128,16 +127,16 @@ const TransactionScreen = ({ navigation }) => {
             return false;
         }
 
-        
-            if (!textInputName.trim()) {
-                alert("Please Enter Name!");
-                return false;
-            }
-            if (!textInputNumber.trim()) {
-                alert("Please Enter Account Number!");
-                return false;
-            }
-        
+
+        if (!textInputName.trim()) {
+            alert("Please Enter Name!");
+            return false;
+        }
+        if (!textInputNumber.trim()) {
+            alert("Please Enter Account Number!");
+            return false;
+        }
+
         if (!textInputDescription.trim()) {
             alert("Please Enter Description!");
             return false;
@@ -154,13 +153,13 @@ const TransactionScreen = ({ navigation }) => {
 
 
     const createNewTemplate = async () => {
-       
-           createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
+
+        createTemplate(userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert("\"" + textInputTitle + "\" saved as a template.");
 
     }
     const handleUpdatePress = async () => {
-            updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
+        updateTemplate(selectedTemplate.id, userId, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category);
         Alert.alert(" Template \"" + textInputTitle + "\" updated.");
 
     }
@@ -170,8 +169,8 @@ const TransactionScreen = ({ navigation }) => {
     const sendTemplate = async (user) => {
         uid = await User.getRecipientDetails(user);
         if (typeof uid !== 'undefined') {
-            
-                createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category, "true");
+
+            createTemplate(uid.id, textInputTitle, textInputAmount?.toString(), paymentType, textInputName, textInputNumber, textInputDescription, "", getCurrencyCode(currency), category, "true");
             Alert.alert("\"" + textInputTitle + "\" sent as a template to user " + user);
 
         }
@@ -194,9 +193,9 @@ const TransactionScreen = ({ navigation }) => {
 
     const checkAndSubmitTransaction = async () => {
         if (checkTextEmpty(paymentType)) {
-            
-                submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
-            
+
+            submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
+
             setUserCategory(false);
 
         }
@@ -234,7 +233,7 @@ const TransactionScreen = ({ navigation }) => {
         }
     }
 
-    
+
 
     function autoCategory() {
         const highestCategory = filterAndSumCategories();
@@ -263,7 +262,7 @@ const TransactionScreen = ({ navigation }) => {
         const phoneNumberList = transactions.filter((transaction) => {
 
             const phone = transaction.recipientPhone ? transaction.recipientPhone.toLowerCase() : '';
-            
+
             return phone === phoneNumber;
         });
 
@@ -296,7 +295,7 @@ const TransactionScreen = ({ navigation }) => {
         const highestCategory = Object.keys(categoryCounts).reduce((a, b) => {
             return categoryCounts[a] > categoryCounts[b] ? a : b;
         }, []);
-        
+
 
         return highestCategory;
     }
@@ -368,7 +367,7 @@ const TransactionScreen = ({ navigation }) => {
                                     value={paymentType}
                                     onValueChange={(type) => {
                                         setPaymentType(type)
-                                
+
                                     }
 
                                     }
@@ -416,30 +415,30 @@ const TransactionScreen = ({ navigation }) => {
                             </View>
 
 
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Recipient name"
-                                    placeholderTextColor="#6e749d"
-                                    value={textInputName}
-                                    onChangeText={(value) => {
-                                        if (!userCategory)
-                                            autoCategory();
-                                        setTextInputName(value);
-                                    }
-                                    }
-                                />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Recipient name"
+                                placeholderTextColor="#6e749d"
+                                value={textInputName}
+                                onChangeText={(value) => {
+                                    if (!userCategory)
+                                        autoCategory();
+                                    setTextInputName(value);
+                                }
+                                }
+                            />
 
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Recipient account number"
-                                    value={textInputNumber}
-                                    placeholderTextColor="#6e749d"
-                                    onChangeText={(value) => {
-                                        if (!userCategory)
-                                            autoCategory();
-                                        setTextInputNumber(value)
-                                    }}
-                                />
+                            <TextInput
+                                style={styles.input}
+                                placeholder="Recipient account number"
+                                value={textInputNumber}
+                                placeholderTextColor="#6e749d"
+                                onChangeText={(value) => {
+                                    if (!userCategory)
+                                        autoCategory();
+                                    setTextInputNumber(value)
+                                }}
+                            />
 
                             <TextInput
                                 style={styles.input}
