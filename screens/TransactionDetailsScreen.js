@@ -152,6 +152,7 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         backgroundColor: "#1B1938",
+        
         padding: 20,
         justifyContent: "center",
         
@@ -159,22 +160,22 @@ const styles = StyleSheet.create({
     container2: {
         flexGrow: 1,
         backgroundColor: "#1B1938",
-        padding: 20,
         justifyContent: "center",
         alignItems: "center",
     },
 
-   claimButton: {
-        alignItems: "center",
+    claimButton: {
+        marginTop: 40,
+        backgroundColor: "#FFC022",
+        width: 170,
+        height: 35,
+        display: "flex",
         justifyContent: "center",
-        borderRadius: 30,
-        width: 180,
-        padding: 15,
-        backgroundColor: "#FFC021",
-        marginTop: 20,
-    
-
+        alignItems: "center",
+        borderRadius: 15,
       },
+
+      
       text2: {
         fontSize: 18,
         lineHeight: 21,
@@ -192,10 +193,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     detailsContainer: {
-        backgroundColor: "#2E2C4A",
+        backgroundColor: "#312e66",
+        borderColor: "#645CD1",
         borderRadius: 10,
         padding: 20,
         marginTop: 0,
+        borderWidth: 2,
     },
     row: {
         flexDirection: "row",
