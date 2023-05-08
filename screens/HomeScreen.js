@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
   buttonImage: {
     width: 50,
     height: 50,
-    marginRight: "65%"
   },
 
     bankImage: {
