@@ -125,18 +125,26 @@ export default function TransactionDetailsScreen({navigation}) {
                     </View>
                 </View>
             </View>
-            <View>
-                <Text>---------------------------------------------------------------------------------------</Text>
+
+            <View style={styles.container2}>
+<Pressable
+            contentContainerStyle={styles.container2}
+          style={styles.claimButton}
+          onPress={() => navigation.navigate("Claim", {transaction: transaction})}
+        >
+          <Text style={styles.text2}>RAISE A CLAIM</Text>
+        </Pressable>
+
             </View>
-            <Pressable
-                style={styles.myTransactionsButton}
-                onPress={() => navigation.navigate("Claim", {transaction: transaction})}
-            >
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>Raise a claim</Text>
-                </View>
-            </Pressable>
+             
+
+           
+           
         </ScrollView>
+
+
+       
+
     );
 }
 
@@ -146,7 +154,35 @@ const styles = StyleSheet.create({
         backgroundColor: "#1B1938",
         padding: 20,
         justifyContent: "center",
+        
     },
+    container2: {
+        flexGrow: 1,
+        backgroundColor: "#1B1938",
+        padding: 20,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+   claimButton: {
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 30,
+        width: 180,
+        padding: 15,
+        backgroundColor: "#FFC021",
+        marginTop: 20,
+    
+
+      },
+      text2: {
+        fontSize: 18,
+        lineHeight: 21,
+        fontWeight: "bold",
+        letterSpacing: 0.25,
+        color: "black",
+      },
+      
     title: {
         fontSize: 20,
         fontWeight: "bold",
