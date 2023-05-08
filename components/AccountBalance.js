@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Text, View, Image, StyleSheet } from "react-native";
 
+
+
 const AccountBalance = () => {
     const [balance, setBalance] = useState(1000);
 

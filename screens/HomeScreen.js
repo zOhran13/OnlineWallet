@@ -76,24 +76,26 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#1B1938",
-    alignItems: "center",
-    justifyContent: "center",
-    
-  },
-  container1: {
-    alignItems: "center",
-    justifyContent: "center",
-    borderColor: "black",
-    borderRadius: 40,
-    backgroundColor: "#312e66",
-    padding: 50,
-    width: "80%",
-    
-   
-  },
+   container: {
+        paddingTop: 15,
+        flex: 1,
+        backgroundColor: "#1B1938",
+        alignItems: "center",
+        justifyContent: "center",
+        
+
+    },
+    container1: {
+        alignItems: "center",
+        justifyContent: "center",
+        borderColor: "black",
+        borderRadius: 40,
+        backgroundColor: "#312e66",
+        padding: 20,
+        width: "80%",
+
+
+    },
   payButton: {
     alignItems: "center",
     justifyContent: "center",
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   buttonImage: {
     width: 50,
     height: 50,
-    marginRight: "65%"
+    marginRight: "0%"
   },
 
     bankImage: {

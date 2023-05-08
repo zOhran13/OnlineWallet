@@ -31,14 +31,15 @@ export default function App() {
             <Stack.Navigator>
                 <Stack.Screen name='Login' component={LoginScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
-                <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
-                <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
-                <Stack.Screen name="Claim" component={ClaimScreen} />
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{ headerShown: false }}
                 />
+
+                <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
+                <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
+                <Stack.Screen name="Claim" component={ClaimScreen} />
 
                 <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
                 <Stack.Screen name="TransactionDetails" component={TransactionDetailsScreen} />

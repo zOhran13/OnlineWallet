@@ -76,19 +76,21 @@ export async function getUsers() {
 }
 
 
-export async function redeemVoucher(voucher) {
+export async function redeemVoucher(voucher,accountNumber) {
     try {
         token = await getToken();
         
-        await fetch(link + '/api/Voucher/Reedem', {
+        await fetch(link + '/api/VoucherRedemption/RedeemVoucher/', {
             method: "POST",
             headers: {
+                'Content-Type': 'application/json',
                 authorization: `Bearer ${token}`
             },
 
             body: JSON.stringify(
                 {
-                    voucher: voucher
+                    code: voucher,
+                    accountNumber: accountNumber
 
                 }),
         }).then((response) => {
