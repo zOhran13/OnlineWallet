@@ -125,26 +125,18 @@ export default function TransactionDetailsScreen({navigation}) {
                     </View>
                 </View>
             </View>
-
-            <View style={styles.container2}>
-<Pressable
-            contentContainerStyle={styles.container2}
-          style={styles.claimButton}
-          onPress={() => navigation.navigate("Claim", {transaction: transaction})}
-        >
-          <Text style={styles.text2}>RAISE A CLAIM</Text>
-        </Pressable>
-
+            <View>
+                <Text>---------------------------------------------------------------------------------------</Text>
             </View>
-             
-
-           
-           
+            <Pressable
+                style={styles.myTransactionsButton}
+                onPress={() => navigation.navigate("Claim", {transaction: transaction})}
+            >
+                <View style={styles.detailsContainer}>
+                    <Text style={styles.title}>Raise a claim</Text>
+                </View>
+            </Pressable>
         </ScrollView>
-
-
-       
-
     );
 }
 
@@ -152,38 +144,9 @@ const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         backgroundColor: "#1B1938",
-        
         padding: 20,
         justifyContent: "center",
-        
     },
-    container2: {
-        flexGrow: 1,
-        backgroundColor: "#1B1938",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
-    claimButton: {
-        marginTop: 40,
-        backgroundColor: "#FFC022",
-        width: 170,
-        height: 35,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 15,
-      },
-
-      
-      text2: {
-        fontSize: 18,
-        lineHeight: 21,
-        fontWeight: "bold",
-        letterSpacing: 0.25,
-        color: "black",
-      },
-      
     title: {
         fontSize: 20,
         fontWeight: "bold",
@@ -193,12 +156,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     detailsContainer: {
-        backgroundColor: "#312e66",
-        borderColor: "#645CD1",
+        backgroundColor: "#2E2C4A",
         borderRadius: 10,
         padding: 20,
         marginTop: 0,
-        borderWidth: 2,
     },
     row: {
         flexDirection: "row",

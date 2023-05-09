@@ -135,17 +135,13 @@ const  ClaimScreen = ({ navigation, route }) => {
             <Image source={require('../assets/images/pdf.png')}
               style={styles.iconpdf} />
             <Text style={styles.pdfText}>CLEAR</Text>
-          </Pressable> 
-
-
+          </Pressable>   
           <Pressable
-            style={styles.claimButton}
+            style={styles.verifyButton}
             title='Raise_the_claim'
             onPress={() => sendRequest(token)}>					
             <Text style={styles.requestText}>RAISE A CLAIM</Text>
           </Pressable>
-
-          
         </View>
       </View>
     );
@@ -179,7 +175,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         gap: 8,
-        width: 190,
+        width: 135,
         height: 35,
         borderRadius: 15,
         backgroundColor: '#ffffff',
@@ -217,7 +213,7 @@ const styles = StyleSheet.create({
     height: 160,
   },
 
-  claimButton: {
+  verifyButton: {
     marginTop: 40,
     backgroundColor: "#FFC022",
     width: 170,
@@ -259,7 +255,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     letterSpacing: 1,
     marginBottom:10,
-    marginTop:25
+    marginTop:40
     
   },
 
