@@ -1,8 +1,6 @@
 import TransactionDetailsScreen from "./screens/TransactionDetailsScreen";
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import AccountBalance from './components/AccountBalance';
-import RegistrationScreen from './screens/RegistrationScreen';
+import { Animated, StyleSheet, Text, View, DrawerLayoutAndroid } from 'react-native';
 import EmailVerificationScreen from './screens/EmailVerificationScreen';
 import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -21,20 +19,42 @@ import { TouchableOpacity } from "react-native";
 import registerNNPushToken from "native-notify";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import RegistrationScreen from './screens/RegistrationScreen';
+
+import React, { useRef } from "react";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
-
+  
     registerNNPushToken(7256, "49XqdeSbyrq5jqZH1ZctRG");
     return (
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen name='Login' component={LoginScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
+
                 <Stack.Screen
                     name="Home"
                     component={HomeScreen}
-                    options={{ headerShown: false }}
+                    options={({ navigation }) => ({
+                        headerLeft: () => (
+                            <TouchableOpacity >
+                                <View
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        opacity: 0.7,
+                                    }}
+                                >
+                                    <Icon
+                                        name="bars"
+                                        size={25}
+                                    />
+                                    <Text style={{ fontSize: 20, paddingLeft: 8 }}> </Text>
+                                </View>
+                            </TouchableOpacity>
+                        ),
+                    })}
                 />
 
                 <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
