@@ -1,27 +1,27 @@
-import TransactionDetailsScreen from "./screens/TransactionDetailsScreen";
-import { StatusBar } from 'expo-status-bar';
-import { Animated, StyleSheet, Text, View, DrawerLayoutAndroid } from 'react-native';
-import EmailVerificationScreen from './screens/EmailVerificationScreen';
-import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
-import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
-import TransactionScreen from './screens/TransactionScreen';
-import MyTransactionsScreen from './screens/MyTransactionsScreen';
-import NewAccountCreationScreen from './screens/NewAccountCreationScreen';
-import ClaimScreen from "./screens/ClaimScreen";
-import EmailOrPhoneVerificationScreen from "./screens/EmailOrPhoneVerificationScreen";
-import TemplateListScreen from "./screens/TemplateListScreen";
-import RequestedAccounts from "./screens/RequestedAccounts";
-import VoucherReedemScreen from "./screens/VoucherReedemScreen";
+import { Animated, DrawerLayoutAndroid, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { TouchableOpacity } from "react-native";
-import registerNNPushToken from "native-notify";
+import { StatusBar } from 'expo-status-bar';
 import Icon from "react-native-vector-icons/FontAwesome";
+import registerNNPushToken from "native-notify";
 
+import ClaimScreen from "./screens/ClaimScreen";
+import EmailOrPhoneVerificationScreen from "./screens/EmailOrPhoneVerificationScreen";
+import EmailVerificationScreen from './screens/EmailVerificationScreen';
+import HomeScreen from './screens/HomeScreen';
+import LoginScreen from './screens/LoginScreen';
+import MyTransactionsScreen from './screens/MyTransactionsScreen';
+import NewAccountCreationScreen from './screens/NewAccountCreationScreen';
+import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
+import RequestedAccounts from "./screens/RequestedAccounts";
+import TemplateListScreen from "./screens/TemplateListScreen";
+import TransactionDetailsScreen from "./screens/TransactionDetailsScreen";
+import TransactionScreen from './screens/TransactionScreen';
+import VoucherReedemScreen from "./screens/VoucherReedemScreen";
 
 import React, { useRef } from "react";
+
 
 const Stack = createNativeStackNavigator();
 export default function App() {

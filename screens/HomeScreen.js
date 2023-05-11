@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Text, ScrollView, View, Image, StyleSheet, Pressable, DrawerLayoutAndroid, FlatList } from "react-native";
 import * as User from '../modules/userModule';
 import { submitTransaction, submitPhoneTransaction, getTransactions, getAccounts } from "../modules/transactionModule";
-
-import { useIsFocused } from '@react-navigation/native';
+import { NavigationActions } from 'react-navigation';
+import { useIsFocused, StackActions,  } from '@react-navigation/native';
 
 
 
@@ -27,27 +27,29 @@ const HomeScreen = ({ navigation }) => {
         }
     }, [isFocused]);
     useEffect(() => {
-        
+
         fetchUser();
 
     }, []);
 
-    const openDrawer = () => {
-        navigation.openDrawer();
-    };
+    
+
     const navigationView = (
-        
+
         <View >
 
-            <ScrollView>
+            <ScrollView >
                 <View style={styles.menuProfile}>
+
                     <View style={styles.circle} View>
 
-                        <Text style={{ fontSize: 60, color: "white", paddingTop: 10 }}>{user.firstName?.subString(0,1)}</Text>
+                        <Text style={{ fontSize: 60, color: "white", paddingTop: 10 }}>{user.firstName?.substring(0, 1)}</Text>
+
                     </View>
                     <Text style={styles.text3}>{user.firstName + " " + user.lastName}</Text>
                     <Text style={styles.text4}>{user.email}</Text>
                     <Text style={styles.text4}>{user.phoneNumber}</Text>
+
                 </View>
                 <Pressable
                     style={styles.listTemplatesButton}
@@ -99,8 +101,28 @@ const HomeScreen = ({ navigation }) => {
                     />
                     <Text style={styles.text}>My Transactions</Text>
                 </Pressable>
+
+
+
+                
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => {
+                        User.logout();
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'Login' }],
+                        });
+                    }}
+                >
+                    <Image
+                        source={require("../assets/images/logout.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Logout</Text>
+                </Pressable>
             </ScrollView>
-            
+
         </View>
     );
 
@@ -109,6 +131,7 @@ const HomeScreen = ({ navigation }) => {
             drawerWidth={300}
             drawerPosition={'left'}
             renderNavigationView={() => navigationView}>
+            
             <View style={styles.container}>
                 <View style={styles.container2}>
                     <FlatList
@@ -130,7 +153,7 @@ const HomeScreen = ({ navigation }) => {
                                                 source={require("../assets/images/WalletPicture.png")}
                                             />
                                         </View>
-                                        
+
 
                                     </View>
 
@@ -228,7 +251,7 @@ const styles = StyleSheet.create({
     menuProfile: {
         alignItems: "center",
         backgroundColor: "#312e66",
-        height: "39%",
+        height: 190,
         paddingTop: 10
     },
     myTransactionsButton: {

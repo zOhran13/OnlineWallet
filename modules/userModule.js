@@ -64,7 +64,7 @@ export const getRecipientDetails = async (userName) => {
 export async function getUsers() {
 
     const token = await getToken();
-    let fetchedData = await fetch('/api/User/', {
+    let fetchedData = await fetch(link + '/api/User/', {
         authorization: `Bearer ${token}`
     }).then(result => result.json())
         .then(data => {
@@ -72,6 +72,31 @@ export async function getUsers() {
         })
 
     return fetchedData;
+
+}
+
+export async function logout() {
+
+    const token = await getToken();
+    await fetch(link + '/api/User/logout/', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            authorization: `Bearer ${token}`
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+
+                alert("Logout successful");
+            } else {
+                throw new Error('Network response was not ok');
+            }
+        })
+        .catch(error => {
+            // Handle error
+            console.error('Error:', error);
+        });
 
 }
 
@@ -89,8 +114,7 @@ export async function redeemVoucher(voucher,accountNumber) {
 
             body: JSON.stringify(
                 {
-                    code: voucher,
-                    accountNumber: accountNumber
+                    code: voucher
 
                 }),
         }).then((response) => {
