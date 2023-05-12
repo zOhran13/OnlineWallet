@@ -13,18 +13,8 @@ import { getAccounts } from "../modules/transactionModule";
 
 import { Picker } from "@react-native-picker/picker";
 const VoucherReedemScreen = ({ navigation }) => {
-    const [accounts, setAccounts] = useState([]);
-    const [account, setAccount] = useState("");
 
 
-    useEffect(() => {
-        const fetchAccounts = async () => {
-            accs = await getAccounts()
-            setAccounts(accs);
-            console.log(accs)
-        };
-        fetchAccounts();
-    }, []);
 
     const [voucher, setVoucher] = useState("");
     const sendVoucher = async () => {
@@ -37,7 +27,7 @@ const VoucherReedemScreen = ({ navigation }) => {
             ToastAndroid.show("Please choose account", ToastAndroid.SHORT);
         }
         else {
-            User.redeemVoucher(voucher,account);
+            User.redeemVoucher(voucher);
         }
     }
 
@@ -45,9 +35,9 @@ const VoucherReedemScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <View style={styles.box}>
-                <Text style={styles.title}>Reedem-Voucher</Text>
+                <Text style={styles.title}>Redeem-Voucher</Text>
                 <Text style={styles.bodyText}>
-                    Enter the voucher below, you need to have account in vouchers currency to reedem it.
+                    Enter the voucher below, you need to have account in vouchers currency to redeem it.
                 </Text>
                 <TextInput
                     style={styles.inputText}
@@ -57,24 +47,10 @@ const VoucherReedemScreen = ({ navigation }) => {
                         setVoucher(text);
                     }}
                 />
-                <Picker
-                    selectedValue={account}
-                    onValueChange={(acc) =>
-                        setAccount(acc)
-                    }
-
-                    mode={'dropdown'}
-                    style={styles.picker}
-                >
-
-                    <Picker.Item label="Choose account" value="null" ></Picker.Item>
-                    {accounts.map((item) => (
-                        <Picker.Item label={item.accountNumber + " " + item.currency + " " + item.bankName} value={item.accountNumber} color="black"/>
-                    ))}
-                </Picker>
+             
                 <Pressable
                     style={styles.verifyButton}
-                    title="Reedem"
+                    title="Redeem"
                     onPress={sendVoucher}>
                     <Text style={styles.verifyText}>Reedem</Text>
                 </Pressable>
@@ -106,7 +82,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         width: "95%",
-        height: "65%",
+        height: "45%",
         backgroundColor: "#312D65",
         borderRadius: 50,
         borderWidth: 2,
