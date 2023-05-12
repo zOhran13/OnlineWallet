@@ -83,6 +83,16 @@ const HomeScreen = ({ navigation }) => {
                 </Pressable>
                 <Pressable
                     style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("EInvoiceRegistration")}
+                >
+                    <Image
+                        source={require("../assets/images/icon-register.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Register new e-invoice</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
                     onPress={() => navigation.navigate("RequestedAccounts")}
                 >
                     <Image
