@@ -19,6 +19,8 @@ import TemplateListScreen from "./screens/TemplateListScreen";
 import TransactionDetailsScreen from "./screens/TransactionDetailsScreen";
 import TransactionScreen from './screens/TransactionScreen';
 import VoucherReedemScreen from "./screens/VoucherReedemScreen";
+import ChatScreen from './screens/ChatScreen';
+import DataTable from './screens/DataTable';
 
 import React, { useRef } from "react";
 
@@ -91,7 +93,8 @@ export default function App() {
                 <Stack.Screen name="PhoneVerification" component={PhoneVerificationScreen}/>
                 <Stack.Screen name="EmailOrPhoneVerification" component={EmailOrPhoneVerificationScreen}/>
                 <Stack.Screen name="Transaction" component={TransactionScreen} />
-
+                <Stack.Screen name="Data Table" component={DataTable} options={{ title: 'Data Table' }} />
+                <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ title: 'Chat Screen' }} />
                 <Stack.Screen name="Voucher Reedem" component={VoucherReedemScreen} />
             </Stack.Navigator>
         </NavigationContainer>
