@@ -75,7 +75,7 @@ const RequestedAccounts = ({ navigation }) => {
             </View>
           {accounts.map(account => (
             <View style={styles.row}>
-              <Text style={styles.cell}>{account.accountNumber}</Text>
+              <Text style={styles.cell}>{account.id}</Text>
               <Text style={styles.cell}>{account.description}</Text>
               <Text style={styles.cell}>{account.approved == false ? "Pending" : "Approved"}</Text>
               <Text style={styles.cell}>{account.currency.name}</Text>
