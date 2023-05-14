@@ -171,8 +171,14 @@ const HomeScreen = ({ navigation }) => {
                     >
                         <Text style={styles.text}>PAY</Text>
                     </Pressable>
-                </View>
 
+                    <Pressable
+                        style={styles.payButton}
+                        onPress={() => navigation.navigate("DataTable")}
+                    >
+                        <Text style={styles.text}>MY Claims</Text>
+                    </Pressable>
+                </View>
 
             </View>
         </DrawerLayoutAndroid>
@@ -270,6 +276,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 20,
         width: 150,
+        margin: 10,
     },
     requestButton: {
         alignItems: "center",

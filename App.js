@@ -1,17 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
+/* import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import ClaimTable from './screens/DataTable';
+import ChatScreen from './screens/ChatScreen';
 
 export default function App() {
   return (
     <View>
-      <ClaimScreen />
+      <ClaimTable />
     </View>
   );
-}
+} */
 
 
-/*
 import { Animated, DrawerLayoutAndroid, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -107,7 +107,7 @@ export default function App() {
                 <Stack.Screen name="PhoneVerification" component={PhoneVerificationScreen}/>
                 <Stack.Screen name="EmailOrPhoneVerification" component={EmailOrPhoneVerificationScreen}/>
                 <Stack.Screen name="Transaction" component={TransactionScreen} />
-                <Stack.Screen name="Data Table" component={DataTable} options={{ title: 'Data Table' }} />
+                <Stack.Screen name="DataTable" component={DataTable} options={{ title: 'Data Table' }} />
                 <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ title: 'Chat Screen' }} />
                 <Stack.Screen name="Voucher Reedem" component={VoucherReedemScreen} />
             </Stack.Navigator>
@@ -124,4 +124,3 @@ const styles = StyleSheet.create({
 
     },
 });
-*/

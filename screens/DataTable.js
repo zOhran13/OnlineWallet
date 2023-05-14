@@ -12,6 +12,7 @@ const ClaimTable = ({ navigation }) => {
     { id: 1, subject: 'Loading...', lastUpdated: 'Loading...', status: 'Loading...' },
     { id: 2, subject: 'Loading...', lastUpdated: 'Loading...', status: 'Loading...' },
     { id: 3, subject: 'Loading...', lastUpdated: 'Loading...', status: 'Loading...' },
+    { id: 4, subject: 'Test', lastUpdated: 'Loading...', status: 'Loading...' },
   ];
 
 
@@ -33,7 +34,7 @@ const ClaimTable = ({ navigation }) => {
           return (<DataTable.Row>
             <DataTable.Cell onPress={
               () => {
-                navigation.navigate("Claim")
+                navigation.navigate('Claim')
               }
             }>{item.id}</DataTable.Cell>
             <DataTable.Cell>{item.subject}</DataTable.Cell>
