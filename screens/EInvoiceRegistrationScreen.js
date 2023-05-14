@@ -12,80 +12,39 @@ import {
 } from "react-native";
 
 import { Picker } from "@react-native-picker/picker";
-import { submitTransaction, submitPhoneTransaction, getTransactions } from "../modules/transactionModule";
-import { useRoute } from '@react-navigation/native';
-import { getTemplate, deleteTemplate, updateTemplate, createTemplate } from "../modules/templatesModule";
-import { useNavigation, StackActions } from '@react-navigation/native';
-import * as User from '../modules/userModule';
 
 const EInvoiceRegistrationScreen = ({ navigation }) => {
 
-    const [textInputName, setTextInputName] = useState("");
-    const [textInputDescription, setTextInputDescription] = useState("");
-    const [textInputNumber, setTextInputNumber] = useState("");
-    const [category, setCategory] = useState("");
-    const [userId, setUserId] = useState("");
-    const [textInputPhoneNumber, setTextInputPhoneNumber] = useState("");
-    const { params } = useRoute();
-    const id = params?.id;
-    const [userCategory, setUserCategory] = useState(false);
-    const [transactions, setTransactions] = useState([])
-    const [companies, setCompanies] = useState([])
+    const [param1, setParam1] = useState("");
+    const [param3, setParam3] = useState("");
+    const [param2, setParam2] = useState("");
+    const [param4, setParam4] = useState("");
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            xid = await User.getUserDetails()
-            setUserId(xid.id);
+    const [company, setCompany] = useState("");
+    const [selectedCompany, setSelectedCompany] = useState({companyName: "Company", param1: null, param2: null, param3: null, param4: null});
 
-        };
-        fetchUserId();
-    }, []);
-
-
-    useEffect(() => {
-        const getTransactionList = async () => {
-            const data = await getTransactions("1", "20");
-            if (Array.isArray(data)) {
-
-                const newTransactions = data.map(item => ({
-                    paymentType: item.transactionType,
-                    recipientName: item.recipient.name,
-                    recipientAccountNumber: item.recipient.accountNumber,
-                    recipientPhone: item.recipient.phoneNumber,
-                    description: item.transactionPurpose,
-                    category: item.category
-                }));
-                setTransactions(newTransactions);
-            }
-        };
-        getTransactionList();
-    }, []);
+ 
 
 
     const checkTextEmpty = () => {
 
-        if (!textInputAmount.toString().trim()) {
-            alert("Please Enter Amount!");
+
+        if (!param1 || !param1.trim()) {
+            alert("Please Enter " + selectedCompany.param1);
+            return false;
+        }
+        if (!param2 || !param2.trim()) {
+            alert("Please Enter " + selectedCompany.param2);
             return false;
         }
 
-
-        if (!textInputName.trim()) {
-            alert("Please Enter Name!");
-            return false;
-        }
-        if (!textInputNumber.trim()) {
-            alert("Please Enter Account Number!");
+        if (!param3 || !param3.trim()) {
+            alert("Please Enter " + selectedCompany.param3);
             return false;
         }
 
-        if (!textInputDescription.trim()) {
-            alert("Please Enter Description!");
-            return false;
-        }
-
-        if (!category) {
-            alert("Please choose Category")
+        if (!param4 || !param4.trim()) {
+            alert("Please Enter " + selectedCompany.param4);            
             return false;
         }
 
@@ -93,20 +52,8 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
         return true;
     }
 
-
-
-    const handleSubmitUsername = async (username) => {
-        setUsernameForSend(inputUsername),
-            setVisible(false);
-        sendTemplate(username)
-    }
-
-    const checkAndSubmitTransaction = async () => {
-        if (checkTextEmpty(paymentType)) {
-
-            submitTransaction(textInputAmount, paymentType, textInputName, textInputNumber, textInputDescription, textInputPhoneNumber, getCurrencyCode(currency), category);
-
-            setUserCategory(false);
+    const checkAndSubmitRegistration = async () => {
+        if (checkTextEmpty()) {
 
         }
 
@@ -114,66 +61,18 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
 
 
 
+    const companiesArray=[{companyName: "Company", param1: null, param2: null, param3: null, param4: null},
+    {companyName: "Vodovod", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: "ljubimac"},
+    {companyName: "Struja", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null},
+    {companyName: "Plin", param1: "JMBG", param2: "imePrezime", param3: null, param4: null},
+    {companyName: "Smeće", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null},
+    {companyName: "Oki", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null},
+    {companyName: "Higijeničar", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null},
+    {companyName: "Slastičarna", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null}];
 
-    function filterAndSumCategories() {
-        const accountNumber = textInputNumber;
-        const phoneNumber = textInputPhoneNumber;
-        const recipientName = textInputName;
-        const descriptionWords = textInputDescription?.split(' ');
-        const englishExcludedWords = [
-            'and', 'but', 'or', 'yet', 'for', 'nor', 'so', 'at', 'by',
-            'from', 'in', 'of', 'on', 'to', 'for', 'payment', 'transfer', 'from', 'with'
-        ];
-
-
-        const accountNumberList = transactions.filter((transaction) => {
-            const number = transaction.recipientAccountNumber ? transaction.recipientAccountNumber.toLowerCase() : '';
-            return number === accountNumber;
-        });
-
-        const phoneNumberList = transactions.filter((transaction) => {
-
-            const phone = transaction.recipientPhone ? transaction.recipientPhone.toLowerCase() : '';
-
-            return phone === phoneNumber;
-        });
-
-        const recipientNameList = transactions.filter((transaction) => {
-            const name = transaction.recipientName ? transaction.recipientName.toLowerCase() : '';
-            return name === recipientName
-
-        });
-        const descriptionList = transactions.filter((transaction) => {
-
-            const description = transaction.description ? transaction.description.toLowerCase() : '';
-            return descriptionWords?.some((word) => {
-                if (!englishExcludedWords.includes(word.toLowerCase()))
-                    return description.includes(word.toLowerCase());
-            });
-        });
-
-
-        //daje se prednost opisu
-        const allLists = [accountNumberList, phoneNumberList, recipientNameList, descriptionList, descriptionList, descriptionList, descriptionList, descriptionList];
-        const categoryCounts = {};
-
-        allLists.forEach((list) => {
-            list.forEach((transaction) => {
-                const category = transaction.category;
-                categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-            });
-        });
-
-        const highestCategory = Object.keys(categoryCounts).reduce((a, b) => {
-            return categoryCounts[a] > categoryCounts[b] ? a : b;
-        }, []);
-
-
-        return highestCategory;
-    }
-
-
-
+    let serviceItems = companiesArray.map( (s, i) => {
+        return <Picker.Item key={i} value={s.companyName} label={s.companyName} />
+    });
 
     return (
         <>
@@ -185,74 +84,76 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                         
 
                         <Picker
-                                selectedValue={category}
-                                onValueChange={(category) => {
-                                    setUserCategory(true);
-                                    setCategory(category);
+                                selectedValue={company}
+                                onValueChange={(company) => {
+                                    setCompany(company);
+                                    setSelectedCompany(companiesArray.find(data => data.companyName===company));
+                                    setParam1(null);
+                                    setParam2(null);
+                                    setParam3(null);
+                                    setParam4(null);
+   
                                 }
                                 }
 
                                 style={styles.categoryPicker}
                             >
-                                <Picker.Item label="Company" value={null} color="darkgrey" />
-                                <Picker.Item label="Food and Drink" value="Food and Drink" color="black" />
-                                <Picker.Item label="Entertainment" value="Entertainment" color="black" />
-                                <Picker.Item label="Transportation" value="Transportation" color="black" />
-                                <Picker.Item label="Shopping" value="Shopping" color="black" />
-                                <Picker.Item label="Health and Wellness" value="Health and Wellness" color="black" />
-                                <Picker.Item label="Travel" value="Travel" color="black" />
-                                <Picker.Item label="Bills and Utilities" value="Bills and Utilities" color="black" />
-                                <Picker.Item label="Other" value="Other" color="black" />
+                                {serviceItems}
 
                             </Picker>
 
                             <View style={styles.inputFieldsContainer}>
+                            {selectedCompany.param1!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder="Recipient name"
+                                placeholder={selectedCompany.param1}
                                 placeholderTextColor="#6e749d"
-                                value={textInputName}
+                                value={param1}
                                 onChangeText={(value) => {
-                                    setTextInputName(value);
+                                    setParam1(value);
                                 }
                                 }
-                            />
+                            />)}
 
+                            {selectedCompany.param2!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder="Recipient account number"
-                                value={textInputNumber}
+                                placeholder={selectedCompany.param2}
                                 placeholderTextColor="#6e749d"
+                                value={param2}
                                 onChangeText={(value) => {
-                                    setTextInputNumber(value)
+                                    setParam2(value)
                                 }}
-                            />
+                            />)}
 
+
+                            {selectedCompany.param3!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder="Description"
-                                value={textInputDescription}
+                                placeholder={selectedCompany.param3}
                                 placeholderTextColor="#6e749d"
+                                value={param3}
                                 onChangeText={(value) => {
-                                    setTextInputDescription(value)
+                                    setParam3(value);
                                 }
                                 }
-                            />
+                            />)}
 
+                            {selectedCompany.param4!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder="Description"
-                                value={textInputDescription}
+                                placeholder={selectedCompany.param4}
                                 placeholderTextColor="#6e749d"
+                                value={param4}
                                 onChangeText={(value) => {
-                                    setTextInputDescription(value)
-                                }
-                                }
-                            />
+                                    setParam4(value)
+                                }}
+                            />)}
+
 
                         </View>
                     </View>
-                    <Pressable style={styles.submitButton} onPress={checkAndSubmitTransaction}>
+                    <Pressable style={styles.submitButton} onPress={checkAndSubmitRegistration}>
                         <Text style={styles.text}>Submit</Text>
                     </Pressable>
                 
