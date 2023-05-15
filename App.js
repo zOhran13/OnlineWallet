@@ -1,6 +1,6 @@
 import { Animated, DrawerLayoutAndroid, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { StatusBar } from 'expo-status-bar';
 import Icon from "react-native-vector-icons/FontAwesome";
 import registerNNPushToken from "native-notify";
@@ -30,32 +30,9 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name='Login' component={LoginScreen} />
-                <Stack.Screen name="Registration" component={RegistrationScreen} />
 
-                <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}
-                    options={({ navigation }) => ({
-                        headerLeft: () => (
-                            <TouchableOpacity >
-                                <View
-                                    style={{
-                                        flexDirection: "row",
-                                        alignItems: "center",
-                                        opacity: 0.7,
-                                    }}
-                                >
-                                    <Icon
-                                        name="bars"
-                                        size={25}
-                                    />
-                                    <Text style={{ fontSize: 20, paddingLeft: 8 }}> </Text>
-                                </View>
-                            </TouchableOpacity>
-                        ),
-                    })}
-                />
+
+                <Stack.Screen name="Home" component={HomeScreen} />
 
                 <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
                 <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />

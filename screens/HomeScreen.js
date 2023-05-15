@@ -4,7 +4,7 @@ import * as User from '../modules/userModule';
 import { submitTransaction, submitPhoneTransaction, getTransactions, getAccounts } from "../modules/transactionModule";
 import { NavigationActions } from 'react-navigation';
 import { useIsFocused, StackActions,  } from '@react-navigation/native';
-
+import Icon from "react-native-vector-icons/FontAwesome";
 
 
 
@@ -12,6 +12,7 @@ const HomeScreen = ({ navigation }) => {
     const [accounts, setAccounts] = useState("");
     const [user, setUser] = useState({});
 
+    const drawer = useRef(null);
     const isFocused = useIsFocused();
     const fetchUser = async () => {
         xid = await User.getUserDetails();
@@ -24,6 +25,7 @@ const HomeScreen = ({ navigation }) => {
         if (isFocused) {
             fetchUser();
             console.log('Home screen is focused');
+            
         }
     }, [isFocused]);
     useEffect(() => {
@@ -31,6 +33,7 @@ const HomeScreen = ({ navigation }) => {
         fetchUser();
 
     }, []);
+
 
     
 
@@ -126,13 +129,26 @@ const HomeScreen = ({ navigation }) => {
         </View>
     );
 
+    const openDrawer = () => {
+        console.log(drawer)
+        drawer.current?.openDrawer();
+    };
     return (
         <DrawerLayoutAndroid
             drawerWidth={300}
-            drawerPosition={'left'}
-            renderNavigationView={() => navigationView}>
-            
+            drawerPosition="left"
+            renderNavigationView={() => navigationView}
+            ref={drawer}
+        >
             <View style={styles.container}>
+                <Pressable onPress={openDrawer} style={styles.pressableContainer}>
+                    <View style={{ flexDirection: "row", }}>
+                        <Icon name="bars" size={30} color="white" />
+                        <Text style={{ fontSize: 25, paddingLeft: 8, color: "white" }}>Menu</Text>
+                    </View>
+                </Pressable>
+
+
                 <View style={styles.container2}>
                     <FlatList
                         data={accounts}
@@ -270,6 +286,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 20,
         width: 150,
+    },
+    pressableContainer: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        padding: 10,
     },
     requestButton: {
         alignItems: "center",
