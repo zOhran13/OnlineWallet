@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { getVendors } from "../modules/vendorsModule";
+import { getEInvoiceRequiredData, registerNewEInvoice } from "../modules/einvoiceModule";
+
 import {
     Text,
     View,
@@ -22,28 +25,39 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
 
     const [company, setCompany] = useState("");
     const [selectedCompany, setSelectedCompany] = useState({companyName: "Company", param1: null, param2: null, param3: null, param4: null});
+    const [listOfCompanies, setListOfCompanies] = useState([]);
+    const [eInvoiceRegistrationRequiredData, setEInvoiceRegistrationRequiredData] = useState({});
+    
+    useEffect(() => {
+        const fetchVendors = async () => {
+            const data = await getVendors();
+            console.log("Evo nekih vendora: ", data);
 
- 
+            setListOfCompanies(data);
+        };
+        fetchVendors();
+
+    }, []);
 
 
     const checkTextEmpty = () => {
 
 
-        if (!param1 || !param1.trim()) {
+        if (param1 && !param1.trim()) {
             alert("Please Enter " + selectedCompany.param1);
             return false;
         }
-        if (!param2 || !param2.trim()) {
+        if (param2 && !param2.trim()) {
             alert("Please Enter " + selectedCompany.param2);
             return false;
         }
 
-        if (!param3 || !param3.trim()) {
+        if (param3 && !param3.trim()) {
             alert("Please Enter " + selectedCompany.param3);
             return false;
         }
 
-        if (!param4 || !param4.trim()) {
+        if (param4 && !param4.trim()) {
             alert("Please Enter " + selectedCompany.param4);            
             return false;
         }
@@ -54,7 +68,7 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
 
     const checkAndSubmitRegistration = async () => {
         if (checkTextEmpty()) {
-
+            registerNewEInvoice(company, param1, param2, param3, param4);
         }
 
     }
@@ -70,8 +84,9 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
     {companyName: "Higijeničar", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null},
     {companyName: "Slastičarna", param1: "JMBG", param2: "imePrezime", param3: "god_rodjenja", param4: null}];
 
-    let serviceItems = companiesArray.map( (s, i) => {
-        return <Picker.Item key={i} value={s.companyName} label={s.companyName} />
+    let serviceItems = listOfCompanies.map( (s, i) => {
+        
+        return <Picker.Item key={i} value={s.name} label={s.name} />
     });
 
     return (
@@ -87,12 +102,17 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                                 selectedValue={company}
                                 onValueChange={(company) => {
                                     setCompany(company);
-                                    setSelectedCompany(companiesArray.find(data => data.companyName===company));
+                                    setSelectedCompany(listOfCompanies.find(data => data.name===company));
                                     setParam1(null);
                                     setParam2(null);
                                     setParam3(null);
                                     setParam4(null);
-   
+                                    const fetchEInvoiceRequiredData = async () => {
+                                        const data = await getEInvoiceRequiredData(company);                            
+                                        setEInvoiceRegistrationRequiredData(data);
+                                    };
+                                    fetchEInvoiceRequiredData();
+                                    
                                 }
                                 }
 
@@ -103,10 +123,10 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                             </Picker>
 
                             <View style={styles.inputFieldsContainer}>
-                            {selectedCompany.param1!=null && (
+                            {eInvoiceRegistrationRequiredData.field1!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder={selectedCompany.param1}
+                                placeholder={eInvoiceRegistrationRequiredData.field1}
                                 placeholderTextColor="#6e749d"
                                 value={param1}
                                 onChangeText={(value) => {
@@ -115,10 +135,10 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                                 }
                             />)}
 
-                            {selectedCompany.param2!=null && (
+                            {eInvoiceRegistrationRequiredData.field2!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder={selectedCompany.param2}
+                                placeholder={seInvoiceRegistrationRequiredData.field2}
                                 placeholderTextColor="#6e749d"
                                 value={param2}
                                 onChangeText={(value) => {
@@ -127,10 +147,10 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                             />)}
 
 
-                            {selectedCompany.param3!=null && (
+                            {eInvoiceRegistrationRequiredData.field3!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder={selectedCompany.param3}
+                                placeholder={eInvoiceRegistrationRequiredData.field3}
                                 placeholderTextColor="#6e749d"
                                 value={param3}
                                 onChangeText={(value) => {
@@ -139,10 +159,10 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                                 }
                             />)}
 
-                            {selectedCompany.param4!=null && (
+                            {eInvoiceRegistrationRequiredData.field4!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder={selectedCompany.param4}
+                                placeholder={eInvoiceRegistrationRequiredData.field4}
                                 placeholderTextColor="#6e749d"
                                 value={param4}
                                 onChangeText={(value) => {
