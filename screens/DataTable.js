@@ -34,18 +34,12 @@ const ClaimTable = ({ navigation }) => {
           return (<DataTable.Row>
             <DataTable.Cell onPress={
               () => {
-                navigation.navigate('Claim')
+                navigation.navigate('ChatScreen')
               }
             }>{item.id}</DataTable.Cell>
             <DataTable.Cell>{item.subject}</DataTable.Cell>
             <DataTable.Cell>{item.lastUpdated}</DataTable.Cell>
             <DataTable.Cell><Button>CLAIM</Button></DataTable.Cell>
-
-            {/* {
-              Object.values(item).forEach(data => {
-                <DataTable.Cell>nesto</DataTable.Cell>
-              })
-            } */}
           </DataTable.Row>)
         })
       }

@@ -102,7 +102,16 @@ const HomeScreen = ({ navigation }) => {
                     <Text style={styles.text}>My Transactions</Text>
                 </Pressable>
 
-
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("DataTable")}
+                >
+                    <Image
+                        source={require("../assets/images/myClaims.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>My Claims</Text>
+                </Pressable>
 
                 
                 <Pressable
@@ -170,13 +179,6 @@ const HomeScreen = ({ navigation }) => {
                         onPress={() => navigation.navigate("Transaction")}
                     >
                         <Text style={styles.text}>PAY</Text>
-                    </Pressable>
-
-                    <Pressable
-                        style={styles.payButton}
-                        onPress={() => navigation.navigate("DataTable")}
-                    >
-                        <Text style={styles.text}>MY Claims</Text>
                     </Pressable>
                 </View>
 
