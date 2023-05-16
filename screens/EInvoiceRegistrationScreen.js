@@ -43,21 +43,21 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
     const checkTextEmpty = () => {
 
 
-        if (!param1?.trim()) {
+        if (eInvoiceRegistrationRequiredData.field1 && !param1?.trim()) {
             alert("Please Enter " + eInvoiceRegistrationRequiredData.field1);
             return false;
         }
-        if (!param2?.trim()) {
+        if (eInvoiceRegistrationRequiredData.field2 && !param2?.trim()) {
             alert("Please Enter " + eInvoiceRegistrationRequiredData.field2);
             return false;
         }
 
-        if (!param3?.trim()) {
+        if (eInvoiceRegistrationRequiredData.field3 &&  !param3?.trim()) {
             alert("Please Enter " + eInvoiceRegistrationRequiredData.field3);
             return false;
         }
 
-        if (!param4?.trim()) {
+        if (eInvoiceRegistrationRequiredData.field4 && !param4?.trim()) {
             alert("Please Enter " + eInvoiceRegistrationRequiredData.field4);            
             return false;
         }
