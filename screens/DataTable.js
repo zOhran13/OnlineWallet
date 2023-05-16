@@ -41,7 +41,7 @@ const ClaimTable = ({ navigation }) => {
 
       {
         claims.map((claim, index) => {
-          return (<DataTable.Row onPress={ () => navigation.navigate('Claim', {claim, token}) }>
+          return (<DataTable.Row onPress={ () => navigation.navigate('Chat', {claim, token}) }>
             <DataTable.Cell >{claim.id}</DataTable.Cell>
             <DataTable.Cell>{claim.subject}</DataTable.Cell>
             <DataTable.Cell>{claim.description}</DataTable.Cell>

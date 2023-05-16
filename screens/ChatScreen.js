@@ -63,9 +63,9 @@ const ChatScreen = ({ route }) => {
   }, []);
 
   const downloadDocument = async (docForDownload) => {
-    console.log(FileSystem.documentDirectory);
-    console.log(FILE_SERVER_URL + docForDownload.unc.slice(8));
-    const result = await FileSystem.downloadAsync(FILE_SERVER_URL + docForDownload.unc.slice(8), FileSystem.documentDirectory + docForDownload.fileName);
+    console.log(docForDownload.unc);
+    console.log(FILE_SERVER_URL + docForDownload.unc.slice(12));
+    const result = await FileSystem.downloadAsync(FILE_SERVER_URL + docForDownload.unc.slice(12), FileSystem.documentDirectory + docForDownload.fileName);
     save(result.uri);
   }
 

@@ -73,7 +73,8 @@ export default function App() {
                 <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
                 <Stack.Screen name="EInvoiceRegistration" component={EInvoiceRegistrationScreen} />
                 <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
-                <Stack.Screen name="Claim" component={ChatScreen} />
+                <Stack.Screen name="Claim" component={ClaimScreen} />
+                <Stack.Screen name="Chat" component={ChatScreen} />
 
                 <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
                 <Stack.Screen name="TransactionDetails" component={TransactionDetailsScreen} />
