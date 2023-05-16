@@ -26,6 +26,7 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import MyTransactionsScreen from './screens/MyTransactionsScreen';
 import NewAccountCreationScreen from './screens/NewAccountCreationScreen';
+import EInvoiceRegistrationScreen from './screens/EInvoiceRegistrationScreen';
 import PhoneVerificationScreen from './screens/PhoneVerificationScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 import RequestedAccounts from "./screens/RequestedAccounts";
@@ -62,10 +63,6 @@ export default function App() {
                                         opacity: 0.7,
                                     }}
                                 >
-                                    <Icon
-                                        name="bars"
-                                        size={25}
-                                    />
                                     <Text style={{ fontSize: 20, paddingLeft: 8 }}> </Text>
                                 </View>
                             </TouchableOpacity>
@@ -74,6 +71,7 @@ export default function App() {
                 />
 
                 <Stack.Screen name="NewAccountCreation" component={NewAccountCreationScreen} />
+                <Stack.Screen name="EInvoiceRegistration" component={EInvoiceRegistrationScreen} />
                 <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
                 <Stack.Screen name="Claim" component={ChatScreen} />
 

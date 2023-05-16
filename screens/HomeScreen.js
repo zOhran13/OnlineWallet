@@ -40,76 +40,86 @@ const HomeScreen = ({ navigation }) => {
     fetchUser();
   }, []);
 
-  const navigationView = (
-    <View>
-      <ScrollView>
-        <View style={styles.menuProfile}>
-          <View style={styles.circle} View>
-            <Text style={{ fontSize: 60, color: "white", paddingTop: 10 }}>
-              {user.firstName?.substring(0, 1)}
-            </Text>
-          </View>
-          <Text style={styles.text3}>
-            {user.firstName + " " + user.lastName}
-          </Text>
-          <Text style={styles.text4}>{user.email}</Text>
-          <Text style={styles.text4}>{user.phoneNumber}</Text>
-        </View>
+    
 
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("Template List")}
-        >
-          <Image
-            source={require("../assets/images/listTemplates.png")}
-            style={styles.buttonImage}
-          />
-          <Text style={styles.text}>Template list</Text>
-        </Pressable>
+    const navigationView = (
 
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("Voucher Reedem")}
-        >
-          <Image
-            source={require("../assets/images/voucher.png")}
-            style={styles.buttonImage}
-          />
-          <Text style={styles.text}>Voucher Redeem</Text>
-        </Pressable>
+        <View >
 
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("NewAccountCreation")}
-        >
-          <Image
-            source={require("../assets/images/newbank.png")}
-            style={styles.buttonImage}
-          />
-          <Text style={styles.text}>Create New Account</Text>
-        </Pressable>
+            <ScrollView >
+                <View style={styles.menuProfile}>
 
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("RequestedAccounts")}
-        >
-          <Image
-            source={require("../assets/images/pendingAccount.png")}
-            style={styles.buttonImage}
-          />
-          <Text style={styles.text}>Requested Accounts</Text>
-        </Pressable>
+                    <View style={styles.circle} View>
 
-        <Pressable
-          style={styles.listTemplatesButton}
-          onPress={() => navigation.navigate("MyTransactions")}
-        >
-          <Image
-            source={require("../assets/images/myTransactions.png")}
-            style={styles.buttonImage}
-          />
-          <Text style={styles.text}>My Transactions</Text>
-        </Pressable>
+                        <Text style={{ fontSize: 60, color: "white", paddingTop: 10 }}>{user.firstName?.substring(0, 1)}</Text>
+
+                    </View>
+                    <Text style={styles.text3}>{user.firstName + " " + user.lastName}</Text>
+                    <Text style={styles.text4}>{user.email}</Text>
+                    <Text style={styles.text4}>{user.phoneNumber}</Text>
+
+                </View>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("Template List")}
+                >
+                    <Image
+                        source={require("../assets/images/listTemplates.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Template list</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("Voucher Reedem")}
+                >
+                    <Image
+                        source={require("../assets/images/voucher.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Voucher Redeem</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("NewAccountCreation")}
+                >
+                    <Image
+                        source={require("../assets/images/newbank.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Create New Account</Text>
+                </Pressable>
+              
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("RequestedAccounts")}
+                >
+                    <Image
+                        source={require("../assets/images/menu.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Requested Accounts</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("EInvoiceRegistration")}
+                >
+                    <Image
+                        source={require("../assets/images/icon-register.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Register new e-invoice</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("MyTransactions")}
+                >
+                    <Image
+                        source={require("../assets/images/transactions.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>My Transactions</Text>
+                </Pressable>
 
         <Pressable
           style={styles.listTemplatesButton}
@@ -142,57 +152,57 @@ const HomeScreen = ({ navigation }) => {
     </View>
   );
 
-  return (
-    <DrawerLayoutAndroid
-      drawerWidth={300}
-      drawerPosition={"left"}
-      renderNavigationView={() => navigationView}
-    >
-      <View style={styles.container}>
-        <View style={styles.container2}>
-          <FlatList
-            data={accounts}
-            renderItem={({ item: account }) => {
-              return (
-                <View style={styles.transactionContainer} key={account.id}>
-                  <View style={styles.containerAccount}>
-                    <View>
-                      <Text style={styles.accountDetails}>
-                        {account.accountNumber + " " + account.currency}
-                      </Text>
-                      <Text style={styles.accountDetails}>
-                        {account.bankName}
-                      </Text>
-                      <Text style={styles.accountDetails}>
-                        {account.description}
-                      </Text>
-                    </View>
-                    <View style={styles.containerAccount}>
-                      <Text style={{ fontSize: 20 }}>
-                        {account.total.toFixed(2) + " " + account.currency}
-                      </Text>
-                      <Image
-                        style={styles.image}
-                        source={require("../assets/images/WalletPicture.png")}
-                      />
-                    </View>
-                  </View>
+    return (
+        <DrawerLayoutAndroid
+            drawerWidth={300}
+            drawerPosition={'left'}
+            renderNavigationView={() => navigationView}>
+            
+            <View style={styles.container}>
+                <View style={styles.container2}>
+                    <FlatList
+                        data={accounts}
+                        renderItem={({ item: account }) => {
+                            return (
+                                <View style={styles.transactionContainer} key={account.id}>
+                                    <View style={styles.containerAccount}>
+                                        <View>
+                                            <Text style={styles.accountDetails}>{account.accountNumber + " " + account.currency}</Text>
+                                            <Text style={styles.accountDetails}>{account.bankName}</Text>
+                                            <Text style={styles.accountDetails}>{account.description?.substring(0,18) + "..."}</Text>
+
+                                        </View>
+                                        <View style={styles.containerAccount}>
+                                            <Text style={{ fontSize: 20 }}>{account.total.toFixed(2) + " " + account.currency}</Text>
+                                            <Image
+                                                style={styles.image}
+                                                source={require("../assets/images/WalletPicture.png")}
+                                            />
+                                        </View>
+
+
+                                    </View>
+
+
+
+                                </View>
+                            );
+                        }}
+                    />
                 </View>
-              );
-            }}
-          />
-        </View>
-        <View style={styles.container1}>
-          <Pressable
-            style={styles.payButton}
-            onPress={() => navigation.navigate("Transaction")}
-          >
-            <Text style={styles.text}>PAY</Text>
-          </Pressable>
-        </View>
-      </View>
-    </DrawerLayoutAndroid>
-  );
+                <View style={styles.container1}>
+                    <Pressable
+                        style={styles.payButton}
+                        onPress={() => navigation.navigate("Transaction")}
+                    >
+                        <Text style={styles.text}>PAY</Text>
+                    </Pressable>
+                </View>
+
+
+            </View>
+        </DrawerLayoutAndroid>
+    );
 };
 const styles = StyleSheet.create({
   accountDetails: {

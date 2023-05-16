@@ -100,7 +100,7 @@ export async function getAccounts() {
     try {
 
         const token = await getToken();
-        const fetchedData = await fetch(link + '/api/Account/GetAllAccountsForUser?token=' + token)
+        const fetchedData = await fetch(link + '/api/UserBankAccount/GetAllAccountsForUser?token=' + token)
        
         const data = await fetchedData.json();
         
