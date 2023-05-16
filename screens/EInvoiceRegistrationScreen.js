@@ -43,22 +43,22 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
     const checkTextEmpty = () => {
 
 
-        if (param1 && !param1.trim()) {
-            alert("Please Enter " + selectedCompany.param1);
+        if (!param1?.trim()) {
+            alert("Please Enter " + eInvoiceRegistrationRequiredData.field1);
             return false;
         }
-        if (param2 && !param2.trim()) {
-            alert("Please Enter " + selectedCompany.param2);
-            return false;
-        }
-
-        if (param3 && !param3.trim()) {
-            alert("Please Enter " + selectedCompany.param3);
+        if (!param2?.trim()) {
+            alert("Please Enter " + eInvoiceRegistrationRequiredData.field2);
             return false;
         }
 
-        if (param4 && !param4.trim()) {
-            alert("Please Enter " + selectedCompany.param4);            
+        if (!param3?.trim()) {
+            alert("Please Enter " + eInvoiceRegistrationRequiredData.field3);
+            return false;
+        }
+
+        if (!param4?.trim()) {
+            alert("Please Enter " + eInvoiceRegistrationRequiredData.field4);            
             return false;
         }
 
