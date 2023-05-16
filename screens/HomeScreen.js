@@ -81,16 +81,7 @@ const HomeScreen = ({ navigation }) => {
                     />
                     <Text style={styles.text}>Create New Account</Text>
                 </Pressable>
-                <Pressable
-                    style={styles.listTemplatesButton}
-                    onPress={() => navigation.navigate("EInvoiceRegistration")}
-                >
-                    <Image
-                        source={require("../assets/images/icon-register.png")}
-                        style={styles.buttonImage}
-                    />
-                    <Text style={styles.text}>Register new e-invoice</Text>
-                </Pressable>
+              
                 <Pressable
                     style={styles.listTemplatesButton}
                     onPress={() => navigation.navigate("RequestedAccounts")}
@@ -103,10 +94,20 @@ const HomeScreen = ({ navigation }) => {
                 </Pressable>
                 <Pressable
                     style={styles.listTemplatesButton}
+                    onPress={() => navigation.navigate("EInvoiceRegistration")}
+                >
+                    <Image
+                        source={require("../assets/images/icon-register.png")}
+                        style={styles.buttonImage}
+                    />
+                    <Text style={styles.text}>Register new e-invoice</Text>
+                </Pressable>
+                <Pressable
+                    style={styles.listTemplatesButton}
                     onPress={() => navigation.navigate("MyTransactions")}
                 >
                     <Image
-                        source={require("../assets/images/menu.png")}
+                        source={require("../assets/images/transactions.png")}
                         style={styles.buttonImage}
                     />
                     <Text style={styles.text}>My Transactions</Text>
@@ -153,7 +154,7 @@ const HomeScreen = ({ navigation }) => {
                                         <View>
                                             <Text style={styles.accountDetails}>{account.accountNumber + " " + account.currency}</Text>
                                             <Text style={styles.accountDetails}>{account.bankName}</Text>
-                                            <Text style={styles.accountDetails}>{account.description}</Text>
+                                            <Text style={styles.accountDetails}>{account.description?.substring(0,18) + "..."}</Text>
 
                                         </View>
                                         <View style={styles.containerAccount}>

@@ -69,6 +69,7 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
     const checkAndSubmitRegistration = async () => {
         if (checkTextEmpty()) {
             registerNewEInvoice(company, param1, param2, param3, param4);
+            Alert.alert("E-Invoice registration successfully sent!")
         }
 
     }
@@ -138,7 +139,7 @@ const EInvoiceRegistrationScreen = ({ navigation }) => {
                             {eInvoiceRegistrationRequiredData.field2!=null && (
                             <TextInput
                                 style={styles.input}
-                                placeholder={seInvoiceRegistrationRequiredData.field2}
+                                placeholder={eInvoiceRegistrationRequiredData.field2}
                                 placeholderTextColor="#6e749d"
                                 value={param2}
                                 onChangeText={(value) => {

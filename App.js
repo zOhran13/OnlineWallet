@@ -31,8 +31,6 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name='Login' component={LoginScreen} />
-                <Stack.Screen name="Registration" component={RegistrationScreen} />
 
                 <Stack.Screen
                     name="Home"
@@ -47,10 +45,6 @@ export default function App() {
                                         opacity: 0.7,
                                     }}
                                 >
-                                    <Icon
-                                        name="bars"
-                                        size={25}
-                                    />
                                     <Text style={{ fontSize: 20, paddingLeft: 8 }}> </Text>
                                 </View>
                             </TouchableOpacity>

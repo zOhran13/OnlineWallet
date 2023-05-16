@@ -11,14 +11,15 @@ async function getToken() {
 export const getEInvoiceRequiredData = async (b2BName) => {
     try {
         const token = await getToken();
-        console
-        const fetchedData = await fetch(link + '/api/InvoiceRegistration/required-data/' + b2BName, {
+        const fetchedData = await fetch(link + '/api/InvoiceRegistration/required-data?B2BName=' + b2BName, {
             headers: {
                 authorization: `Bearer ${token}`
             }
         });
         const data = await fetchedData.json();
+        console.log(data)
         return data;
+
     } catch (error) {
         console.log(error);
         throw error;
