@@ -1,8 +1,8 @@
 {
   "expo": {
-    "scheme": "host.exp.exponent",
-    "name": "SI-Wallet",
-    "slug": "SI-Wallet",
+    "scheme": "com.armin.wallet",
+    "name": "wallet",
+    "slug": "wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/registration.png",
@@ -17,10 +17,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "host.exp.exponent"
+      "bundleIdentifier": "com.armin.wallet"
     },
     "android": {
-      "package": "host.exp.exponent",
+      "package": "com.armin.wallet",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
