@@ -35,6 +35,6 @@ workflows:
           email:
             recipients:
               - apetrovic1@etf.unsa.ba
-          notify:
-            success: true
-            failure: false
+            notify:
+              success: true
+              failure: false
