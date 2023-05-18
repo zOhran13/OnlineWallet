@@ -4,7 +4,6 @@ import { Picker } from '@react-native-picker/picker';
 import * as DocumentPicker  from 'expo-document-picker';
 import * as SecureStorage from 'expo-secure-store';
 import jwtDecode from 'jwt-decode';
-import { fileTransactionClaim } from '../modules/claimsModule';
 import axios from 'axios';
 
 const  ClaimScreen = ({ navigation, route }) => {
@@ -62,7 +61,16 @@ const  ClaimScreen = ({ navigation, route }) => {
     });
   }
 
-  
+  function fileTransactionClaim(request, myToken) {
+    return axios(API_URL + '/api/transactions/claim', {
+      method: 'POST',
+      data: request,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + myToken,
+      },
+    });
+  }
 
 
   const sendRequest = (myToken) => {
