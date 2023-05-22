@@ -3,7 +3,6 @@ import { Text, View, StyleSheet,TextInput,Alert,Pressable, Image, ScrollView, To
 import { Picker } from '@react-native-picker/picker';
 import Checkbox from "expo-checkbox";
 
-
 const RegistrationScreen = ({ navigation }) => {
 
   const showAlert = (title, errorMsg, desc) =>
