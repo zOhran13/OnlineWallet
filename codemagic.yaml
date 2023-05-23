@@ -1,0 +1,39 @@
+workflows:
+    android-workflow:
+        name: SI-wallet android build workflow
+        max_build_duration: 120
+        instance_type: mac_mini_m1
+        environment:
+          groups:
+            - keystore_credentials
+          vars:
+            PACKAGE_NAME: "host.exp.exponent"
+        scripts:
+          - name: Set up keystore
+            script: |
+              echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+          - name: Install npm dependencies
+            script: | 
+              npm install
+          - name: Install Expo CLI and eject
+            script: | 
+              npx expo prebuild
+          - name: Set up app/build.gradle
+            script: |
+              mv ./support-files/build.gradle android/app
+          - name: Set Android SDK location
+            script: | 
+              echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/android/local.properties"
+          - name: Build Android release
+            script: | 
+              cd android
+              ./gradlew bundleRelease
+        artifacts:
+          - android/app/build/outputs/**/*.aab
+        publishing: 
+          email:
+            recipients:
+              - apetrovic1@etf.unsa.ba
+            notify:
+              success: true
+              failure: false

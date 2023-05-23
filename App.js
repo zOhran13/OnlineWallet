@@ -1,17 +1,3 @@
-/* import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import ClaimTable from './screens/DataTable';
-import ChatScreen from './screens/ChatScreen';
-
-export default function App() {
-  return (
-    <View>
-      <ClaimTable />
-    </View>
-  );
-} */
-
-
 import { Animated, DrawerLayoutAndroid, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
@@ -34,8 +20,6 @@ import TemplateListScreen from "./screens/TemplateListScreen";
 import TransactionDetailsScreen from "./screens/TransactionDetailsScreen";
 import TransactionScreen from './screens/TransactionScreen';
 import VoucherReedemScreen from "./screens/VoucherReedemScreen";
-import ChatScreen from './screens/ChatScreen';
-import DataTable from './screens/DataTable';
 
 import React, { useRef } from "react";
 
@@ -74,7 +58,6 @@ export default function App() {
                 <Stack.Screen name="EInvoiceRegistration" component={EInvoiceRegistrationScreen} />
                 <Stack.Screen name="RequestedAccounts" component={RequestedAccounts} />
                 <Stack.Screen name="Claim" component={ClaimScreen} />
-                <Stack.Screen name="Chat" component={ChatScreen} />
 
                 <Stack.Screen name="MyTransactions" component={MyTransactionsScreen} />
                 <Stack.Screen name="TransactionDetails" component={TransactionDetailsScreen} />
@@ -106,8 +89,7 @@ export default function App() {
                 <Stack.Screen name="PhoneVerification" component={PhoneVerificationScreen}/>
                 <Stack.Screen name="EmailOrPhoneVerification" component={EmailOrPhoneVerificationScreen}/>
                 <Stack.Screen name="Transaction" component={TransactionScreen} />
-                <Stack.Screen name="DataTable" component={DataTable} options={{ title: 'Data Table' }} />
-                <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ title: 'Chat Screen' }} />
+
                 <Stack.Screen name="Voucher Reedem" component={VoucherReedemScreen} />
             </Stack.Navigator>
         </NavigationContainer>
