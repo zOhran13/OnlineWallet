@@ -3,7 +3,6 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { ToastAndroid } from 'react-native'; // Import ToastAndroid from react-native
 
 import VoucherReedemScreen from '../screens/VoucherReedemScreen.js';
-import { setItemAsync, getItemAsync, deleteItemAsync } from '../__mocks__/expo-secure-store.js';
 
 jest.mock('react-native/Libraries/Components/ToastAndroid/ToastAndroid', () => {
   // Mock the show method

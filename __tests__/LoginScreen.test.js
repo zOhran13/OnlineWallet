@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import LoginScreen from '../screens/LoginScreen.js';
-import { setItemAsync, getItemAsync, deleteItemAsync } from '../__mocks__/expo-secure-store.js';
 
 describe('LoginScreen', () => {
   it('should render the login screen correctly', () => {
