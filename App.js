@@ -1,7 +1,6 @@
 import { Animated, DrawerLayoutAndroid, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from 'expo-status-bar';
 import Icon from "react-native-vector-icons/FontAwesome";
 import registerNNPushToken from "native-notify";
 
@@ -31,7 +30,6 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator>
-                <Stack.Screen name='Login' component={LoginScreen} />
                 <Stack.Screen name="Registration" component={RegistrationScreen} />
 
                 <Stack.Screen

@@ -29,7 +29,7 @@ const TemplateListScreen = ({ navigation }) => {
 
     useEffect(() => {
         const fetchUserId = async () => {
-            xid = await User.getUserDetails();
+            const xid = await User.getUserDetails();
             setUserId(xid.id);
             const data = await getTemplates(xid.id);
             setTemplates(data);

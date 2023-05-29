@@ -20,7 +20,7 @@ const MyTransactionsScreen = ({ navigation }) => {
 
     useEffect(() => {
         const fetchUserTransactions = async () => {
-            xid = await User.getUserDetails();
+            const xid = await User.getUserDetails();
             setUserId(xid.id);
             setUserName(xid.firstName + " " + xid.lastName);
             const trans = await getTransactions(pageNumber.toString(), "10");
